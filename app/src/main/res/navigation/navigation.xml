@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/loginNav"
+    app:startDestination="@id/loginFragment"
+    tools:ignore="UnusedNavigation">
+
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="com.huda.mypatienttracker.LoginFragment.LoginFragment"
+        tools:layout="@layout/login_fragment">
+
+        <action
+            android:id="@+id/action_login_to_home"
+            app:destination="@id/HomeFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/HomeFragment"
+        android:name="com.huda.mypatienttracker.HomeFragment.HomeFragment"
+        tools:layout="@layout/home_fragment">
+
+        <!--  <action
+              android:id="@+id/action_LoginFragment_to_Home"
+              app:destination="@id/LocationFragment" />
+  -->
+    </fragment>
+
+
+</navigation>
