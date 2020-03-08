@@ -1,4 +1,4 @@
-package com.huda.mypatienttracker.HospitalList
+package com.huda.mypatienttracker.ActivityFragment
 
 import android.content.Context
 import android.content.SharedPreferences
@@ -14,15 +14,16 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.huda.mypatienttracker.Adapters.ActivityAdapter
 import com.huda.mypatienttracker.R
 import com.huda.mypatienttracker.Adapters.HospitalAdapter
 
 
-class HospitalFragment : Fragment() {
+class ActivityFragment : Fragment() {
     private lateinit var root: View
-    private lateinit var hospitalViewModel: HospitalViewModel
+    private lateinit var activityViewModel: ActivityViewModel
     private val modelFeedArrayList = arrayListOf<String>()
-    private lateinit var hospitalAdapter: HospitalAdapter
+    private lateinit var activityAdapter: ActivityAdapter
     private lateinit var recyclerView: RecyclerView
     private lateinit var loginPreferences: SharedPreferences
     private var type: Int = -1
@@ -39,7 +40,7 @@ class HospitalFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         root = inflater.inflate(R.layout.hospital_fragment_list, container, false)
-        hospitalViewModel = ViewModelProviders.of(this).get(HospitalViewModel::class.java)
+        activityViewModel = ViewModelProviders.of(this).get(ActivityViewModel::class.java)
         return root
     }
 
@@ -99,10 +100,10 @@ class HospitalFragment : Fragment() {
         modelFeedArrayList.add("hi")
         modelFeedArrayList.add("hi")
         modelFeedArrayList.add("huda")
-        hospitalAdapter = HospitalAdapter(modelFeedArrayList)
+        activityAdapter = ActivityAdapter(modelFeedArrayList)
         recyclerView.layoutManager = layoutManager
-        recyclerView.adapter = hospitalAdapter
-        hospitalAdapter.setOnCommentListener(object : HospitalAdapter.OnCommentClickListener {
+        recyclerView.adapter = activityAdapter
+        activityAdapter.setOnCommentListener(object : ActivityAdapter.OnCommentClickListener {
             override fun onDotsImageClicked(position: Int, fromTab: String) {
                 if (fromTab == "AddDoctor") {
                     findNavController().navigate(R.id.action_HospitalListFragment_to_addDoctor)

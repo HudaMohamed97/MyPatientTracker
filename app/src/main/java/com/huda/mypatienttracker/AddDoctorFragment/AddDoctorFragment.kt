@@ -1,32 +1,22 @@
-package com.huda.mypatienttracker.HomeFragment
+package com.huda.mypatienttracker.AddDoctorFragment
 
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
-import android.text.method.HideReturnsTransformationMethod
-import android.text.method.PasswordTransformationMethod
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
-import android.widget.Button
-import android.widget.EditText
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
-import androidx.navigation.fragment.findNavController
-import com.example.catapplication.utilies.Validation
 import com.huda.mypatienttracker.R
-import kotlinx.android.synthetic.main.home_fragment.*
+import kotlinx.android.synthetic.main.add_doctor.*
 import kotlinx.android.synthetic.main.login_fragment.*
 
-class HomeFragment : Fragment() {
+class AddDoctorFragment : Fragment() {
     private lateinit var root: View
-    private lateinit var homeViewModel: HomeViewModel
-    private lateinit var email: EditText
-    private lateinit var passwordEt: EditText
+    private lateinit var addFragmentViewModel: AddFragmentViewModel
     private lateinit var loginPreferences: SharedPreferences
-    private lateinit var loginPrefsEditor: SharedPreferences.Editor
 
 
     override fun onCreateView(
@@ -34,8 +24,8 @@ class HomeFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        root = inflater.inflate(R.layout.home_fragment, container, false)
-        homeViewModel = ViewModelProviders.of(this).get(HomeViewModel::class.java)
+        root = inflater.inflate(R.layout.add_doctor, container, false)
+        addFragmentViewModel = ViewModelProviders.of(this).get(AddFragmentViewModel::class.java)
         return root
     }
 
@@ -45,13 +35,16 @@ class HomeFragment : Fragment() {
     }
 
     private fun setClickListeners() {
-        hospitalCard.setOnClickListener {
-            findNavController().navigate(R.id.action_HomeFragment_to_HospitalList)
-        }
-        activity_card.setOnClickListener {
-            findNavController().navigate(R.id.action_HomeFragment_toActivityFragment)
+
+        mainView.setOnClickListener {
+            hideKeyboard()
         }
 
+        /*   email = root.findViewById(R.id.input_email)
+           passwordEt = root.findViewById(R.id.input_password)
+           mainLayout.setOnClickListener {
+               hideKeyboard()
+           }*/
         loginPreferences = activity!!.getSharedPreferences("loginPrefs", Context.MODE_PRIVATE)
 
     }
@@ -83,23 +76,6 @@ class HomeFragment : Fragment() {
 
          })*/
 
-    }
-
-    private fun checkErrorEnabled() {
-        if (!Validation.validate(email.text.toString())) {
-            Toast.makeText(activity, "empty Email please fill it", Toast.LENGTH_SHORT).show()
-        } else if (!Validation.validateEmail(email.text.toString())) {
-            Toast.makeText(
-                activity,
-                "Invalid Email Format Please enter valid mail",
-                Toast.LENGTH_SHORT
-            ).show()
-
-        } else {
-            if (!Validation.validate(passwordEt.text.toString())) {
-                Toast.makeText(activity, "empty password please fill it", Toast.LENGTH_SHORT).show()
-            }
-        }
     }
 
 

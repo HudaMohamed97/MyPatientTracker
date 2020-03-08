@@ -128,11 +128,12 @@
             android:background="@drawable/background_edittext"
             android:orientation="horizontal">
 
-            <androidx.appcompat.widget.AppCompatSpinner
+            <com.toptoche.searchablespinnerlibrary.SearchableSpinner
                 android:id="@+id/spinner"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:prompt="@string/app_name"
+                app:hintText="Select Countries"
+                android:textColor="@color/black"
                 android:spinnerMode="dropdown"
                 android:theme="@style/SpinnerThemeLight" />
 
@@ -152,12 +153,14 @@
                 android:background="@drawable/background_edittext"
                 android:orientation="horizontal">
 
-                <androidx.appcompat.widget.AppCompatSpinner
+                <com.toptoche.searchablespinnerlibrary.SearchableSpinner
                     android:id="@+id/spinner2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:spinnerMode="dropdown"
+                    android:prompt="@string/app_name"
+                    app:hintText="Select Countries"
                     android:theme="@style/SpinnerThemeLight" />
+
 
             </LinearLayout>
 
@@ -176,7 +179,7 @@
         android:layout_marginLeft="20dp"
         android:layout_marginTop="30dp"
         android:layout_marginRight="20dp"
-        android:layout_marginBottom="40dp"
+        android:layout_marginBottom="80dp"
         android:background="@color/not_blue"
         android:backgroundTint="@color/not_blue"
         android:text="CONTINUO"

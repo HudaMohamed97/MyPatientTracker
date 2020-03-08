@@ -13,8 +13,8 @@ import java.util.*
 import androidx.appcompat.view.ContextThemeWrapper
 
 
-class HospitalAdapter(modelFeedArrayList: ArrayList<String>) :
-    RecyclerView.Adapter<HospitalAdapter.MyViewHolder>() {
+class ActivityAdapter(modelFeedArrayList: ArrayList<String>) :
+    RecyclerView.Adapter<ActivityAdapter.MyViewHolder>() {
 
     lateinit var onItemClickListener: OnCommentClickListener
     private var context: Context? = null
@@ -34,7 +34,7 @@ class HospitalAdapter(modelFeedArrayList: ArrayList<String>) :
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
 
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.hospital_row, parent, false)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.activity_row, parent, false)
         context = parent.context
         return MyViewHolder(view)
     }
@@ -85,7 +85,7 @@ class HospitalAdapter(modelFeedArrayList: ArrayList<String>) :
                 }
 
 
-                popup.inflate(R.menu.option_menu)
+                popup.inflate(R.menu.activity_menu)
 
 
                 //adding click listener

@@ -14,11 +14,59 @@
         <action
             android:id="@+id/action_login_to_home"
             app:destination="@id/HomeFragment" />
+        <action
+            android:id="@+id/action_login_to_hospital"
+            app:destination="@id/HospitalListFragment" />
+
     </fragment>
     <fragment
         android:id="@+id/HomeFragment"
         android:name="com.huda.mypatienttracker.HomeFragment.HomeFragment"
         tools:layout="@layout/home_fragment">
+
+        <action
+            android:id="@+id/action_HomeFragment_to_HospitalList"
+            app:destination="@id/HospitalListFragment" />
+        <action
+            android:id="@+id/action_HomeFragment_toActivityFragment"
+            app:destination="@id/ActivityFragment" />
+        <action
+            android:id="@+id/action_HomeFragment_toPatientFragment"
+            app:destination="@id/PatientaListFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/HospitalListFragment"
+        android:name="com.huda.mypatienttracker.HospitalList.HospitalFragment"
+        tools:layout="@layout/hospital_fragment_list">
+
+        <action
+            android:id="@+id/action_HospitalListFragment_to_addDoctor"
+            app:destination="@id/AddDoctorFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/AddDoctorFragment"
+        android:name="com.huda.mypatienttracker.AddDoctorFragment.AddDoctorFragment"
+        tools:layout="@layout/add_doctor">
+
+        <!--  <action
+              android:id="@+id/action_LoginFragment_to_Home"
+              app:destination="@id/LocationFragment" />
+  -->
+    </fragment>
+    <fragment
+        android:id="@+id/ActivityFragment"
+        android:name="com.huda.mypatienttracker.ActivityFragment.ActivityFragment"
+        tools:layout="@layout/activity_fragment_list">
+
+        <!--  <action
+              android:id="@+id/action_LoginFragment_to_Home"
+              app:destination="@id/LocationFragment" />
+  -->
+    </fragment>
+    <fragment
+        android:id="@+id/PatientaListFragment"
+        android:name="com.huda.mypatienttracker.patientListFragment.PatientaListFragment"
+        tools:layout="@layout/patient_fragment_list">
 
         <!--  <action
               android:id="@+id/action_LoginFragment_to_Home"

@@ -28,7 +28,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="2"
-            android:text="HospitalName"
+            android:text="ActivityName"
             android:textColor="@color/black" />
 
         <TextView
@@ -73,15 +73,9 @@
                 android:id="@+id/hospitalLocation"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="HospitalLocation"
+                android:text="SpeakerName"
                 android:textColor="@color/black" />
 
-            <TextView
-                android:id="@+id/hospitalAdress"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="hospitalAdress"
-                android:textColor="@color/black" />
         </LinearLayout>
 
 
