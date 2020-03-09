@@ -16,7 +16,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.huda.mypatienttracker.Adapters.ActivityAdapter
 import com.huda.mypatienttracker.R
-import com.huda.mypatienttracker.Adapters.HospitalAdapter
 
 
 class ActivityFragment : Fragment() {
@@ -39,7 +38,7 @@ class ActivityFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        root = inflater.inflate(R.layout.hospital_fragment_list, container, false)
+        root = inflater.inflate(R.layout.activity_fragment_list, container, false)
         activityViewModel = ViewModelProviders.of(this).get(ActivityViewModel::class.java)
         return root
     }
@@ -105,8 +104,8 @@ class ActivityFragment : Fragment() {
         recyclerView.adapter = activityAdapter
         activityAdapter.setOnCommentListener(object : ActivityAdapter.OnCommentClickListener {
             override fun onDotsImageClicked(position: Int, fromTab: String) {
-                if (fromTab == "AddDoctor") {
-                    findNavController().navigate(R.id.action_HospitalListFragment_to_addDoctor)
+                if (fromTab == "AddActivity") {
+                    findNavController().navigate(R.id.action_Activity_to_Add_Activity)
 
                 } else if (fromTab == "") {
                     Toast.makeText(activity, "Please Select Action.", Toast.LENGTH_SHORT).show()

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#dcffffff</color>
+    <color name="colorPrimary">@color/not_blue</color>
     <color name="colorPrimaryDark">#242424</color>
     <color name="colorAccent">#dcffffff</color>
 

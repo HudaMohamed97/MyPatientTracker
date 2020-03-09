@@ -32,7 +32,7 @@
             app:destination="@id/ActivityFragment" />
         <action
             android:id="@+id/action_HomeFragment_toPatientFragment"
-            app:destination="@id/PatientaListFragment" />
+            app:destination="@id/PatientListFragment" />
     </fragment>
     <fragment
         android:id="@+id/HospitalListFragment"
@@ -54,9 +54,9 @@
   -->
     </fragment>
     <fragment
-        android:id="@+id/ActivityFragment"
-        android:name="com.huda.mypatienttracker.ActivityFragment.ActivityFragment"
-        tools:layout="@layout/activity_fragment_list">
+        android:id="@+id/AddActivityFragment"
+        android:name="com.huda.mypatienttracker.AddActiivtyFragment.AddActivityFragment"
+        tools:layout="@layout/add_activity_fragment">
 
         <!--  <action
               android:id="@+id/action_LoginFragment_to_Home"
@@ -64,9 +64,28 @@
   -->
     </fragment>
     <fragment
-        android:id="@+id/PatientaListFragment"
+        android:id="@+id/ActivityFragment"
+        android:name="com.huda.mypatienttracker.ActivityFragment.ActivityFragment"
+        tools:layout="@layout/activity_fragment_list">
+
+        <action
+            android:id="@+id/action_Activity_to_Add_Activity"
+            app:destination="@id/AddActivityFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/PatientListFragment"
         android:name="com.huda.mypatienttracker.patientListFragment.PatientaListFragment"
         tools:layout="@layout/patient_fragment_list">
+
+        <!--  <action
+              android:id="@+id/action_LoginFragment_to_Home"
+              app:destination="@id/LocationFragment" />
+  -->
+    </fragment>
+    <fragment
+        android:id="@+id/AddTargetFragment"
+        android:name="com.huda.mypatienttracker.AddTaergetFragment.AddTargetFragment"
+        tools:layout="@layout/add_target_fragment">
 
         <!--  <action
               android:id="@+id/action_LoginFragment_to_Home"

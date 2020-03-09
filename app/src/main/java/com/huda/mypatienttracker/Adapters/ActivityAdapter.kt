@@ -92,17 +92,12 @@ class ActivityAdapter(modelFeedArrayList: ArrayList<String>) :
                 popup.setOnMenuItemClickListener { item ->
                     when {
                         item.itemId == R.id.menu1 -> {
-                            fromTab = "AddDoctor"
+                            fromTab = "AddActivity"
                             onItemClickListener.onDotsImageClicked(position, fromTab)
                             true
                         }
                         item.itemId == R.id.menu2 -> {
                             fromTab = "update"
-                            onItemClickListener.onDotsImageClicked(position, fromTab)
-                            true
-                        }
-                        item.itemId == R.id.menu3 -> {
-                            fromTab = "delete"
                             onItemClickListener.onDotsImageClicked(position, fromTab)
                             true
                         }
