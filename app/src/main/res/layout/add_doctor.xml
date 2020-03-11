@@ -110,7 +110,7 @@
                 android:id="@+id/spinner"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:hintText="Select Countries"
+                app:hintText="Specialty"
                 android:textColor="@color/black"
                 android:spinnerMode="dropdown"
                 android:theme="@style/SpinnerThemeLight" />
@@ -135,7 +135,7 @@
                     android:id="@+id/spinner2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:hintText="Select Countries"
+                    app:hintText="Specialty Type"
                     android:textColor="@color/black"
                     android:spinnerMode="dropdown"
                     android:theme="@style/SpinnerThemeLight" />

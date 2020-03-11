@@ -51,6 +51,9 @@ class HomeFragment : Fragment() {
         activity_card.setOnClickListener {
             findNavController().navigate(R.id.action_HomeFragment_toActivityFragment)
         }
+        patientCard.setOnClickListener {
+            findNavController().navigate(R.id.action_HomeFragment_toPatientFragment)
+        }
 
         loginPreferences = activity!!.getSharedPreferences("loginPrefs", Context.MODE_PRIVATE)
 

@@ -50,11 +50,6 @@ class LoginFragment : Fragment(), LoginInterface {
     }
 
     override fun setClickListeners() {
-
-        forgetPassword.setOnClickListener {
-            //  findNavController().navigate(R.id.action_LoginFragment_to_ForgetPassword)
-
-        }
         showPassword.setOnClickListener {
             var cursor = passwordEt.selectionStart
             if (clicked) {
@@ -89,18 +84,16 @@ class LoginFragment : Fragment(), LoginInterface {
 
 
         button.setOnClickListener {
-
-            findNavController().navigate(R.id.action_login_to_home)
-
-           /* checkErrorEnabled()
+            checkErrorEnabled()
             hideKeyboard()
             if (loginViewModel.validateLoginInfo(
                     email.text.toString(),
                     passwordEt.text.toString()
-                )
+
+                ) && passwordEt.text.length > 6 || passwordEt.text.length == 6
             ) {
                 callLoginRequest()
-            }*/
+            }
         }
 
     }
@@ -118,7 +111,8 @@ class LoginFragment : Fragment(), LoginInterface {
                     saveData(it)
                     saveUserData()
                     if (findNavController().currentDestination?.id == R.id.loginFragment) {
-                      // findNavController().navigate(R.id)
+                        findNavController().navigate(R.id.action_login_to_home)
+
                     }
                 } else {
                     var error = it.token_type.replace("[", "")
@@ -147,6 +141,12 @@ class LoginFragment : Fragment(), LoginInterface {
         } else {
             if (!Validation.validate(passwordEt.text.toString())) {
                 Toast.makeText(activity, "empty password please fill it", Toast.LENGTH_SHORT).show()
+            } else if (passwordEt.text.toString().length < 6) {
+                Toast.makeText(
+                    activity,
+                    "password must be at least 6 characters",
+                    Toast.LENGTH_SHORT
+                ).show()
             }
         }
     }

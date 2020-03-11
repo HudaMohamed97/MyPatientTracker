@@ -20,7 +20,7 @@
             android:layout_height="20dp"
             android:layout_marginLeft="@dimen/space_20"
             android:layout_marginRight="@dimen/space_20"
-            app:srcCompat="@drawable/ic_launcher_background"
+            app:srcCompat="@mipmap/hospital_small_icon"
             tools:ignore="VectorDrawableCompat" />
 
         <TextView
@@ -31,19 +31,16 @@
             android:text="HospitalName"
             android:textColor="@color/black" />
 
-        <TextView
+        <ImageView
             android:id="@+id/textViewOptions"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentTop="true"
-            android:text=". . ."
-            android:textSize="@dimen/space_20"
+            android:layout_width="@dimen/space_20"
+            android:layout_height="@dimen/space_20"
             android:layout_gravity="end"
             android:layout_marginLeft="@dimen/space_20"
             android:layout_marginRight="@dimen/space_20"
             android:clickable="true"
-            android:textAppearance="?android:textAppearanceLarge" />
+            android:textAppearance="?android:textAppearanceLarge"
+            app:srcCompat="@mipmap/toggle" />
     </LinearLayout>
 
     <LinearLayout
@@ -57,8 +54,9 @@
             android:layout_width="20dp"
             android:layout_height="20dp"
             android:layout_marginLeft="@dimen/space_20"
+            android:layout_marginTop="@dimen/space_10"
             android:layout_marginRight="@dimen/space_20"
-            app:srcCompat="@drawable/ic_launcher_background"
+            app:srcCompat="@mipmap/gray_location_icon"
             tools:ignore="VectorDrawableCompat" />
 
         <LinearLayout
@@ -83,8 +81,6 @@
                 android:text="hospitalAdress"
                 android:textColor="@color/black" />
         </LinearLayout>
-
-
     </LinearLayout>
 
 

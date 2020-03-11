@@ -13,9 +13,8 @@ interface ApiServices {
     @POST("auth/login")
     fun login(@Body loginRequestModel: LoginRequestModel): Call<ResponseModelData>
 
-
-    @POST("check/{user}/add")
-    fun submitlocation(
+    @POST("/hospitals")
+    fun addHospital(
         @Path("user") user: Int, @Body body: Map<String, String>
     ): Call<ResponseBody>
 
@@ -28,6 +27,6 @@ interface ApiServices {
     ): Call<ResponseModelData>
 
 
-   /* @POST("auth/register")
-    fun register(@Body registerRequestModel: RegisterRequestModel): Call<ResponseModelData>*/
+    /* @POST("auth/register")
+     fun register(@Body registerRequestModel: RegisterRequestModel): Call<ResponseModelData>*/
 }

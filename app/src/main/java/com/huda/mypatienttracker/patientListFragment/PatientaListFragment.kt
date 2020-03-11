@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.huda.mypatienttracker.Adapters.PatientAdapter
 import com.huda.mypatienttracker.R
+import kotlinx.android.synthetic.main.patient_fragment_list.*
 
 
 class PatientaListFragment : Fragment() {
@@ -104,13 +105,13 @@ class PatientaListFragment : Fragment() {
         recyclerView.adapter = patientAdapter
         patientAdapter.setOnCommentListener(object : PatientAdapter.OnCommentClickListener {
             override fun onDotsImageClicked(position: Int, fromTab: String) {
-                if (fromTab == "AddDoctor") {
-                    findNavController().navigate(R.id.action_HospitalListFragment_to_addDoctor)
+                /* if (fromTab == "AddDoctor") {
+                     findNavController().navigate(R.id.action_HospitalListFragment_to_addDoctor)
 
-                } else if (fromTab == "") {
-                    Toast.makeText(activity, "Please Select Action.", Toast.LENGTH_SHORT).show()
+                 } else if (fromTab == "") {
+                     Toast.makeText(activity, "Please Select Action.", Toast.LENGTH_SHORT).show()
 
-                }
+                 }*/
 
             }
 
@@ -133,7 +134,10 @@ class PatientaListFragment : Fragment() {
     }
 
     private fun setClickListeners() {
-        recyclerView = root.findViewById(R.id.hospitalRecycler)
+        addNew.setOnClickListener {
+            findNavController().navigate(R.id.action_PatientList_addPatientFragment)
+        }
+        recyclerView = root.findViewById(R.id.patientRecycler)
         val logOutButton = root.findViewById(R.id.backButton) as ImageView
         logOutButton.setOnClickListener {
             activity!!.finish()

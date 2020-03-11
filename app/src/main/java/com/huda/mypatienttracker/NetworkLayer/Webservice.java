@@ -1,7 +1,5 @@
 package com.huda.mypatienttracker.NetworkLayer;
 
-import android.util.Log;
-
 import com.example.myapplication.NetworkLayer.ApiServices;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -14,7 +12,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class Webservice {
-    private static final String MAIN_URL = "http://gmap.cat-sw.com/api/";
+    private static final String MAIN_URL = "http://patient-tracker.cat-sw.com/api/";
     private static Webservice instance;
     private ApiServices api;
 

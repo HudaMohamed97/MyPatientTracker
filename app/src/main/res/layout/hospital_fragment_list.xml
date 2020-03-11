@@ -78,6 +78,17 @@
             android:indeterminateTintMode="src_atop"
             android:visibility="gone" />
 
+        <TextView
+            android:id="@+id/addHospital"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:clickable="true"
+            android:background="@drawable/rounded_background_edittext_blue"
+            android:text="    ADD Hospital     "
+            android:textColor="@color/black" />
+
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/hospitalRecycler"
             android:layout_width="match_parent"

@@ -34,7 +34,7 @@ class PatientAdapter(modelFeedArrayList: ArrayList<String>) :
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
 
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.activity_row, parent, false)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.patient_row, parent, false)
         context = parent.context
         return MyViewHolder(view)
     }
