@@ -81,9 +81,9 @@
             android:textColor="@color/black" />
 
         <EditText
-            android:id="@+id/editText"
+            android:id="@+id/DoctorName"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/space_50"
             android:layout_marginLeft="@dimen/space_10"
             android:layout_marginTop="@dimen/space_20"
             android:layout_marginRight="@dimen/space_10"
@@ -98,7 +98,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/space_50"
             android:layout_marginLeft="@dimen/space_10"
             android:layout_marginTop="@dimen/space_20"
             android:layout_marginRight="@dimen/space_10"
@@ -123,7 +123,7 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="@dimen/space_50"
                 android:layout_marginLeft="@dimen/space_10"
                 android:layout_marginTop="@dimen/space_20"
                 android:layout_marginRight="@dimen/space_10"
@@ -131,7 +131,7 @@
                 android:orientation="horizontal">
 
                 <com.toptoche.searchablespinnerlibrary.SearchableSpinner
-                    android:id="@+id/spinner2"
+                    android:id="@+id/specialityType"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:spinnerMode="dropdown"

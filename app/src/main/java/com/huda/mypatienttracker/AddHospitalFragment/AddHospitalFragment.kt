@@ -120,7 +120,7 @@ class AddHospitalFragment : Fragment() {
                 } else {
                     if (type == "COE") {
                         add_hospitalRequestModel = addHospitalRequestModel(
-                            name, city_id, country_id.toInt(), type.toInt(), 0, 0, 0, 0, 0,
+                            name, type, city_id.toInt(), country_id.toInt(), 0, 0, 0, 0, 0,
                             0, 0, 0
                         )
                         val bundle = Bundle()
@@ -145,36 +145,6 @@ class AddHospitalFragment : Fragment() {
         loginPreferences = activity!!.getSharedPreferences("loginPrefs", Context.MODE_PRIVATE)
 
     }
-
-    private fun callLoginRequest() {
-        progressBar.visibility = View.VISIBLE
-        /* homeViewModel.login(
-             email.text.toString(),
-             passwordEt.text.toString()
-         )*/
-        /* loginViewModel.getData().observe(this, Observer {
-             progressBar.visibility = View.GONE
-             if (it != null) {
-                 if (it.access_token != "") {
-                     saveData(it)
-                     saveUserData()
-                     if (findNavController().currentDestination?.id == R.id.loginFragment) {
-                         //   findNavController().navigate(R.id.action_LoginFragment_to_Home)
-                     }
-                 } else {
-                     var error = it.token_type.replace("[", "")
-                     error = error.replace("]", "")
-                     Toast.makeText(activity, error, Toast.LENGTH_SHORT).show()
-                 }
-             } else {
-                 Toast.makeText(activity, "Network Error", Toast.LENGTH_SHORT).show()
-             }
-
-
-         })*/
-
-    }
-
 
     private fun hideKeyboard() {
         val view = activity?.currentFocus

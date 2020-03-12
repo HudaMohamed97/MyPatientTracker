@@ -22,6 +22,11 @@ interface ApiServices {
         @Body body: addHospitalRequestModel, @Header("Authorization") authHeader: String
     ): Call<SubmitModel>
 
+    @DELETE("hospitals/{hospital}")
+    fun deleteHospital(
+        @Path("hospital") postId: Int, @Header("Authorization") authHeader: String
+    ): Call<SubmitModel>
+
     @POST("doctors")
     fun addDoctor(
         @Body body: AddDoctorModel, @Header("Authorization") authHeader: String

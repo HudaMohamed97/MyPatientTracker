@@ -18,7 +18,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.huda.mypatienttracker.R
 import com.huda.mypatienttracker.Adapters.HospitalAdapter
-import com.huda.mypatienttracker.AddPatientFragment.AddPatientFragment
 import com.huda.mypatienttracker.Models.HospitalModels.HospitalData
 import kotlinx.android.synthetic.main.hospital_fragment_list.*
 
@@ -125,11 +124,17 @@ class HospitalFragment : Fragment() {
         hospitalAdapter.setOnCommentListener(object : HospitalAdapter.OnDotsClickListener {
             override fun onDotsImageClicked(position: Int, fromTab: String) {
                 if (fromTab == "AddDoctor") {
-                    findNavController().navigate(R.id.action_HospitalListFragment_to_addDoctor)
+                    val hospitalId = modelFeedArrayList[position].id
+                    val bundle = Bundle()
+                    bundle.putInt("hospitalId", hospitalId)
+                    findNavController().navigate(
+                        R.id.action_HospitalListFragment_to_addDoctor,
+                        bundle
+                    )
 
-                } else if (fromTab == "") {
-                    Toast.makeText(activity, "Please Select Action.", Toast.LENGTH_SHORT).show()
-
+                } else if (fromTab == "Delete") {
+                    val hospitalId = modelFeedArrayList[position].id
+                    deleteHospital(hospitalId, position, fromType)
                 }
 
             }
@@ -151,6 +156,35 @@ class HospitalFragment : Fragment() {
         })
 
     }
+
+
+    private fun deleteHospital(hospitalId: Int, position: Int, type: String) {
+        hospitalProgressBar.visibility = View.VISIBLE
+        val accessToken = loginPreferences.getString("accessToken", "")
+        if (accessToken != null) {
+            hospitalViewModel.deleteHospitals(hospitalId, accessToken)
+        }
+        hospitalViewModel.getDeleteData().observe(this, Observer {
+            hospitalProgressBar.visibility = View.GONE
+            if (it != null) {
+                if (it.type == "error")
+                    Toast.makeText(
+                        activity,
+                        it.title,
+                        Toast.LENGTH_SHORT
+                    ).show()
+                else {
+                    Toast.makeText(activity, "Deleted Successfully", Toast.LENGTH_SHORT).show()
+                    modelFeedArrayList.removeAt(position)
+                    hospitalAdapter.notifyDataSetChanged()
+                    //callHospitals(type, 1, false, false)
+                }
+            } else {
+                Toast.makeText(activity, "Network Error", Toast.LENGTH_SHORT).show()
+            }
+        })
+    }
+
 
     private fun setClickListeners() {
         addHospital.setOnClickListener {

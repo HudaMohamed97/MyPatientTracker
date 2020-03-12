@@ -88,7 +88,7 @@ class HospitalAdapter(modelFeedArrayList: ArrayList<HospitalData>) :
                             true
                         }
                         item.itemId == R.id.menu3 -> {
-                            fromTab = "delete"
+                            fromTab = "Delete"
                             onItemClickListener.onDotsImageClicked(position, fromTab)
                             true
                         }
@@ -107,7 +107,8 @@ class HospitalAdapter(modelFeedArrayList: ArrayList<HospitalData>) :
         var dotsImage: ImageView = itemView.findViewById(R.id.textViewOptions)
 
         var hospitalAdress: TextView = itemView.findViewById<View>(R.id.hospitalAdress) as TextView
-        var hospitalLocation: TextView = itemView.findViewById<View>(R.id.hospitalLocation) as TextView
+        var hospitalLocation: TextView =
+            itemView.findViewById<View>(R.id.hospitalLocation) as TextView
         var hospitalName: TextView = itemView.findViewById<View>(R.id.hospitalName) as TextView
 
     }
