@@ -3,6 +3,8 @@ package com.example.myapplication.NetworkLayer
 import com.example.myapplication.Models.*
 import com.example.myapplication.Models.EventModels.SingleEventResponse
 import com.huda.mypatienttracker.Models.AddDoctorModel
+import com.huda.mypatienttracker.Models.CountriesResonse
+import com.huda.mypatienttracker.Models.HospitalModels.CitiesResponse
 import com.huda.mypatienttracker.Models.HospitalModels.HospitalResponseModel
 import com.huda.mypatienttracker.Models.addHospitalRequestModel
 import okhttp3.MultipartBody
@@ -16,7 +18,6 @@ interface ApiServices {
     @POST("auth/login")
     fun login(@Body loginRequestModel: LoginRequestModel): Call<ResponseModelData>
 
-
     @POST("hospitals")
     fun addHospital(
         @Body body: addHospitalRequestModel, @Header("Authorization") authHeader: String
@@ -27,6 +28,11 @@ interface ApiServices {
         @Path("hospital") postId: Int, @Header("Authorization") authHeader: String
     ): Call<SubmitModel>
 
+    @GET("countries/{country}")
+    fun getCity(
+        @Path("country") country: Int, @Header("Authorization") authHeader: String
+    ): Call<CitiesResponse>
+
     @POST("doctors")
     fun addDoctor(
         @Body body: AddDoctorModel, @Header("Authorization") authHeader: String
@@ -36,6 +42,11 @@ interface ApiServices {
     fun getHospital(
         @Query("type") type: String, @Header("Authorization") authHeader: String
     ): Call<HospitalResponseModel>
+
+    @GET("countries")
+    fun getCountries(
+        @Header("Authorization") authHeader: String
+    ): Call<CountriesResonse>
 
 
     @Multipart
