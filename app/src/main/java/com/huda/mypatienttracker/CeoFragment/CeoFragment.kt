@@ -9,13 +9,15 @@ import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
+import com.huda.mypatienttracker.AddHospitalFragment.AddHospitalViewModel
+import com.huda.mypatienttracker.Models.addHospitalRequestModel
 import com.huda.mypatienttracker.R
 import kotlinx.android.synthetic.main.add_doctor.*
 import kotlinx.android.synthetic.main.login_fragment.*
 
 class CeoFragment : Fragment() {
     private lateinit var root: View
-    private lateinit var ceoFragmentViewModel: CEOFragmentViewModel
+    private lateinit var ceoFragmentViewModel: AddHospitalViewModel
     private lateinit var loginPreferences: SharedPreferences
 
 
@@ -25,12 +27,13 @@ class CeoFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         root = inflater.inflate(R.layout.hospital_coe, container, false)
-        ceoFragmentViewModel = ViewModelProviders.of(this).get(CEOFragmentViewModel::class.java)
+        ceoFragmentViewModel = ViewModelProviders.of(this).get(AddHospitalViewModel::class.java)
         return root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val hospitalRequestModel = arguments?.getParcelable<addHospitalRequestModel>("Hospital")!!
         setClickListeners()
     }
 

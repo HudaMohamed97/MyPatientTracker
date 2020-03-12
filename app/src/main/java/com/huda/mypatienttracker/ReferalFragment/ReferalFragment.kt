@@ -9,14 +9,14 @@ import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
-import com.huda.mypatienttracker.CeoFragment.CEOFragmentViewModel
+import com.huda.mypatienttracker.AddHospitalFragment.AddHospitalViewModel
+import com.huda.mypatienttracker.Models.addHospitalRequestModel
 import com.huda.mypatienttracker.R
-import kotlinx.android.synthetic.main.add_doctor.*
 import kotlinx.android.synthetic.main.login_fragment.*
 
 class ReferalFragment : Fragment() {
     private lateinit var root: View
-    private lateinit var referalFragmentViewModel: ReferalFragmentViewModel
+    private lateinit var referalFragmentViewModel: AddHospitalViewModel
     private lateinit var loginPreferences: SharedPreferences
 
 
@@ -26,12 +26,14 @@ class ReferalFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         root = inflater.inflate(R.layout.hospital_peferal, container, false)
-        referalFragmentViewModel = ViewModelProviders.of(this).get(ReferalFragmentViewModel::class.java)
+        referalFragmentViewModel = ViewModelProviders.of(this).get(AddHospitalViewModel::class.java)
         return root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val hospitalRequestModel = arguments?.getParcelable<addHospitalRequestModel>("Hospital")!!
+
         setClickListeners()
     }
 

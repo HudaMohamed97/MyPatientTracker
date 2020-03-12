@@ -83,10 +83,49 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="right"
-            android:clickable="true"
+            android:layout_marginBottom="@dimen/space_5"
             android:background="@drawable/rounded_background_edittext_blue"
+            android:clickable="true"
             android:text="    ADD Hospital     "
             android:textColor="@color/black" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/space_5"
+            android:orientation="horizontal">
+
+            <RadioGroup
+                android:id="@+id/radioHospital"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/space_20"
+                android:orientation="horizontal">
+
+
+                <RadioButton
+                    android:id="@+id/coe"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="@dimen/space_20"
+                    android:layout_weight="1"
+                    android:buttonTint="@color/not_blue"
+                    android:checked="true"
+                    android:text="   COE"
+                    android:textColor="@color/black" />
+
+                <RadioButton
+                    android:id="@+id/referal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:buttonTint="@color/not_black"
+                    android:text="REFERAL"
+                    android:textColor="@color/black" />
+
+            </RadioGroup>
+
+        </LinearLayout>
 
 
         <androidx.recyclerview.widget.RecyclerView

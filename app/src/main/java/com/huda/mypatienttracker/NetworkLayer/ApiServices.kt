@@ -2,6 +2,9 @@ package com.example.myapplication.NetworkLayer
 
 import com.example.myapplication.Models.*
 import com.example.myapplication.Models.EventModels.SingleEventResponse
+import com.huda.mypatienttracker.Models.AddDoctorModel
+import com.huda.mypatienttracker.Models.HospitalModels.HospitalResponseModel
+import com.huda.mypatienttracker.Models.addHospitalRequestModel
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import okhttp3.ResponseBody
@@ -13,10 +16,21 @@ interface ApiServices {
     @POST("auth/login")
     fun login(@Body loginRequestModel: LoginRequestModel): Call<ResponseModelData>
 
-    @POST("/hospitals")
+
+    @POST("hospitals")
     fun addHospital(
-        @Path("user") user: Int, @Body body: Map<String, String>
-    ): Call<ResponseBody>
+        @Body body: addHospitalRequestModel, @Header("Authorization") authHeader: String
+    ): Call<SubmitModel>
+
+    @POST("doctors")
+    fun addDoctor(
+        @Body body: AddDoctorModel, @Header("Authorization") authHeader: String
+    ): Call<SubmitModel>
+
+    @GET("hospitals")
+    fun getHospital(
+        @Query("type") type: String, @Header("Authorization") authHeader: String
+    ): Call<HospitalResponseModel>
 
 
     @Multipart

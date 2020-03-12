@@ -23,6 +23,10 @@
         <item name="colorAccent">@android:color/darker_gray</item>
     </style>
 
+    <style name="AppTheme.EditText" parent="@style/Widget.AppCompat.EditText">
+        <item name="android:textCursorDrawable">@color/black</item>  // Cursor
+
+    </style>
     <style name="primaryButtonStyle" parent="Widget.MaterialComponents.Button">
         <item name="android:textSize">@dimen/large_text</item>
         <item name="android:textAllCaps">false</item>

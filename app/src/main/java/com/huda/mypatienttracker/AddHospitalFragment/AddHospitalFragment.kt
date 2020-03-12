@@ -9,9 +9,11 @@ import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
+import com.huda.mypatienttracker.Models.addHospitalRequestModel
 import com.huda.mypatienttracker.R
 import com.toptoche.searchablespinnerlibrary.SearchableSpinner
 import kotlinx.android.synthetic.main.add_doctor.*
@@ -23,7 +25,13 @@ class AddHospitalFragment : Fragment() {
     private lateinit var root: View
     private lateinit var addHospitalViewModel: AddHospitalViewModel
     private lateinit var loginPreferences: SharedPreferences
+    private lateinit var add_hospitalRequestModel: addHospitalRequestModel
     private lateinit var spinnerType: SearchableSpinner
+    private lateinit var name: String
+    private lateinit var city_id: String
+    private lateinit var country_id: String
+    private lateinit var type: String
+    private var flagSelected: Int = 0
     private val typeList = arrayListOf<String>()
 
 
@@ -45,6 +53,7 @@ class AddHospitalFragment : Fragment() {
     }
 
     private fun prepareTypeList() {
+        typeList.clear()
         typeList.add("COE")
         typeList.add("REFERAL")
         initializeTypeSpinner(spinnerType, typeList)
@@ -69,12 +78,14 @@ class AddHospitalFragment : Fragment() {
                 id: Long
             ) {
 
-                val type = typeList[position]
-                if (type == "COE") {
-                    findNavController().navigate(R.id.action_addHospital_coeFragment)
-                } else {
-                    findNavController().navigate(R.id.action_addHospital_ReferalFragment)
+                val typeHospital = typeList[position]
+                type = if (typeHospital == "COE") {
+                    flagSelected = 1
+                    "COE"
 
+                } else {
+                    flagSelected = 1
+                    "referal"
                 }
             }
 
@@ -91,18 +102,46 @@ class AddHospitalFragment : Fragment() {
     }
 
     private fun setClickListeners() {
-
+        flagSelected = 0
         spinnerType = root.findViewById(R.id.typeSpinner)
-
         mainView.setOnClickListener {
             hideKeyboard()
         }
+        hospital_add_button.setOnClickListener {
+            city_id = cityEditText.text.toString()
+            name = nameEditText.text.toString()
+            country_id = countryEditText.text.toString()
+            if (city_id.isEmpty() || name.isEmpty() || country_id.isEmpty()) {
+                Toast.makeText(activity, "please fill All Fields", Toast.LENGTH_SHORT).show()
+            } else {
+                if (flagSelected == 0) {
+                    Toast.makeText(activity, "please Choose Type", Toast.LENGTH_SHORT).show()
 
-        /*   email = root.findViewById(R.id.input_email)
-           passwordEt = root.findViewById(R.id.input_password)
-           mainLayout.setOnClickListener {
-               hideKeyboard()
-           }*/
+                } else {
+                    if (type == "COE") {
+                        add_hospitalRequestModel = addHospitalRequestModel(
+                            name, city_id, country_id.toInt(), type.toInt(), 0, 0, 0, 0, 0,
+                            0, 0, 0
+                        )
+                        val bundle = Bundle()
+                        bundle.putParcelable("Hospital", add_hospitalRequestModel)
+                        findNavController().navigate(R.id.action_addHospital_coeFragment, bundle)
+                    } else {
+                        add_hospitalRequestModel = addHospitalRequestModel(
+                            name, type, city_id.toInt(), country_id.toInt(), 0, 0, 0, 0, 0,
+                            0, 0, 0
+                        )
+                        val bundle = Bundle()
+                        bundle.putParcelable("Hospital", add_hospitalRequestModel)
+                        findNavController().navigate(
+                            R.id.action_addHospital_ReferalFragment,
+                            bundle
+                        )
+                    }
+                }
+            }
+        }
+
         loginPreferences = activity!!.getSharedPreferences("loginPrefs", Context.MODE_PRIVATE)
 
     }
