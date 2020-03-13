@@ -73,6 +73,7 @@ class AddHospitalFragment : Fragment() {
     }
 
     private fun getCountryList() {
+        countryList.clear()
         hospitalProgressBar.visibility = View.VISIBLE
         val accessToken = loginPreferences.getString("accessToken", "")
         if (accessToken != null) {
@@ -93,6 +94,7 @@ class AddHospitalFragment : Fragment() {
 
 
     private fun prepareCountryList(countryList: ArrayList<CountryData>) {
+        countriesNameList.clear()
         for (country in countryList) {
             countriesNameList.add(country.name)
         }
@@ -140,6 +142,7 @@ class AddHospitalFragment : Fragment() {
     }
 
     private fun callCitiesPerCountry(countryId: Int) {
+        cityList.clear()
         val accessToken = loginPreferences.getString("accessToken", "")
         if (accessToken != null) {
             addHospitalViewModel.getCities(countryId, accessToken)
@@ -157,6 +160,7 @@ class AddHospitalFragment : Fragment() {
     }
 
     private fun prepareCityList(cityList: ArrayList<Cities>) {
+        citiesNameList.clear()
         for (city in cityList) {
             citiesNameList.add(city.name)
         }
@@ -167,6 +171,8 @@ class AddHospitalFragment : Fragment() {
         citySpinner: SearchableSpinner,
         citiesNameList: ArrayList<String>
     ) {
+        cityText.visibility = View.GONE
+        cityLayout.visibility = View.VISIBLE
         val arrayAdapter =
             context?.let {
                 ArrayAdapter(
@@ -242,6 +248,11 @@ class AddHospitalFragment : Fragment() {
     }
 
     private fun setClickListeners() {
+        cityText.setOnClickListener {
+            Toast.makeText(activity, "please Choose Country first Thanks.", Toast.LENGTH_SHORT)
+                .show()
+        }
+
         flagSelected = 0
         spinnerType = root.findViewById(R.id.typeSpinner)
         countrySpinner = root.findViewById(R.id.countrySpinner)

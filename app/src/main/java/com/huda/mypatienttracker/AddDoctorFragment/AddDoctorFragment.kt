@@ -18,7 +18,6 @@ import com.huda.mypatienttracker.R
 import com.toptoche.searchablespinnerlibrary.SearchableSpinner
 import kotlinx.android.synthetic.main.add_doctor.*
 import kotlinx.android.synthetic.main.add_doctor.mainView
-import kotlinx.android.synthetic.main.add_hospital_fragment.*
 
 class AddDoctorFragment : Fragment() {
     private lateinit var root: View
@@ -42,7 +41,7 @@ class AddDoctorFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        hospitalId = arguments?.getInt("POLL_ID")!!
+        hospitalId = arguments?.getInt("hospitalId")!!
         setClickListeners()
         prepareSpecialityList()
 
@@ -123,9 +122,9 @@ class AddDoctorFragment : Fragment() {
 
         addDoctorButton.setOnClickListener {
             when {
-                DoctorName.text.isEmpty() -> Toast.makeText(
+                DoctorName.text.isEmpty() || specialityName.text.isEmpty() -> Toast.makeText(
                     activity,
-                    "Please Add Doctor Name",
+                    "Please fill All Fields Thanks",
                     Toast.LENGTH_SHORT
                 ).show()
                 flagSelected == 0 -> Toast.makeText(
@@ -138,7 +137,7 @@ class AddDoctorFragment : Fragment() {
                     val model =
                         AddDoctorModel(
                             DoctorName.text.toString(),
-                            "doctor",
+                            specialityName.text.toString(),
                             typeSpeciality,
                             hospitalId
                         )

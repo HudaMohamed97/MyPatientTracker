@@ -96,25 +96,20 @@
             android:textCursorDrawable="@color/not_black" />
 
 
-        <LinearLayout
+        <EditText
+            android:id="@+id/specialityName"
             android:layout_width="match_parent"
             android:layout_height="@dimen/space_50"
             android:layout_marginLeft="@dimen/space_10"
             android:layout_marginTop="@dimen/space_20"
             android:layout_marginRight="@dimen/space_10"
-            android:background="@drawable/background_edittext"
-            android:orientation="horizontal">
-
-            <com.toptoche.searchablespinnerlibrary.SearchableSpinner
-                android:id="@+id/spinner"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:spinnerMode="dropdown"
-                android:textColor="@color/black"
-                android:theme="@style/SpinnerThemeLight"
-                app:hintText="Specialty" />
-
-        </LinearLayout>
+            android:background="@drawable/background_edittext_black_border"
+            android:cursorVisible="true"
+            android:ems="10"
+            android:hint="Speciality"
+            android:inputType="textPersonName"
+            android:textColorHint="@color/not_black"
+            android:textCursorDrawable="@color/not_black" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -159,14 +154,15 @@
             android:textColor="@color/white"
             android:textSize="@dimen/space_20"
             app:cornerRadius="@dimen/space_10" />
+
         <ProgressBar
             android:id="@+id/addDoctorProgressBar"
             style="?android:attr/progressBarStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:indeterminate="true"
             android:layout_marginTop="@dimen/space_10"
+            android:indeterminate="true"
             android:indeterminateTint="@color/not_blue"
             android:indeterminateTintMode="src_atop"
             android:visibility="gone" />
