@@ -2,6 +2,8 @@ package com.huda.mypatienttracker.AddHospitalFragment
 
 import androidx.lifecycle.MutableLiveData
 import com.example.myapplication.Models.SubmitModel
+import com.huda.mypatienttracker.Models.CountriesResonse
+import com.huda.mypatienttracker.Models.HospitalModels.CitiesResponse
 import com.huda.mypatienttracker.Models.addHospitalRequestModel
 import com.huda.mypatienttracker.NetworkLayer.Webservice
 import retrofit2.Call
@@ -32,6 +34,54 @@ class AddHospitalRepository {
                 }
             })
         return hospitalData
+
+    }
+
+    fun getCountries(
+        accessToken: String
+    ): MutableLiveData<CountriesResonse> {
+        val countriesData = MutableLiveData<CountriesResonse>()
+        Webservice.getInstance().api.getCountries(accessToken)
+            .enqueue(object : Callback<CountriesResonse> {
+                override fun onResponse(
+                    call: Call<CountriesResonse>,
+                    response: Response<CountriesResonse>
+                ) {
+                    if (response.isSuccessful) {
+                        countriesData.value = response.body()
+                    } else {
+                        countriesData.value = response.body()
+                    }
+                }
+
+                override fun onFailure(call: Call<CountriesResonse>, t: Throwable) {
+                    countriesData.value = null
+                }
+            })
+        return countriesData
+
+    }
+
+    fun getCities(countryId: Int, accessToken: String): MutableLiveData<CitiesResponse> {
+        val citiesData = MutableLiveData<CitiesResponse>()
+        Webservice.getInstance().api.getCity(countryId, accessToken)
+            .enqueue(object : Callback<CitiesResponse> {
+                override fun onResponse(
+                    call: Call<CitiesResponse>,
+                    response: Response<CitiesResponse>
+                ) {
+                    if (response.isSuccessful) {
+                        citiesData.value = response.body()
+                    } else {
+                        citiesData.value = response.body()
+                    }
+                }
+
+                override fun onFailure(call: Call<CitiesResponse>, t: Throwable) {
+                    citiesData.value = null
+                }
+            })
+        return citiesData
 
     }
 }

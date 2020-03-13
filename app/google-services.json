@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "155244787408",
+    "firebase_url": "https://mypatienttracker.firebaseio.com",
+    "project_id": "mypatienttracker",
+    "storage_bucket": "mypatienttracker.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:155244787408:android:50bbde3d46b399234690d5",
+        "android_client_info": {
+          "package_name": "com.huda.mypatienttracker"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "155244787408-71jc0kgemf76sk5r81ft29kenbu2pm0n.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.huda.mypatienttracker",
+            "certificate_hash": "bcf83f9446753a764242cc10f769a390bcbf0187"
+          }
+        },
+        {
+          "client_id": "155244787408-b9qu8rh2lvsr4ia9rdi61l91q98rhn6h.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCfGJMROBYQ56v2mCxubxC9AXZJdSRKUPI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "155244787408-b9qu8rh2lvsr4ia9rdi61l91q98rhn6h.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
