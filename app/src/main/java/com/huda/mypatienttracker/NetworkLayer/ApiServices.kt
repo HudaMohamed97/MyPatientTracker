@@ -1,15 +1,11 @@
-package com.example.myapplication.NetworkLayer
+package com.huda.mypatienttracker.NetworkLayer
 
 import com.example.myapplication.Models.*
-import com.example.myapplication.Models.EventModels.SingleEventResponse
-import com.huda.mypatienttracker.Models.AddDoctorModel
-import com.huda.mypatienttracker.Models.CountriesResonse
+import com.huda.mypatienttracker.Models.*
 import com.huda.mypatienttracker.Models.HospitalModels.CitiesResponse
 import com.huda.mypatienttracker.Models.HospitalModels.HospitalResponseModel
-import com.huda.mypatienttracker.Models.addHospitalRequestModel
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
-import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.http.*
 
@@ -23,9 +19,24 @@ interface ApiServices {
         @Body body: addHospitalRequestModel, @Header("Authorization") authHeader: String
     ): Call<SubmitModel>
 
+    @POST("targets")
+    fun addTarget(
+        @Body body: TargetRequestModel, @Header("Authorization") authHeader: String
+    ): Call<SubmitModel>
+
+    @GET("targets")
+    fun getTarget(
+        @Query("hospital_id") hospitalId: Int, @Header("Authorization") authHeader: String
+    ): Call<TargetResponse>
+
     @DELETE("hospitals/{hospital}")
     fun deleteHospital(
         @Path("hospital") postId: Int, @Header("Authorization") authHeader: String
+    ): Call<SubmitModel>
+
+    @DELETE("targets/{target}")
+    fun deleteTarget(
+        @Path("target") target: Int, @Header("Authorization") authHeader: String
     ): Call<SubmitModel>
 
     @GET("countries/{country}")

@@ -45,6 +45,9 @@
         <action
             android:id="@+id/action_HospitalListFragment_to_addHospital"
             app:destination="@id/AddHospitalFragment" />
+        <action
+            android:id="@+id/action_HospitalListFragment_to_targetFragment"
+            app:destination="@id/AddTargetFragment" />
     </fragment>
     <fragment
         android:id="@+id/AddDoctorFragment"

@@ -1,6 +1,7 @@
 package com.huda.mypatienttracker.NetworkLayer;
 
-import com.example.myapplication.NetworkLayer.ApiServices;
+import android.util.Log;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -35,6 +36,7 @@ public class Webservice {
                 .build();
 
         api = retrofit.create(ApiServices.class);
+        Log.i("hhhh", "" + api.toString());
 
     }
 
@@ -46,6 +48,7 @@ public class Webservice {
     }
 
     public ApiServices getApi() {
+        Log.i("hhhh", "" + api.toString());
         return api;
     }
 

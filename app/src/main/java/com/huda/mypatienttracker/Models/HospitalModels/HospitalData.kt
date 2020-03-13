@@ -2,7 +2,6 @@ package com.huda.mypatienttracker.Models.HospitalModels
 
 import City
 import Country
-import User
 import com.google.gson.annotations.SerializedName
 
 data class HospitalData (

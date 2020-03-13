@@ -135,6 +135,17 @@ class HospitalFragment : Fragment() {
                 } else if (fromTab == "Delete") {
                     val hospitalId = modelFeedArrayList[position].id
                     deleteHospital(hospitalId, position, fromType)
+                } else if (fromTab == "Target") {
+                    val hospitalId = modelFeedArrayList[position].id
+                    val hospitalName = modelFeedArrayList[position].name
+                    val bundle = Bundle()
+                    bundle.putInt("hospitalId", hospitalId)
+                    bundle.putString("hospitalName", hospitalName)
+                    findNavController().navigate(
+                        R.id.action_HospitalListFragment_to_targetFragment,
+                        bundle
+                    )
+
                 }
 
             }

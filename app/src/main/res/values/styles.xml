@@ -24,7 +24,7 @@
     </style>
 
     <style name="AppTheme.EditText" parent="@style/Widget.AppCompat.EditText">
-        <item name="android:textCursorDrawable">@color/black</item>  // Cursor
+        <item name="android:textCursorDrawable">@color/not_black</item>  // Cursor
 
     </style>
     <style name="primaryButtonStyle" parent="Widget.MaterialComponents.Button">

@@ -12,10 +12,11 @@ import com.huda.mypatienttracker.R
 import java.util.*
 import androidx.appcompat.view.ContextThemeWrapper
 import com.huda.mypatienttracker.Models.HospitalModels.HospitalData
+import com.huda.mypatienttracker.Models.TargetData
 
 
-class HospitalAdapter(modelFeedArrayList: ArrayList<HospitalData>) :
-    RecyclerView.Adapter<HospitalAdapter.MyViewHolder>() {
+class TargetAdapter(modelFeedArrayList: ArrayList<TargetData>) :
+    RecyclerView.Adapter<TargetAdapter.MyViewHolder>() {
 
     lateinit var onItemClickListener: OnDotsClickListener
     private var context: Context? = null
@@ -26,7 +27,7 @@ class HospitalAdapter(modelFeedArrayList: ArrayList<HospitalData>) :
         return modelFeedArrayList.size
     }
 
-    var modelFeedArrayList = ArrayList<HospitalData>()
+    var modelFeedArrayList = ArrayList<TargetData>()
 
 
     init {
@@ -35,16 +36,15 @@ class HospitalAdapter(modelFeedArrayList: ArrayList<HospitalData>) :
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
 
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.hospital_row, parent, false)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.target_row, parent, false)
         context = parent.context
         return MyViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val modelFeed = modelFeedArrayList[position]
-        holder.hospitalName.text = modelFeed.name
-        holder.hospitalLocation.text = modelFeed.city.name
-        holder.hospitalAdress.text = modelFeed.country.name
+        holder.hospitalName.text = modelFeed.hospital_id.name
+        holder.targetText.text = modelFeed.number.toString()
         holder.dotsImage.setOnClickListener {
             if (onItemClickListener != null && position != RecyclerView.NO_POSITION) {
                 val wrapper = ContextThemeWrapper(context, R.style.popupMenuStyle)
@@ -71,7 +71,7 @@ class HospitalAdapter(modelFeedArrayList: ArrayList<HospitalData>) :
                 }
 
 
-                popup.inflate(R.menu.option_menu)
+                popup.inflate(R.menu.activity_menu)
 
 
                 //adding click listener
@@ -83,19 +83,11 @@ class HospitalAdapter(modelFeedArrayList: ArrayList<HospitalData>) :
                             true
                         }
                         item.itemId == R.id.menu2 -> {
-                            fromTab = "update"
-                            onItemClickListener.onDotsImageClicked(position, fromTab)
-                            true
-                        }
-                        item.itemId == R.id.menu3 -> {
                             fromTab = "Delete"
                             onItemClickListener.onDotsImageClicked(position, fromTab)
                             true
-                        } item.itemId == R.id.menu4 -> {
-                            fromTab = "Target"
-                            onItemClickListener.onDotsImageClicked(position, fromTab)
-                            true
                         }
+
                     }
                     true
                 }
@@ -109,11 +101,8 @@ class HospitalAdapter(modelFeedArrayList: ArrayList<HospitalData>) :
     class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         var dotsImage: ImageView = itemView.findViewById(R.id.textViewOptions)
-
-        var hospitalAdress: TextView = itemView.findViewById<View>(R.id.hospitalAdress) as TextView
-        var hospitalLocation: TextView =
-            itemView.findViewById<View>(R.id.hospitalLocation) as TextView
         var hospitalName: TextView = itemView.findViewById<View>(R.id.hospitalName) as TextView
+        var targetText: TextView = itemView.findViewById<View>(R.id.target) as TextView
 
     }
 

@@ -2,20 +2,21 @@ package com.huda.mypatienttracker.Models
 
 import android.os.Parcel
 import android.os.Parcelable
+import com.google.gson.annotations.SerializedName
 
 data class addHospitalRequestModel(
-    var name: String,
-    var type: String,
-    var city_id: Int,
-    var country_id: Int,
-    var rheuma: Int,
-    var crdio: Int,
-    var pulmo: Int,
-    var pah_expert: Int,
-    var rhc: Int,
-    var rwe: Int,
-    var echo: Int,
-    var pah_attentive: Int
+    @SerializedName("name")var name: String,
+    @SerializedName("type")var type: String,
+    @SerializedName("city_id")var city_id: Int,
+    @SerializedName("country_id")var country_id: Int,
+    @SerializedName("rheuma")var rheuma: Int,
+    @SerializedName("crdio")var crdio: Int,
+    @SerializedName("pulmo")var pulmo: Int,
+    @SerializedName("pah_expert")var pah_expert: Int,
+    @SerializedName("rhc") var rhc: Int,
+    @SerializedName("rwe") var rwe: Int,
+    @SerializedName("echo")var echo: Int,
+    @SerializedName("pah_attentive")var pah_attentive: Int
 
 ):Parcelable {
     constructor(parcel: Parcel) : this(
