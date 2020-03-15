@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -49,47 +50,48 @@ class PatientaListFragment : Fragment() {
         loginPreferences = activity!!.getSharedPreferences("loginPrefs", Context.MODE_PRIVATE)
         setClickListeners()
         initRecyclerView()
-        //callPosts(1, false, false)
+        callPatients(1, false, false)
 
     }
 
-    private fun callPosts(page: Int, fromLoadMore: Boolean, fromRefresh: Boolean) {
-        /*  if (fromLoadMore) {
-              postLoadProgressBar.visibility = View.VISIBLE
-          } else {
-              PostsProgressBar.visibility = View.VISIBLE
-          }
-          val accessToken = loginPreferences.getString("accessToken", "")
-          if (accessToken != null) {
-              hospitalViewModel.getPosts(page, accessToken)
-          }
-          hospitalViewModel.getData().observe(this, Observer {
-              if (fromLoadMore) {
-                  postLoadProgressBar.visibility = View.GONE
-              } else {
-                  PostsProgressBar.visibility = View.GONE
-              }
-              if (fromRefresh) {
-                  currentPageNum = 1
-                  modelFeedArrayList.clear()
-              }
-              if (it != null) {
-                  lastPageNum = it.meta.last_page
-                  for (data in it.data) {
-                      modelFeedArrayList.add(data)
-                  }
-                  if (modelFeedArrayList.size == 0) {
-                      Toast.makeText(activity, "No Posts Added Yet.", Toast.LENGTH_SHORT).show()
+    private fun callPatients(page: Int, fromLoadMore: Boolean, fromRefresh: Boolean) {
+        if (fromLoadMore) {
+            patientProgressBar.visibility = View.VISIBLE
+        } else {
+            patientProgressBar.visibility = View.VISIBLE
+        }
+        val accessToken = loginPreferences.getString("accessToken", "")
+        if (accessToken != null) {
+            patientaListViewModel.getPatients("no update", "referal", accessToken)
+        }
+        patientaListViewModel.getData().observe(this, Observer {
+            if (fromLoadMore) {
+                patientProgressBar.visibility = View.GONE
+            } else {
+                modelFeedArrayList.clear()
+                patientProgressBar.visibility = View.GONE
+            }
+            if (fromRefresh) {
+                currentPageNum = 1
+                modelFeedArrayList.clear()
+            }
+            if (it != null) {
+                //lastPageNum = it.meta.last_page
+                /*for (data in it.data) {
+                    modelFeedArrayList.add(data)
+                }*/
+                if (modelFeedArrayList.size == 0) {
+                    Toast.makeText(activity, "No Patient Added Yet.", Toast.LENGTH_SHORT).show()
 
-                  }
-                  hospitalAdapter.notifyDataSetChanged()
-                  mHasReachedBottomOnce = false
-                  currentPageNum++
+                }
+                patientAdapter.notifyDataSetChanged()
+                mHasReachedBottomOnce = false
+                currentPageNum++
 
-              } else {
-                  Toast.makeText(activity, "Network Error", Toast.LENGTH_SHORT).show()
-              }
-          })*/
+            } else {
+                Toast.makeText(activity, "Network Error", Toast.LENGTH_SHORT).show()
+            }
+        })
     }
 
 
@@ -124,7 +126,7 @@ class PatientaListFragment : Fragment() {
                 if (!recyclerView.canScrollVertically(1) && !mHasReachedBottomOnce) {
                     mHasReachedBottomOnce = true
                     if (currentPageNum <= lastPageNum) {
-                        callPosts(currentPageNum, true, false)
+                        // callPosts(currentPageNum, true, false)
 
                     }
                 }

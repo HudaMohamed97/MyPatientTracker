@@ -99,7 +99,7 @@
             android:layout_marginTop="@dimen/space_10"
             android:layout_marginEnd="20dp"
             android:layout_marginRight="20dp"
-            android:text="SpeakerName"
+            android:text="City"
             android:textColor="@color/black"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -129,7 +129,7 @@
             android:layout_gravity="end"
             android:background="@drawable/background_edittext_yeloow"
             android:clickable="true"
-            android:text=" Referal "
+            android:text="No Update"
             android:textColor="@color/black"
             android:visibility="visible"
             app:layout_constraintEnd_toEndOf="parent"

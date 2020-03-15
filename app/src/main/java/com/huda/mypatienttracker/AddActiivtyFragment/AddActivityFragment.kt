@@ -1,6 +1,5 @@
 package com.huda.mypatienttracker.AddActiivtyFragment
 
-import android.annotation.SuppressLint
 import android.app.DatePickerDialog
 import android.content.Context
 import android.content.SharedPreferences
@@ -8,11 +7,16 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.DatePicker
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import android.widget.ImageView
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModelProviders
+import com.example.myapplication.Models.SubmitModel
+import com.huda.mypatienttracker.Models.AddActivityRequestModel
 import com.huda.mypatienttracker.R
+import com.toptoche.searchablespinnerlibrary.SearchableSpinner
 import kotlinx.android.synthetic.main.add_activity_fragment.*
 import java.text.SimpleDateFormat
 import java.util.*
@@ -22,6 +26,14 @@ class AddActivityFragment : Fragment() {
     private lateinit var root: View
     private lateinit var addActivityViewModel: AddActivityViewModel
     private lateinit var loginPreferences: SharedPreferences
+    private lateinit var spinnerType: SearchableSpinner
+    private lateinit var seakerType: SearchableSpinner
+    private lateinit var citySpinner: SearchableSpinner
+    private val medicalList = arrayListOf<String>()
+    private val speakerList = arrayListOf<String>()
+    private lateinit var type: String
+    private lateinit var speakerType: String
+    private var flagSelected: Int = 0
 
 
     override fun onCreateView(
@@ -38,9 +50,124 @@ class AddActivityFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         loginPreferences = activity!!.getSharedPreferences("loginPrefs", Context.MODE_PRIVATE)
         setClickListeners()
-        //callPosts(1, false, false)
+        intializeMedicalSpinner()
+        intializeSpeakerSpinner()
+    }
+
+    private fun intializeSpeakerSpinner() {
+        speakerList.clear()
+        speakerList.add("Inter")
+        speakerList.add("Local")
+        initializeTypeSpinner(spinnerType, medicalList)
+        initializeSpeakerSpinner(speakerSpinner, speakerList)
+    }
+
+    private fun intializeMedicalSpinner() {
+        medicalList.clear()
+        medicalList.add("MedicalEducation")
+        medicalList.add("MarketAccess")
+        medicalList.add("Commercial")
+        initializeTypeSpinner(spinnerType, medicalList)
+
 
     }
+
+    private fun initializeTypeSpinner(spinnerType: SearchableSpinner, typeList: ArrayList<String>) {
+        val arrayAdapter =
+            context?.let {
+                ArrayAdapter(
+                    it,
+                    R.layout.support_simple_spinner_dropdown_item,
+                    typeList
+                )
+            }
+
+        spinnerType.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(
+                parentView: AdapterView<*>,
+                selectedItemView: View,
+                position: Int,
+                id: Long
+            ) {
+
+                val typeHospital = typeList[position]
+                type = when (typeHospital) {
+                    "MedicalEducation" -> {
+                        flagSelected = 1
+                        "MedicalEducation"
+
+                    }
+                    "MarketAccess" -> {
+                        flagSelected = 1
+                        "MarketAccess"
+                    }
+                    else -> {
+                        flagSelected = 1
+                        "Commercial"
+                    }
+                }
+            }
+
+            override fun onNothingSelected(parentView: AdapterView<*>) {
+                // your code here
+            }
+
+        }
+        arrayAdapter?.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        if (arrayAdapter != null) {
+            medicalspinner.adapter = arrayAdapter
+        }
+
+    }
+
+    private fun initializeSpeakerSpinner(
+        spinnerType: SearchableSpinner,
+        typeList: ArrayList<String>
+    ) {
+        val arrayAdapter =
+            context?.let {
+                ArrayAdapter(
+                    it,
+                    R.layout.support_simple_spinner_dropdown_item,
+                    typeList
+                )
+            }
+
+        spinnerType.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(
+                parentView: AdapterView<*>,
+                selectedItemView: View,
+                position: Int,
+                id: Long
+            ) {
+
+                val typeHospital = typeList[position]
+                speakerType = when (typeHospital) {
+                    "Inter" -> {
+                        flagSelected = 1
+                        "Inter"
+
+                    }
+                    else -> {
+                        flagSelected = 1
+                        "Local"
+                    }
+
+                }
+            }
+
+            override fun onNothingSelected(parentView: AdapterView<*>) {
+                // your code here
+            }
+
+        }
+        arrayAdapter?.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        if (arrayAdapter != null) {
+            speakerSpinner.adapter = arrayAdapter
+        }
+
+    }
+
 
     private fun callPosts(page: Int, fromLoadMore: Boolean, fromRefresh: Boolean) {
         /*  if (fromLoadMore) {
@@ -82,9 +209,11 @@ class AddActivityFragment : Fragment() {
     }
 
 
-    @SuppressLint("SetTextI18n")
     private fun setClickListeners() {
+
         val logOutButton = root.findViewById(R.id.backButton) as ImageView
+        spinnerType = root.findViewById(R.id.medicalspinner)
+        seakerType = root.findViewById(R.id.speakerSpinner)
         logOutButton.setOnClickListener {
             activity!!.finish()
         }
@@ -111,24 +240,16 @@ class AddActivityFragment : Fragment() {
             )
             dpd.show()
 
-/*
-
-            val datePick = DatePickerDialog(
-                activity!!,
-                DatePickerDialog.OnDateSetListener { _, year, monthOfYear, dayOfMonth ->
-                    val month = monthOfYear + 1
-                    datePicker.setText(year.toString() + "-" + String.format(
-                            "%02d",
-                            month
-                        ) + "-" + String.format("%02d", dayOfMonth)
-                    )
-                }, year, month, day
-            )
-            datePick.show()
-*/
 
         }
     }
+
+  /*  fun addActivity(
+        model: AddActivityRequestModel,
+        accessToken: String
+    ): MutableLiveData<SubmitModel> {
+
+    }*/
 
 
 }

@@ -79,10 +79,13 @@
             android:visibility="gone" />
 
         <LinearLayout
+            android:id="@+id/add_Activity_layout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="right"
             android:background="@drawable/rounded_background_edittext_blue"
+            android:clickable="true"
+            android:focusable="true"
             android:orientation="horizontal">
 
             <ImageView

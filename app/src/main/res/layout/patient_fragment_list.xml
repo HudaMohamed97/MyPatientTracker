@@ -117,7 +117,7 @@
         app:layout_constraintTop_toBottomOf="@+id/patientInfo">
 
         <ProgressBar
-            android:id="@+id/hospitalProgressBar"
+            android:id="@+id/patientProgressBar"
             style="?android:attr/progressBarStyle"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"

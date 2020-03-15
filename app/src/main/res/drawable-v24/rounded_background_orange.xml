@@ -5,7 +5,7 @@
 
     </stroke>
     <solid android:color="@color/concor_background" />
-    <corners android:radius="30dp" />
+    <corners android:radius="10dp" />
     <padding
         android:bottom="10dp"
         android:left="20dp"

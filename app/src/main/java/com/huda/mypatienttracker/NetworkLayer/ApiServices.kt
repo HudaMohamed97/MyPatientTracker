@@ -6,6 +6,7 @@ import com.huda.mypatienttracker.Models.HospitalModels.CitiesResponse
 import com.huda.mypatienttracker.Models.HospitalModels.HospitalResponseModel
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
+import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.http.*
 
@@ -28,6 +29,12 @@ interface ApiServices {
     fun getTarget(
         @Query("hospital_id") hospitalId: Int, @Header("Authorization") authHeader: String
     ): Call<TargetResponse>
+
+    @GET("patients")
+    fun getReferalPatient(
+        @Query("status") status: String, @Query("hospital_type")
+        hospital_type: String, @Header("Authorization") authHeader: String
+    ): Call<ResponseBody>
 
     @DELETE("hospitals/{hospital}")
     fun deleteHospital(

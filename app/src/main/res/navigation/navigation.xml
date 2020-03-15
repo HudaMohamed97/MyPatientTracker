@@ -76,19 +76,15 @@
         android:name="com.huda.mypatienttracker.AddActiivtyFragment.AddActivityFragment"
         tools:layout="@layout/add_activity_fragment">
 
-        <!--  <action
-              android:id="@+id/action_LoginFragment_to_Home"
-              app:destination="@id/LocationFragment" />
-  -->
     </fragment>
     <fragment
         android:id="@+id/ActivityFragment"
         android:name="com.huda.mypatienttracker.ActivityFragment.ActivityFragment"
         tools:layout="@layout/activity_fragment_list">
-
         <action
             android:id="@+id/action_Activity_to_Add_Activity"
             app:destination="@id/AddActivityFragment" />
+
     </fragment>
     <fragment
         android:id="@+id/PatientListFragment"

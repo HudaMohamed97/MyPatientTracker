@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.widget.PopupMenu
 import androidx.recyclerview.widget.RecyclerView
@@ -113,7 +114,7 @@ class ActivityAdapter(modelFeedArrayList: ArrayList<String>) :
 
     class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-        var dotsImage: TextView = itemView.findViewById(R.id.textViewOptions)
+        var dotsImage: ImageView = itemView.findViewById(R.id.textViewOptions)
 
         /*  var tvName: TextView
           var tvTime: TextView

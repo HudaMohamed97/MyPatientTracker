@@ -104,45 +104,18 @@
 
             </LinearLayout>
 
-            <LinearLayout
+            <EditText
+                android:id="@+id/editText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/space_10"
                 android:layout_marginTop="@dimen/space_10"
                 android:layout_marginRight="@dimen/space_10"
                 android:background="@drawable/background_edittext"
-                android:orientation="horizontal">
-
-                <com.toptoche.searchablespinnerlibrary.SearchableSpinner
-                    android:id="@+id/marketAccessSpinner"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:spinnerMode="dropdown"
-                    android:textColor="@color/black"
-                    android:theme="@style/SpinnerThemeLight"
-                    app:hintText="MarketAccess" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/space_10"
-                android:layout_marginTop="@dimen/space_10"
-                android:layout_marginRight="@dimen/space_10"
-                android:background="@drawable/background_edittext"
-                android:orientation="horizontal">
-
-                <com.toptoche.searchablespinnerlibrary.SearchableSpinner
-                    android:id="@+id/commercialSpinner"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:spinnerMode="dropdown"
-                    android:textColor="@color/black"
-                    android:theme="@style/SpinnerThemeLight"
-                    app:hintText="Commercial" />
-
-            </LinearLayout>
+                android:ems="10"
+                android:hint="   SubType"
+                android:inputType="textPersonName"
+                android:textColorHint="@color/not_black" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -168,6 +141,7 @@
                 </LinearLayout>
             </LinearLayout>
 
+
             <EditText
                 android:id="@+id/datePicker"
                 android:layout_width="match_parent"
@@ -176,29 +150,16 @@
                 android:layout_marginTop="@dimen/space_10"
                 android:layout_marginRight="@dimen/space_10"
                 android:background="@drawable/background_edittext"
-                android:focusable="false"
-                android:textColor="@color/black"
                 android:ems="10"
+                android:focusable="false"
                 android:hint="   Date"
+                android:textColor="@color/black"
                 android:textColorHint="@color/not_black" />
 
-            <EditText
-                android:id="@+id/editText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/space_10"
-                android:layout_marginTop="@dimen/space_10"
-                android:layout_marginRight="@dimen/space_10"
-                android:background="@drawable/background_edittext"
-                android:ems="10"
-                android:hint="   city"
-                android:inputType="textPersonName"
-                android:textColorHint="@color/not_black" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
-
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -210,14 +171,27 @@
                     android:orientation="horizontal">
 
                     <com.toptoche.searchablespinnerlibrary.SearchableSpinner
-                        android:id="@+id/specialtySpinner"
+                        android:id="@+id/citySpinner"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:prompt="@string/app_name"
                         android:theme="@style/SpinnerThemeLight"
-                        app:hintText="speaker" />
+                        app:hintText="City" />
                 </LinearLayout>
             </LinearLayout>
+
+            <EditText
+                android:id="@+id/specialityText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/space_10"
+                android:layout_marginTop="@dimen/space_10"
+                android:layout_marginRight="@dimen/space_10"
+                android:background="@drawable/background_edittext"
+                android:ems="10"
+                android:hint="   Speciality"
+                android:inputType="textPersonName"
+                android:textColorHint="@color/not_black" />
 
             <EditText
                 android:id="@+id/numOfAttend"

@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.huda.mypatienttracker.Adapters.ActivityAdapter
 import com.huda.mypatienttracker.R
+import kotlinx.android.synthetic.main.activity_fragment_list.*
 
 
 class ActivityFragment : Fragment() {
@@ -133,6 +134,9 @@ class ActivityFragment : Fragment() {
     }
 
     private fun setClickListeners() {
+        add_Activity_layout.setOnClickListener {
+            findNavController().navigate(R.id.action_Activity_to_Add_Activity)
+        }
         recyclerView = root.findViewById(R.id.hospitalRecycler)
         val logOutButton = root.findViewById(R.id.backButton) as ImageView
         logOutButton.setOnClickListener {
