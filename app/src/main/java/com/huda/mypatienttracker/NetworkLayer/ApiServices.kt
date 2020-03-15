@@ -30,6 +30,11 @@ interface ApiServices {
         @Query("hospital_id") hospitalId: Int, @Header("Authorization") authHeader: String
     ): Call<TargetResponse>
 
+    @GET("activities")
+    fun getActivity(
+        @Header("Authorization") authHeader: String
+    ): Call<ActivityModelResponse>
+
     @GET("patients")
     fun getReferalPatient(
         @Query("status") status: String, @Query("hospital_type")

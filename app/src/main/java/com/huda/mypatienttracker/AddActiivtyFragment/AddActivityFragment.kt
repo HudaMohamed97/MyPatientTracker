@@ -11,10 +11,8 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.ImageView
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModelProviders
-import com.example.myapplication.Models.SubmitModel
-import com.huda.mypatienttracker.Models.AddActivityRequestModel
+import com.huda.mypatienttracker.ActivityFragment.AddActivityViewModel
 import com.huda.mypatienttracker.R
 import com.toptoche.searchablespinnerlibrary.SearchableSpinner
 import kotlinx.android.synthetic.main.add_activity_fragment.*
@@ -169,7 +167,7 @@ class AddActivityFragment : Fragment() {
     }
 
 
-    private fun callPosts(page: Int, fromLoadMore: Boolean, fromRefresh: Boolean) {
+    private fun callActivity(page: Int, fromLoadMore: Boolean, fromRefresh: Boolean) {
         /*  if (fromLoadMore) {
               postLoadProgressBar.visibility = View.VISIBLE
           } else {

@@ -2,7 +2,6 @@ package com.huda.mypatienttracker.Adapters
 
 import android.content.Context
 import android.view.LayoutInflater
-import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
@@ -12,9 +11,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.huda.mypatienttracker.R
 import java.util.*
 import androidx.appcompat.view.ContextThemeWrapper
+import com.huda.mypatienttracker.Models.ActivityData
 
 
-class ActivityAdapter(modelFeedArrayList: ArrayList<String>) :
+class ActivityAdapter(modelFeedArrayList: ArrayList<ActivityData>) :
     RecyclerView.Adapter<ActivityAdapter.MyViewHolder>() {
 
     lateinit var onItemClickListener: OnCommentClickListener
@@ -26,7 +26,7 @@ class ActivityAdapter(modelFeedArrayList: ArrayList<String>) :
         return modelFeedArrayList.size
     }
 
-    var modelFeedArrayList = ArrayList<String>()
+    var modelFeedArrayList = ArrayList<ActivityData>()
 
 
     init {
@@ -42,24 +42,9 @@ class ActivityAdapter(modelFeedArrayList: ArrayList<String>) :
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val modelFeed = modelFeedArrayList[position]
-/*
-        holder.tvName.text = modelFeed.owner.name
-        holder.tvStatus.text = modelFeed.content
-        holder.tvTime.text = modelFeed.created_at
-        if (modelFeed.owner.photo != null) {
-            Glide.with(context!!).load(modelFeed.owner.photo).centerCrop()
-                .placeholder(R.drawable.profile)
-                .error(R.drawable.profile).into(holder.imgProfile)
-        }
-        if (modelFeed.photo == null) {
-            holder.imgviewPostpic.visibility = View.GONE
-        } else {
-            holder.imgviewPostpic.visibility = View.VISIBLE
-            Glide.with(context!!).load(modelFeed.photo).centerCrop()
-                .placeholder(R.drawable.profile)
-                .error(R.drawable.profile).into(holder.imgviewPostpic)
+        holder.activityName.text = modelFeed.subtype
+        holder.speakerName.text = modelFeed.speakers[0].name
 
-        }*/
         holder.dotsImage.setOnClickListener {
             if (onItemClickListener != null && position != RecyclerView.NO_POSITION) {
                 val wrapper = ContextThemeWrapper(context, R.style.popupMenuStyle)
@@ -113,20 +98,14 @@ class ActivityAdapter(modelFeedArrayList: ArrayList<String>) :
     }
 
     class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-
         var dotsImage: ImageView = itemView.findViewById(R.id.textViewOptions)
+        var speakerName: TextView
+        var activityName: TextView
 
-        /*  var tvName: TextView
-          var tvTime: TextView
-          var tvStatus: TextView
-          var imgProfile = itemView.findViewById<ImageView>(R.id.imgProfile)
-          var root = itemView.findViewById<View>(R.id.root)
-
-          init {
-              tvName = itemView.findViewById<View>(R.id.tv_name) as TextView
-              tvTime = itemView.findViewById<View>(R.id.tv_time) as TextView
-              tvStatus = itemView.findViewById<View>(R.id.tv_status) as TextView
-          }*/
+        init {
+            speakerName = itemView.findViewById<View>(R.id.speakerName) as TextView
+            activityName = itemView.findViewById<View>(R.id.activityName) as TextView
+        }
     }
 
     interface OnCommentClickListener {

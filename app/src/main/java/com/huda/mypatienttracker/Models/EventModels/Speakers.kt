@@ -5,7 +5,6 @@ import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
 
 data class Speakers(
-
     @SerializedName("id") val id: Int,
     @SerializedName("name") val name: String,
     @SerializedName("phone") val phone: Int,
