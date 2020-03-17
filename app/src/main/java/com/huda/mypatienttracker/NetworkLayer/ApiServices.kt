@@ -39,7 +39,7 @@ interface ApiServices {
     fun getReferalPatient(
         @Query("status") status: String, @Query("hospital_type")
         hospital_type: String, @Header("Authorization") authHeader: String
-    ): Call<ResponseBody>
+    ): Call<PatientResponse>
 
     @DELETE("hospitals/{hospital}")
     fun deleteHospital(

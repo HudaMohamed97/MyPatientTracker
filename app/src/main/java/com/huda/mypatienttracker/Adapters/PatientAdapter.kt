@@ -11,9 +11,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.huda.mypatienttracker.R
 import java.util.*
 import androidx.appcompat.view.ContextThemeWrapper
+import com.huda.mypatienttracker.Models.PatientResponse
+import com.huda.mypatienttracker.Models.PatientResponseData
 
 
-class PatientAdapter(modelFeedArrayList: ArrayList<String>) :
+class PatientAdapter(modelFeedArrayList: ArrayList<PatientResponseData>) :
     RecyclerView.Adapter<PatientAdapter.MyViewHolder>() {
 
     lateinit var onItemClickListener: OnCommentClickListener
@@ -25,7 +27,7 @@ class PatientAdapter(modelFeedArrayList: ArrayList<String>) :
         return modelFeedArrayList.size
     }
 
-    var modelFeedArrayList = ArrayList<String>()
+    var modelFeedArrayList = ArrayList<PatientResponseData>()
 
 
     init {
@@ -41,24 +43,8 @@ class PatientAdapter(modelFeedArrayList: ArrayList<String>) :
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val modelFeed = modelFeedArrayList[position]
-/*
-        holder.tvName.text = modelFeed.owner.name
-        holder.tvStatus.text = modelFeed.content
-        holder.tvTime.text = modelFeed.created_at
-        if (modelFeed.owner.photo != null) {
-            Glide.with(context!!).load(modelFeed.owner.photo).centerCrop()
-                .placeholder(R.drawable.profile)
-                .error(R.drawable.profile).into(holder.imgProfile)
-        }
-        if (modelFeed.photo == null) {
-            holder.imgviewPostpic.visibility = View.GONE
-        } else {
-            holder.imgviewPostpic.visibility = View.VISIBLE
-            Glide.with(context!!).load(modelFeed.photo).centerCrop()
-                .placeholder(R.drawable.profile)
-                .error(R.drawable.profile).into(holder.imgviewPostpic)
+        holder.tvName.text = modelFeed.hospital.name
 
-        }*/
         holder.dotsImage.setOnClickListener {
             if (onItemClickListener != null && position != RecyclerView.NO_POSITION) {
                 val wrapper = ContextThemeWrapper(context, R.style.popupMenuStyle)
@@ -120,17 +106,15 @@ class PatientAdapter(modelFeedArrayList: ArrayList<String>) :
 
         var dotsImage: TextView = itemView.findViewById(R.id.textViewOptions)
 
-        /*  var tvName: TextView
-          var tvTime: TextView
-          var tvStatus: TextView
-          var imgProfile = itemView.findViewById<ImageView>(R.id.imgProfile)
-          var root = itemView.findViewById<View>(R.id.root)
+        var tvName: TextView
+        /*  var tvTime: TextView
+          var tvStatus: TextView*/
 
-          init {
-              tvName = itemView.findViewById<View>(R.id.tv_name) as TextView
-              tvTime = itemView.findViewById<View>(R.id.tv_time) as TextView
-              tvStatus = itemView.findViewById<View>(R.id.tv_status) as TextView
-          }*/
+        init {
+            tvName = itemView.findViewById<View>(R.id.hospitalName) as TextView
+            /* tvTime = itemView.findViewById<View>(R.id.tv_time) as TextView
+             tvStatus = itemView.findViewById<View>(R.id.tv_status) as TextView*/
+        }
     }
 
     interface OnCommentClickListener {

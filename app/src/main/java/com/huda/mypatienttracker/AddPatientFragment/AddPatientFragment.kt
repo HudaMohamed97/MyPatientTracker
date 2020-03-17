@@ -56,7 +56,7 @@ class AddPatientFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setClickListeners()
-        callHospitals("coe",false,false)
+        callHospitals("coe", false, false)
     }
 
     private fun setClickListeners() {

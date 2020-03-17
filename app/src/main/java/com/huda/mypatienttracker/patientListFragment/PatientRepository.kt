@@ -1,6 +1,7 @@
 package com.huda.mypatienttracker.patientListFragment
 
 import androidx.lifecycle.MutableLiveData
+import com.huda.mypatienttracker.Models.PatientResponse
 import com.huda.mypatienttracker.NetworkLayer.Webservice
 import okhttp3.ResponseBody
 import retrofit2.Call
@@ -12,13 +13,13 @@ class PatientRepository {
         status: String,
         hospitalType: String,
         accessToken: String
-    ): MutableLiveData<ResponseBody> {
-        val hospitalData = MutableLiveData<ResponseBody>()
+    ): MutableLiveData<PatientResponse> {
+        val hospitalData = MutableLiveData<PatientResponse>()
         Webservice.getInstance().api.getReferalPatient(status, hospitalType, accessToken)
-            .enqueue(object : Callback<ResponseBody> {
+            .enqueue(object : Callback<PatientResponse> {
                 override fun onResponse(
-                    call: Call<ResponseBody>,
-                    response: Response<ResponseBody>
+                    call: Call<PatientResponse>,
+                    response: Response<PatientResponse>
                 ) {
                     if (response.isSuccessful) {
                         hospitalData.value = response.body()
@@ -27,7 +28,7 @@ class PatientRepository {
                     }
                 }
 
-                override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                override fun onFailure(call: Call<PatientResponse>, t: Throwable) {
                     hospitalData.value = null
                 }
             })

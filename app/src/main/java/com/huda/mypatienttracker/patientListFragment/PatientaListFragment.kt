@@ -16,6 +16,8 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.huda.mypatienttracker.Adapters.PatientAdapter
+import com.huda.mypatienttracker.Models.PatientResponse
+import com.huda.mypatienttracker.Models.PatientResponseData
 import com.huda.mypatienttracker.R
 import kotlinx.android.synthetic.main.patient_fragment_list.*
 
@@ -23,14 +25,11 @@ import kotlinx.android.synthetic.main.patient_fragment_list.*
 class PatientaListFragment : Fragment() {
     private lateinit var root: View
     private lateinit var patientaListViewModel: PatientaListViewModel
-    private val modelFeedArrayList = arrayListOf<String>()
+    private val modelFeedArrayList = arrayListOf<PatientResponseData>()
     private lateinit var patientAdapter: PatientAdapter
     private lateinit var recyclerView: RecyclerView
     private lateinit var loginPreferences: SharedPreferences
-    private var type: Int = -1
     var mHasReachedBottomOnce = false
-    private var fileUri: String = ""
-    private lateinit var selectedImage: Uri
     var currentPageNum = 1
     var lastPageNum: Int = 0
 
@@ -76,10 +75,10 @@ class PatientaListFragment : Fragment() {
                 modelFeedArrayList.clear()
             }
             if (it != null) {
-                //lastPageNum = it.meta.last_page
-                /*for (data in it.data) {
+                lastPageNum = it.meta.last_page
+                for (data in it.data) {
                     modelFeedArrayList.add(data)
-                }*/
+                }
                 if (modelFeedArrayList.size == 0) {
                     Toast.makeText(activity, "No Patient Added Yet.", Toast.LENGTH_SHORT).show()
 
@@ -97,11 +96,6 @@ class PatientaListFragment : Fragment() {
 
     private fun initRecyclerView() {
         val layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
-        modelFeedArrayList.add("hi")
-        modelFeedArrayList.add("huda")
-        modelFeedArrayList.add("hi")
-        modelFeedArrayList.add("hi")
-        modelFeedArrayList.add("huda")
         patientAdapter = PatientAdapter(modelFeedArrayList)
         recyclerView.layoutManager = layoutManager
         recyclerView.adapter = patientAdapter
