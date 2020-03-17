@@ -91,7 +91,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/space_50"
             android:layout_marginLeft="@dimen/space_10"
             android:layout_marginTop="@dimen/space_10"
             android:layout_marginRight="@dimen/space_10"
@@ -109,14 +109,30 @@
 
         </LinearLayout>
 
-        <LinearLayout
+        <TextView
+            android:id="@+id/doctorText"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/space_50"
             android:layout_marginLeft="@dimen/space_10"
             android:layout_marginTop="@dimen/space_10"
             android:layout_marginRight="@dimen/space_10"
             android:background="@drawable/background_edittext"
-            android:orientation="horizontal">
+            android:paddingLeft="@dimen/space_20"
+            android:text="DoctorName"
+            android:textColor="@color/not_black"
+            android:textSize="16dp"
+            android:theme="@style/SpinnerThemeLight" />
+
+        <LinearLayout
+            android:id="@+id/doctorSpinner"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/space_50"
+            android:layout_marginLeft="@dimen/space_10"
+            android:layout_marginTop="@dimen/space_10"
+            android:layout_marginRight="@dimen/space_10"
+            android:background="@drawable/background_edittext"
+            android:orientation="horizontal"
+            android:visibility="gone">
 
             <com.toptoche.searchablespinnerlibrary.SearchableSpinner
                 android:id="@+id/drNameSpinner"
@@ -466,7 +482,7 @@
         android:layout_marginBottom="30dp"
         android:background="@color/not_blue"
         android:backgroundTint="@color/not_blue"
-        android:text="Continue"
+        android:text="Submit"
         android:textColor="@color/white"
         android:textSize="@dimen/space_20"
         app:cornerRadius="@dimen/space_10"

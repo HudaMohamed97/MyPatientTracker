@@ -2,7 +2,6 @@ package com.huda.mypatienttracker.patientListFragment
 
 import android.content.Context
 import android.content.SharedPreferences
-import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -16,7 +15,6 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.huda.mypatienttracker.Adapters.PatientAdapter
-import com.huda.mypatienttracker.Models.PatientResponse
 import com.huda.mypatienttracker.Models.PatientResponseData
 import com.huda.mypatienttracker.R
 import kotlinx.android.synthetic.main.patient_fragment_list.*
@@ -50,7 +48,6 @@ class PatientaListFragment : Fragment() {
         setClickListeners()
         initRecyclerView()
         callPatients(1, false, false)
-
     }
 
     private fun callPatients(page: Int, fromLoadMore: Boolean, fromRefresh: Boolean) {
@@ -130,6 +127,9 @@ class PatientaListFragment : Fragment() {
     }
 
     private fun setClickListeners() {
+        add_ref.setOnClickListener {
+            findNavController().navigate(R.id.action_PatientList_addReferalFragment)
+        }
         addNew.setOnClickListener {
             findNavController().navigate(R.id.action_PatientList_addPatientFragment)
         }

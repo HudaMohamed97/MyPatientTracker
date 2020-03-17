@@ -44,6 +44,8 @@ class PatientAdapter(modelFeedArrayList: ArrayList<PatientResponseData>) :
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val modelFeed = modelFeedArrayList[position]
         holder.tvName.text = modelFeed.hospital.name
+        holder.doctorName.text = modelFeed.name
+        holder.time.text = modelFeed.created_at
 
         holder.dotsImage.setOnClickListener {
             if (onItemClickListener != null && position != RecyclerView.NO_POSITION) {
@@ -106,15 +108,13 @@ class PatientAdapter(modelFeedArrayList: ArrayList<PatientResponseData>) :
 
         var dotsImage: TextView = itemView.findViewById(R.id.textViewOptions)
 
-        var tvName: TextView
-        /*  var tvTime: TextView
-          var tvStatus: TextView*/
+        var tvName: TextView = itemView.findViewById<View>(R.id.hospitalName) as TextView
+        var doctorName: TextView = itemView.findViewById<View>(R.id.doctorName) as TextView
+        var location: TextView = itemView.findViewById<View>(R.id.location) as TextView
+        var time: TextView = itemView.findViewById<View>(R.id.time) as TextView
+        var city: TextView = itemView.findViewById<View>(R.id.city) as TextView
 
-        init {
-            tvName = itemView.findViewById<View>(R.id.hospitalName) as TextView
-            /* tvTime = itemView.findViewById<View>(R.id.tv_time) as TextView
-             tvStatus = itemView.findViewById<View>(R.id.tv_status) as TextView*/
-        }
+
     }
 
     interface OnCommentClickListener {

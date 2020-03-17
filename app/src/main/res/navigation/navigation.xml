@@ -94,6 +94,9 @@
         <action
             android:id="@+id/action_PatientList_addPatientFragment"
             app:destination="@id/addPatientFragment" />
+        <action
+            android:id="@+id/action_PatientList_addReferalFragment"
+            app:destination="@id/AddReferalFragment" />
 
     </fragment>
     <fragment
@@ -148,6 +151,13 @@
         <action
             android:id="@+id/action_PatientList_toOpsumit"
             app:destination="@id/OpsumitFargment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/AddReferalFragment"
+        android:name="com.huda.mypatienttracker.AddReferal.AddReferalFragment"
+        tools:layout="@layout/add_referal">
+
     </fragment>
 
 

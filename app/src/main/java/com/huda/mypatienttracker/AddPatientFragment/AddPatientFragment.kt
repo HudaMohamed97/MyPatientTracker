@@ -19,10 +19,13 @@ import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.huda.mypatienttracker.Models.Cities
 import com.huda.mypatienttracker.Models.CountryData
+import com.huda.mypatienttracker.Models.Doctors
 import com.huda.mypatienttracker.Models.HospitalModels.HospitalData
+import com.huda.mypatienttracker.Models.PatientRequestModel
 import com.toptoche.searchablespinnerlibrary.SearchableSpinner
 import kotlinx.android.synthetic.main.add_patient_fragment.*
 import kotlinx.android.synthetic.main.hospital_fragment_list.*
+import kotlinx.android.synthetic.main.hospital_peferal.*
 
 
 class AddPatientFragment : Fragment() {
@@ -33,13 +36,15 @@ class AddPatientFragment : Fragment() {
 
     private lateinit var root: View
     private var fromType: String = ""
+    private var otherMedication: String = ""
     private lateinit var addPatientFragmentViewModel: AddPatientFragmentViewModel
     private lateinit var loginPreferences: SharedPreferences
     private val hospitalList = arrayListOf<HospitalData>()
     private val hospitalNameList = arrayListOf<String>()
-    private val doctorist = arrayListOf<Cities>()
+    private val doctorist = arrayListOf<Doctors>()
     private val doctorNameList = arrayListOf<String>()
-    private var hospitalId: Int = 0
+    private var hospitalId: Int = -1
+    private var doctorId: Int = -1
 
 
     override fun onCreateView(
@@ -63,22 +68,85 @@ class AddPatientFragment : Fragment() {
 
         val rg = root.findViewById(R.id.radioPatientGroup) as RadioGroup
 
+        PDE5i.setOnClickListener {
+            otherMedication = "PDE5i"
+            Oral_PC.isChecked = false
+            Rio.isChecked = false
+            other.isChecked = false
+        }
+        PDE5iOpsumit.setOnClickListener {
+            otherMedication = "PDE5i"
+            Macitentan.isChecked = false
+            Rioopsumit.isChecked = false
+            Other_ERA.isChecked = false
+        }
+
+        Oral_PC.setOnClickListener {
+            otherMedication = "Oral_PC"
+            PDE5i.isChecked = false
+            Rio.isChecked = false
+            other.isChecked = false
+        }
+
+        Macitentan.setOnClickListener {
+            otherMedication = "Macitentan"
+            PDE5iOpsumit.isChecked = false
+            Rioopsumit.isChecked = false
+            Other_ERA.isChecked = false
+        }
+
+        Other_ERA.setOnClickListener {
+            otherMedication = "Other_ERA"
+            PDE5iOpsumit.isChecked = false
+            Rioopsumit.isChecked = false
+            Macitentan.isChecked = false
+        }
+
+        Rioopsumit.setOnClickListener {
+            otherMedication = "Rioopsumit"
+            PDE5iOpsumit.isChecked = false
+            Macitentan.isChecked = false
+            Other_ERA.isChecked = false
+        }
+
+        Rio.setOnClickListener {
+            otherMedication = "Rio"
+            Oral_PC.isChecked = false
+            PDE5i.isChecked = false
+            other.isChecked = false
+        }
+
+        other.setOnClickListener {
+            otherMedication = "PDE5i"
+            Oral_PC.isChecked = false
+            Rio.isChecked = false
+            PDE5i.isChecked = false
+        }
+
+        doctorText.setOnClickListener {
+            Toast.makeText(activity, "Please Select Hospital First Thanks.", Toast.LENGTH_SHORT)
+                .show()
+        }
+
         continueButton.setOnClickListener {
-            if (fromType == UPTRAVI) {
-                if (findNavController().currentDestination?.id == R.id.addPatientFragment) {
-                    findNavController().navigate(R.id.action_PatientList_toUptravi)
-                }
-
-            } else if (fromType == OPSUMIT) {
-                if (findNavController().currentDestination?.id == R.id.addPatientFragment) {
-                    findNavController().navigate(R.id.action_PatientList_toOpsumit)
-
-                } else if (fromType == "") {
-                    Toast.makeText(activity, "Please Select Patient Type", Toast.LENGTH_SHORT)
-                        .show()
-                }
+            if (fromType == "" || hospitalId == -1 || doctorId == -1 || otherMedication == "") {
+                Toast.makeText(activity, "Please fill All Fields Thanks", Toast.LENGTH_SHORT)
+                    .show()
+            } else {
+                val model = PatientRequestModel(
+                    "patient",
+                    1,
+                    1,
+                    hospitalId,
+                    doctorId,
+                    fromType,
+                    "etiology",
+                    otherMedication
+                )
+                callAddPatient(model)
             }
         }
+
         rg.setOnCheckedChangeListener { _, checkedId ->
             when (checkedId) {
                 R.id.radioUptarvi -> {
@@ -94,6 +162,32 @@ class AddPatientFragment : Fragment() {
             }
         }
         loginPreferences = activity!!.getSharedPreferences("loginPrefs", Context.MODE_PRIVATE)
+
+    }
+
+    private fun callAddPatient(model: PatientRequestModel) {
+        patientProgressBar.visibility = View.VISIBLE
+        val accessToken = loginPreferences.getString("accessToken", "")
+        if (accessToken != null) {
+            addPatientFragmentViewModel.submitPatient(model, accessToken)
+        }
+        addPatientFragmentViewModel.getSubmitPatient().observe(this, Observer {
+            patientProgressBar.visibility = View.GONE
+            if (it != null) {
+                if (it.type == "error")
+                    Toast.makeText(
+                        activity,
+                        it.title,
+                        Toast.LENGTH_SHORT
+                    ).show()
+                else {
+                    Toast.makeText(activity, "Submitted Successfully", Toast.LENGTH_SHORT).show()
+                }
+            } else {
+                Toast.makeText(activity, "Network Error", Toast.LENGTH_SHORT).show()
+            }
+        })
+
 
     }
 
@@ -130,6 +224,38 @@ class AddPatientFragment : Fragment() {
         })
     }
 
+    private fun callSingelHospital(
+        hospitalId: Int,
+        fromLoadMore: Boolean
+    ) {
+        val accessToken = loginPreferences.getString("accessToken", "")
+        if (accessToken != null) {
+            addPatientFragmentViewModel.getSingelHospital(hospitalId, accessToken)
+        }
+        addPatientFragmentViewModel.getSingelData().observe(this, Observer {
+            if (it != null) {
+                doctorText.visibility = View.GONE
+                doctorSpinner.visibility = view?.visibility!!
+                doctorist.clear()
+                for (data in it.data.doctors) {
+                    doctorist.add(data)
+                }
+                preparDoctorsList(doctorist)
+            } else {
+                Toast.makeText(activity, "Network Error", Toast.LENGTH_SHORT).show()
+            }
+        })
+    }
+
+    private fun preparDoctorsList(doctorist: ArrayList<Doctors>) {
+        doctorNameList.clear()
+        for (hospital in doctorist) {
+            doctorNameList.add(hospital.name)
+        }
+        initializeDoctorSpinner(drNameSpinner, doctorNameList)
+    }
+
+
     private fun preparHospitalList(hopital_List: ArrayList<HospitalData>) {
         hospitalNameList.clear()
         for (hospital in hopital_List) {
@@ -158,17 +284,13 @@ class AddPatientFragment : Fragment() {
                 position: Int,
                 id: Long
             ) {
-
-                val cml = parentView.getItemAtPosition(position).toString()
                 hospitalId = hospitalList[position].id
-                //callDoctorsPerHospital(hospitalId)
+                callSingelHospital(hospitalId, false)
             }
 
             override fun onNothingSelected(parentView: AdapterView<*>) {
                 // your code here
             }
-
-
         }
         arrayAdapter?.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         if (arrayAdapter != null) {
@@ -177,10 +299,40 @@ class AddPatientFragment : Fragment() {
 
     }
 
-    private fun callDoctorsPerHospital(hospitalId: Int) {
+    private fun initializeDoctorSpinner(
+        spinner: SearchableSpinner,
+        doctorsNameList: ArrayList<String>
+    ) {
+        val arrayAdapter =
+            context?.let {
+                ArrayAdapter(
+                    it,
+                    R.layout.support_simple_spinner_dropdown_item,
+                    doctorsNameList
+                )
+            }
+
+        drNameSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(
+                parentView: AdapterView<*>,
+                selectedItemView: View,
+                position: Int,
+                id: Long
+            ) {
+
+                doctorId = doctorist[position].id
+            }
+
+            override fun onNothingSelected(parentView: AdapterView<*>) {
+                // your code here
+            }
+        }
+        arrayAdapter?.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        if (arrayAdapter != null) {
+            drNameSpinner.adapter = arrayAdapter
+        }
 
     }
-
 
     private fun hideKeyboard() {
         val view = activity?.currentFocus

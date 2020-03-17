@@ -25,6 +25,11 @@ interface ApiServices {
         @Body body: TargetRequestModel, @Header("Authorization") authHeader: String
     ): Call<SubmitModel>
 
+    @POST("patients")
+    fun addPatient(
+        @Body body: PatientRequestModel, @Header("Authorization") authHeader: String
+    ): Call<SubmitModel>
+
     @GET("targets")
     fun getTarget(
         @Query("hospital_id") hospitalId: Int, @Header("Authorization") authHeader: String
@@ -43,8 +48,13 @@ interface ApiServices {
 
     @DELETE("hospitals/{hospital}")
     fun deleteHospital(
-        @Path("hospital") postId: Int, @Header("Authorization") authHeader: String
+        @Path("hospital") hospital: Int, @Header("Authorization") authHeader: String
     ): Call<SubmitModel>
+
+    @GET("hospitals/{hospital}")
+    fun getSingelHospital(
+        @Path("hospital") hospital: Int, @Header("Authorization") authHeader: String
+    ): Call<SingelHospitalResponse>
 
     @DELETE("targets/{target}")
     fun deleteTarget(

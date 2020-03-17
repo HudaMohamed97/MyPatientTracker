@@ -45,7 +45,6 @@ class AddHospitalFragment : Fragment() {
     private val citiesNameList = arrayListOf<String>()
     private val typeList = arrayListOf<String>()
 
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
