@@ -20,7 +20,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/space_10"
             android:gravity="center"
-            android:text="ADD Patient"
+            android:text="ADD Referal"
             android:textColor="@color/white"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -148,9 +148,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/space_10"
-            android:layout_marginTop="@dimen/space_20"
+            android:layout_marginTop="@dimen/space_5"
             android:layout_marginRight="@dimen/space_10"
-            android:layout_marginBottom="@dimen/space_10"
+            android:layout_marginBottom="@dimen/space_5"
             android:text=" REFRRED TO "
             android:textColor="@color/not_black"
             android:textStyle="bold" />
@@ -224,14 +224,44 @@
                 android:textColor="@color/not_black"
                 android:theme="@style/SpinnerThemeLight"
                 app:hintText="To Hospital" />
+        </LinearLayout>
 
+        <ProgressBar
+            android:id="@+id/toDoctorsProgressBar"
+            style="?android:attr/progressBarStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="5dp"
+            android:indeterminate="true"
+            android:indeterminateTint="@color/not_blue"
+            android:indeterminateTintMode="src_atop"
+            android:visibility="gone" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/space_50"
+            android:layout_marginLeft="@dimen/space_10"
+            android:layout_marginTop="@dimen/space_10"
+            android:layout_marginRight="@dimen/space_10"
+            android:background="@drawable/background_edittext"
+            android:orientation="horizontal">
+
+            <com.toptoche.searchablespinnerlibrary.SearchableSpinner
+                android:id="@+id/ToDoctorspinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:spinnerMode="dropdown"
+                android:textColor="@color/not_black"
+                android:theme="@style/SpinnerThemeLight"
+                app:hintText="To Doctor" />
         </LinearLayout>
 
 
     </LinearLayout>
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/continueButton"
+        android:id="@+id/submitReferalButton"
         style="@style/Widget.MaterialComponents.Button.OutlinedButton"
         android:layout_width="match_parent"
         android:layout_height="70dp"

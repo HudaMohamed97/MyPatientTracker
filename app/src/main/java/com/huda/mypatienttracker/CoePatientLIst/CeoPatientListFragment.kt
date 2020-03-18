@@ -1,8 +1,7 @@
-package com.huda.mypatienttracker.ActivityFragment
+package com.huda.mypatienttracker.CoePatientLIst
 
 import android.content.Context
 import android.content.SharedPreferences
-import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -15,20 +14,19 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.huda.mypatienttracker.Adapters.ActivityAdapter
-import com.huda.mypatienttracker.Models.ActivityData
+import com.huda.mypatienttracker.Adapters.CoePatientAdapter
+import com.huda.mypatienttracker.Models.PatientResponseData
 import com.huda.mypatienttracker.R
-import kotlinx.android.synthetic.main.activity_fragment_list.*
+import kotlinx.android.synthetic.main.coe_patient_list_fragment.*
+import kotlinx.android.synthetic.main.patient_fragment_list.*
 
-
-class ActivityFragment : Fragment() {
+class CeoPatientListFragment : Fragment() {
     private lateinit var root: View
-    private lateinit var activityViewModel: AddActivityViewModel
-    private val modelFeedArrayList = arrayListOf<ActivityData>()
-    private lateinit var activityAdapter: ActivityAdapter
+    private lateinit var ceoPatientaListViewModel: CeoPatientaListViewModel
+    private val modelFeedArrayList = arrayListOf<PatientResponseData>()
+    private lateinit var patientAdapter: CoePatientAdapter
     private lateinit var recyclerView: RecyclerView
     private lateinit var loginPreferences: SharedPreferences
-    private var type: Int = -1
     var mHasReachedBottomOnce = false
     var currentPageNum = 1
     var lastPageNum: Int = 0
@@ -39,8 +37,9 @@ class ActivityFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        root = inflater.inflate(R.layout.activity_fragment_list, container, false)
-        activityViewModel = ViewModelProviders.of(this).get(AddActivityViewModel::class.java)
+        root = inflater.inflate(R.layout.coe_patient_list_fragment, container, false)
+        ceoPatientaListViewModel =
+            ViewModelProviders.of(this).get(CeoPatientaListViewModel::class.java)
         return root
     }
 
@@ -49,25 +48,25 @@ class ActivityFragment : Fragment() {
         loginPreferences = activity!!.getSharedPreferences("loginPrefs", Context.MODE_PRIVATE)
         setClickListeners()
         initRecyclerView()
-        callActivity(1, false, false)
-
+        callPatients(1, false, false)
     }
 
-    private fun callActivity(page: Int, fromLoadMore: Boolean, fromRefresh: Boolean) {
+    private fun callPatients(page: Int, fromLoadMore: Boolean, fromRefresh: Boolean) {
         if (fromLoadMore) {
-            ActivityProgressBar.visibility = View.VISIBLE
+            coePatientProgressBar.visibility = View.VISIBLE
         } else {
-            ActivityProgressBar.visibility = View.VISIBLE
+            coePatientProgressBar.visibility = View.VISIBLE
         }
         val accessToken = loginPreferences.getString("accessToken", "")
         if (accessToken != null) {
-            activityViewModel.getActivity(accessToken)
+            ceoPatientaListViewModel.getPatients("coe", accessToken)
         }
-        activityViewModel.getData().observe(this, Observer {
+        ceoPatientaListViewModel.getData().observe(this, Observer {
             if (fromLoadMore) {
-                ActivityProgressBar.visibility = View.GONE
+                coePatientProgressBar.visibility = View.GONE
             } else {
-                ActivityProgressBar.visibility = View.GONE
+                modelFeedArrayList.clear()
+                coePatientProgressBar.visibility = View.GONE
             }
             if (fromRefresh) {
                 currentPageNum = 1
@@ -76,14 +75,13 @@ class ActivityFragment : Fragment() {
             if (it != null) {
                 lastPageNum = it.meta.last_page
                 for (data in it.data) {
-                    modelFeedArrayList.clear()
                     modelFeedArrayList.add(data)
                 }
                 if (modelFeedArrayList.size == 0) {
-                    Toast.makeText(activity, "No Activity Added Yet.", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(activity, "No Patient Added Yet.", Toast.LENGTH_SHORT).show()
 
                 }
-                activityAdapter.notifyDataSetChanged()
+                patientAdapter.notifyDataSetChanged()
                 mHasReachedBottomOnce = false
                 currentPageNum++
 
@@ -96,14 +94,15 @@ class ActivityFragment : Fragment() {
 
     private fun initRecyclerView() {
         val layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
-        activityAdapter = ActivityAdapter(modelFeedArrayList)
+        patientAdapter = CoePatientAdapter(modelFeedArrayList)
         recyclerView.layoutManager = layoutManager
-        recyclerView.adapter = activityAdapter
-        activityAdapter.setOnCommentListener(object : ActivityAdapter.OnCommentClickListener {
+        recyclerView.adapter = patientAdapter
+        patientAdapter.setOnCommentListener(object : CoePatientAdapter.OnCommentClickListener {
             override fun onDotsImageClicked(position: Int, fromTab: String) {
-                if (fromTab == "AddActivity") {
-                    findNavController().navigate(R.id.action_Activity_to_Add_Activity)
-
+                if (fromTab == "update") {
+                    val bundle = Bundle()
+                    bundle.putInt("PatientId", modelFeedArrayList[position].id)
+                    findNavController().navigate(R.id.action_navigate_to_update, bundle)
                 } else if (fromTab == "") {
                     Toast.makeText(activity, "Please Select Action.", Toast.LENGTH_SHORT).show()
 
@@ -120,7 +119,7 @@ class ActivityFragment : Fragment() {
                 if (!recyclerView.canScrollVertically(1) && !mHasReachedBottomOnce) {
                     mHasReachedBottomOnce = true
                     if (currentPageNum <= lastPageNum) {
-                        //  callPosts(currentPageNum, true, false)
+                        // callPosts(currentPageNum, true, false)
 
                     }
                 }
@@ -130,10 +129,7 @@ class ActivityFragment : Fragment() {
     }
 
     private fun setClickListeners() {
-        add_Activity_layout.setOnClickListener {
-            findNavController().navigate(R.id.action_Activity_to_Add_Activity)
-        }
-        recyclerView = root.findViewById(R.id.hospitalRecycler)
+        recyclerView = root.findViewById(R.id.patientRecycler)
         val logOutButton = root.findViewById(R.id.backButton) as ImageView
         logOutButton.setOnClickListener {
             activity!!.finish()
@@ -141,6 +137,5 @@ class ActivityFragment : Fragment() {
 
 
     }
-
 
 }

@@ -4,6 +4,7 @@ import com.example.myapplication.Models.*
 import com.huda.mypatienttracker.Models.*
 import com.huda.mypatienttracker.Models.HospitalModels.CitiesResponse
 import com.huda.mypatienttracker.Models.HospitalModels.HospitalResponseModel
+import com.huda.mypatienttracker.Models.HospitalModels.PatientReferalRequestModel
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import okhttp3.ResponseBody
@@ -30,6 +31,11 @@ interface ApiServices {
         @Body body: PatientRequestModel, @Header("Authorization") authHeader: String
     ): Call<SubmitModel>
 
+    @POST("patients/add-referal")
+    fun addReferalPatient(
+        @Body body: PatientReferalRequestModel, @Header("Authorization") authHeader: String
+    ): Call<SubmitModel>
+
     @GET("targets")
     fun getTarget(
         @Query("hospital_id") hospitalId: Int, @Header("Authorization") authHeader: String
@@ -43,6 +49,17 @@ interface ApiServices {
     @GET("patients")
     fun getReferalPatient(
         @Query("status") status: String, @Query("hospital_type")
+        hospital_type: String, @Header("Authorization") authHeader: String
+    ): Call<PatientResponse>
+
+    @POST("patients/{patient}/treatments")
+    fun updatePatient(
+        @Path("patient") patient: Int,@Body body: updatePatientRequestModel, @Header("Authorization") authHeader: String
+    ): Call<SubmitModel>
+
+    @GET("patients")
+    fun getCoePatient(
+        @Query("hospital_type")
         hospital_type: String, @Header("Authorization") authHeader: String
     ): Call<PatientResponse>
 

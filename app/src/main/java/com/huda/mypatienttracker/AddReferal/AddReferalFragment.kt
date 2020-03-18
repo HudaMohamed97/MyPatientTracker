@@ -17,8 +17,11 @@ import com.huda.mypatienttracker.Models.Cities
 import com.huda.mypatienttracker.Models.CountryData
 import com.huda.mypatienttracker.Models.Doctors
 import com.huda.mypatienttracker.Models.HospitalModels.HospitalData
+import com.huda.mypatienttracker.Models.HospitalModels.PatientReferalRequestModel
+import com.huda.mypatienttracker.Models.PatientRequestModel
 import com.huda.mypatienttracker.R
 import com.toptoche.searchablespinnerlibrary.SearchableSpinner
+import kotlinx.android.synthetic.main.add_patient_fragment.*
 import kotlinx.android.synthetic.main.add_patient_fragment.doctorSpinner
 import kotlinx.android.synthetic.main.add_referal.*
 
@@ -29,10 +32,16 @@ class AddReferalFragment : Fragment() {
     private lateinit var loginPreferences: SharedPreferences
     private val hospitalList = arrayListOf<HospitalData>()
     private val hospitalNameList = arrayListOf<String>()
+    private val hospitalCeoList = arrayListOf<HospitalData>()
+    private val hospitalCeoNameList = arrayListOf<String>()
     private val doctorist = arrayListOf<Doctors>()
     private val doctorNameList = arrayListOf<String>()
+    private val toDoctorist = arrayListOf<Doctors>()
+    private val toDoctorNameList = arrayListOf<String>()
     private var hospitalId: Int = -1
+    private var toHospitalId: Int = -1
     private var doctorId: Int = -1
+    private var toDoctorId: Int = -1
     private val countryList = arrayListOf<CountryData>()
     private val countriesNameList = arrayListOf<String>()
     private val cityList = arrayListOf<Cities>()
@@ -57,12 +66,63 @@ class AddReferalFragment : Fragment() {
         setClickListeners()
         callHospitals("referal", false, false)
         getCountryList()
-        callHospitals("coe", false, true)
     }
 
     private fun setClickListeners() {
+        hospitalId = -1
+        toHospitalId = -1
+        doctorId = -1
+        toDoctorId = -1
+        city_id = -1
+        country_id = -1
         loginPreferences = activity!!.getSharedPreferences("loginPrefs", Context.MODE_PRIVATE)
+        submitReferalButton.setOnClickListener {
+            if (hospitalId == -1 || doctorId == -1 || toDoctorId == -1 || toHospitalId == -1 || city_id == -1 || country_id == -1) {
+                Toast.makeText(activity, "Please Fill All Data", Toast.LENGTH_SHORT).show()
+
+            } else {
+                val model = PatientReferalRequestModel(
+                    "name",
+                    city_id,
+                    country_id,
+                    hospitalId,
+                    doctorId,
+                    toHospitalId,
+                    toDoctorId
+                )
+                callAddPatient(model)
+            }
+        }
+
+
     }
+
+    private fun callAddPatient(model: PatientReferalRequestModel) {
+        referalProgressBar.visibility = View.VISIBLE
+        val accessToken = loginPreferences.getString("accessToken", "")
+        if (accessToken != null) {
+            addReferalFragmentViewModel.submitPatient(model, accessToken)
+        }
+        addReferalFragmentViewModel.getSubmitPatient().observe(this, Observer {
+            referalProgressBar.visibility = View.GONE
+            if (it != null) {
+                if (it.type == "error")
+                    Toast.makeText(
+                        activity,
+                        it.title,
+                        Toast.LENGTH_SHORT
+                    ).show()
+                else {
+                    Toast.makeText(activity, "Submitted Successfully", Toast.LENGTH_SHORT).show()
+                }
+            } else {
+                Toast.makeText(activity, "Network Error", Toast.LENGTH_SHORT).show()
+            }
+        })
+
+
+    }
+
 
     private fun getCountryList() {
         countryList.clear()
@@ -205,18 +265,21 @@ class AddReferalFragment : Fragment() {
         }
         addReferalFragmentViewModel.getData().observe(this, Observer {
             if (fromCoe) {
+                hospitalCeoList.clear()
             } else {
                 hospitalList.clear()
                 referalProgressBar.visibility = View.GONE
             }
             if (it != null) {
-                hospitalList.clear()
                 for (data in it.data) {
-                    hospitalList.add(data)
+                    if (fromCoe) {
+                        hospitalCeoList.add(data)
+                    } else {
+                        hospitalList.add(data)
+                    }
                 }
                 if (fromCoe) {
-                    preparCoeHospitalList(hospitalList)
-
+                    preparCoeHospitalList(hospitalCeoList)
                 } else {
                     preparHospitalList(hospitalList)
                 }
@@ -227,27 +290,53 @@ class AddReferalFragment : Fragment() {
     }
 
     private fun preparCoeHospitalList(hospitalList: ArrayList<HospitalData>) {
+        hospitalCeoNameList.clear()
+        for (hospital in hospitalList) {
+            hospitalCeoNameList.add(hospital.name)
+        }
+        initializeCeoHospitalSpinner(ToHospitalspinner, hospitalCeoNameList)
 
     }
 
     private fun callSingelHospital(
         hospitalId: Int,
-        fromLoadMore: Boolean
+        fromLoadMore: Boolean,
+        toHospital: Boolean
     ) {
-        doctorsProgressBar.visibility = View.VISIBLE
+        if (toHospital) {
+            toDoctorsProgressBar.visibility = View.VISIBLE
+        } else {
+            doctorsProgressBar.visibility = View.VISIBLE
+        }
         val accessToken = loginPreferences.getString("accessToken", "")
         if (accessToken != null) {
             addReferalFragmentViewModel.getSingelHospital(hospitalId, accessToken)
         }
         addReferalFragmentViewModel.getSingelData().observe(this, Observer {
             if (it != null) {
-                doctorsProgressBar.visibility = View.GONE
-                doctorSpinner.visibility = view?.visibility!!
-                doctorist.clear()
-                for (data in it.data.doctors) {
-                    doctorist.add(data)
+                if (toHospital) {
+                    toDoctorsProgressBar.visibility = View.GONE
+                } else {
+                    doctorsProgressBar.visibility = View.GONE
                 }
-                preparDoctorsList(doctorist)
+                doctorSpinner.visibility = view?.visibility!!
+                if (toHospital) {
+                    toDoctorist.clear()
+                } else {
+                    doctorist.clear()
+                }
+                for (data in it.data.doctors) {
+                    if (toHospital) {
+                        toDoctorist.add(data)
+                    } else {
+                        doctorist.add(data)
+                    }
+                }
+                if (toHospital) {
+                    preparToDoctorsList(toDoctorist)
+                } else {
+                    preparDoctorsList(doctorist)
+                }
             } else {
                 Toast.makeText(activity, "Network Error", Toast.LENGTH_SHORT).show()
             }
@@ -262,8 +351,17 @@ class AddReferalFragment : Fragment() {
         initializeDoctorSpinner(drReferalNameSpinner, doctorNameList)
     }
 
+    private fun preparToDoctorsList(doctorist: ArrayList<Doctors>) {
+        toDoctorNameList.clear()
+        for (hospital in doctorist) {
+            toDoctorNameList.add(hospital.name)
+        }
+        initializeToDoctorSpinner(ToDoctorspinner, toDoctorNameList)
+    }
+
 
     private fun preparHospitalList(hopital_List: ArrayList<HospitalData>) {
+        callHospitals("coe", false, true)
         hospitalNameList.clear()
         for (hospital in hopital_List) {
             hospitalNameList.add(hospital.name)
@@ -293,7 +391,7 @@ class AddReferalFragment : Fragment() {
                     id: Long
                 ) {
                     hospitalId = hospitalList[position].id
-                    callSingelHospital(hospitalId, false)
+                    callSingelHospital(hospitalId, false, false)
                 }
 
                 override fun onNothingSelected(parentView: AdapterView<*>) {
@@ -303,6 +401,43 @@ class AddReferalFragment : Fragment() {
         arrayAdapter?.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         if (arrayAdapter != null) {
             hospitalReferalspinner.adapter = arrayAdapter
+        }
+
+    }
+
+    private fun initializeCeoHospitalSpinner(
+        spinner: SearchableSpinner,
+        countriesNameList: ArrayList<String>
+    ) {
+        val arrayAdapter =
+            context?.let {
+                ArrayAdapter(
+                    it,
+                    R.layout.support_simple_spinner_dropdown_item,
+                    countriesNameList
+                )
+            }
+
+        spinner.onItemSelectedListener =
+            object : AdapterView.OnItemSelectedListener {
+                override fun onItemSelected(
+                    parentView: AdapterView<*>,
+                    selectedItemView: View,
+                    position: Int,
+                    id: Long
+                ) {
+                    toHospitalId = hospitalCeoList[position].id
+                    callSingelHospital(toHospitalId, false, true)
+
+                }
+
+                override fun onNothingSelected(parentView: AdapterView<*>) {
+                    // your code here
+                }
+            }
+        arrayAdapter?.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        if (arrayAdapter != null) {
+            spinner.adapter = arrayAdapter
         }
 
     }
@@ -327,7 +462,6 @@ class AddReferalFragment : Fragment() {
                 position: Int,
                 id: Long
             ) {
-
                 doctorId = doctorist[position].id
             }
 
@@ -338,6 +472,40 @@ class AddReferalFragment : Fragment() {
         arrayAdapter?.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         if (arrayAdapter != null) {
             drReferalNameSpinner.adapter = arrayAdapter
+        }
+
+    }
+
+    private fun initializeToDoctorSpinner(
+        spinner: SearchableSpinner,
+        doctorsNameList: ArrayList<String>
+    ) {
+        val arrayAdapter =
+            context?.let {
+                ArrayAdapter(
+                    it,
+                    R.layout.support_simple_spinner_dropdown_item,
+                    doctorsNameList
+                )
+            }
+
+        spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(
+                parentView: AdapterView<*>,
+                selectedItemView: View,
+                position: Int,
+                id: Long
+            ) {
+                toDoctorId = toDoctorist[position].id
+            }
+
+            override fun onNothingSelected(parentView: AdapterView<*>) {
+                // your code here
+            }
+        }
+        arrayAdapter?.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        if (arrayAdapter != null) {
+            spinner.adapter = arrayAdapter
         }
 
     }

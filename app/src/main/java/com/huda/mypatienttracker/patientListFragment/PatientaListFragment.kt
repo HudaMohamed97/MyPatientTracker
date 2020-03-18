@@ -133,6 +133,9 @@ class PatientaListFragment : Fragment() {
         addNew.setOnClickListener {
             findNavController().navigate(R.id.action_PatientList_addPatientFragment)
         }
+        updatePatient.setOnClickListener {
+            findNavController().navigate(R.id.action_PatientList_CoePatientFragment)
+        }
         recyclerView = root.findViewById(R.id.patientRecycler)
         val logOutButton = root.findViewById(R.id.backButton) as ImageView
         logOutButton.setOnClickListener {

@@ -20,7 +20,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/space_10"
             android:gravity="center"
-            android:text="ADD Patient"
+            android:text="Update Patient"
             android:textColor="@color/white"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -68,6 +68,17 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/header">
 
+        <ProgressBar
+            android:id="@+id/updatepatientProgressBar"
+            style="?android:attr/progressBarStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:indeterminate="true"
+            android:indeterminateTint="@color/not_blue"
+            android:indeterminateTintMode="src_atop"
+            android:visibility="gone" />
+
         <TextView
             android:id="@+id/textView5"
             android:layout_width="wrap_content"
@@ -80,7 +91,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/space_50"
             android:layout_marginLeft="@dimen/space_10"
             android:layout_marginTop="@dimen/space_10"
             android:layout_marginRight="@dimen/space_10"
@@ -88,7 +99,7 @@
             android:orientation="horizontal">
 
             <com.toptoche.searchablespinnerlibrary.SearchableSpinner
-                android:id="@+id/Hospitalspinner"
+                android:id="@+id/updateHospitalspinner"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:spinnerMode="dropdown"
@@ -98,23 +109,61 @@
 
         </LinearLayout>
 
-        <LinearLayout
+        <TextView
+            android:id="@+id/updateDoctorText"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/space_50"
             android:layout_marginLeft="@dimen/space_10"
             android:layout_marginTop="@dimen/space_10"
             android:layout_marginRight="@dimen/space_10"
             android:background="@drawable/background_edittext"
-            android:orientation="horizontal">
+            android:paddingLeft="@dimen/space_20"
+            android:text="DoctorName"
+            android:textColor="@color/not_black"
+            android:textSize="16dp"
+            android:theme="@style/SpinnerThemeLight" />
+
+        <LinearLayout
+            android:id="@+id/updateDoctorSpinner"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/space_50"
+            android:layout_marginLeft="@dimen/space_10"
+            android:layout_marginTop="@dimen/space_10"
+            android:layout_marginRight="@dimen/space_10"
+            android:background="@drawable/background_edittext"
+            android:orientation="horizontal"
+            android:visibility="gone">
 
             <com.toptoche.searchablespinnerlibrary.SearchableSpinner
-                android:id="@+id/drNameSpinner"
+                android:id="@+id/updateDrNameSpinner"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:spinnerMode="dropdown"
                 android:textColor="@color/black"
                 android:theme="@style/SpinnerThemeLight"
                 app:hintText="DR Name" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/etiloigy"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/space_50"
+            android:layout_marginLeft="@dimen/space_10"
+            android:layout_marginTop="@dimen/space_10"
+            android:layout_marginRight="@dimen/space_10"
+            android:background="@drawable/background_edittext"
+            android:orientation="horizontal"
+            android:visibility="visible">
+
+            <com.toptoche.searchablespinnerlibrary.SearchableSpinner
+                android:id="@+id/updateEtiloigySpinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:spinnerMode="dropdown"
+                android:textColor="@color/black"
+                android:theme="@style/SpinnerThemeLight"
+                app:hintText="Etiology" />
 
         </LinearLayout>
 
@@ -135,7 +184,7 @@
             android:orientation="horizontal">
 
             <RadioGroup
-                android:id="@+id/radioPatientGroup"
+                android:id="@+id/updateRadioPatientGroup"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/space_20"
@@ -143,7 +192,7 @@
 
 
                 <RadioButton
-                    android:id="@+id/radioUptarvi"
+                    android:id="@+id/updateRadioUptarvi"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="@dimen/space_20"
@@ -154,11 +203,10 @@
                     android:textColor="@color/black" />
 
                 <RadioButton
-                    android:id="@+id/radioOpsumit"
+                    android:id="@+id/updateRadioOpsumit"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:buttonTint="@color/not_black"
+                    android:buttonTint="@color/not_blue"
                     android:text="Opsumit"
                     android:textColor="@color/black" />
 
@@ -166,43 +214,281 @@
 
         </LinearLayout>
 
-        <LinearLayout
+        <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/space_10"
-            android:layout_marginTop="@dimen/space_10"
             android:layout_marginRight="@dimen/space_10"
-            android:background="@drawable/background_edittext"
-            android:orientation="horizontal">
+            android:layout_marginBottom="@dimen/space_10"
+            android:text=" Other Medication"
+            android:textColor="@color/not_black"
+            android:textStyle="bold" />
 
-            <com.toptoche.searchablespinnerlibrary.SearchableSpinner
-                android:id="@+id/etiologySpinner"
+        <LinearLayout
+            android:id="@+id/updateUptraviLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/space_20"
+                    android:layout_marginBottom="@dimen/space_5"
+                    android:orientation="horizontal"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <CheckBox
+                        android:id="@+id/updatePDE5i"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:backgroundTint="@color/not_blue"
+                        android:checked="true"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:theme="@style/DialogTheme" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/space_5"
+                        android:text="PDE5i"
+                        android:textColor="@color/black" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="2dp"
+                    android:layout_marginRight="@dimen/space_20"
+                    android:layout_marginBottom="@dimen/space_5"
+                    android:orientation="horizontal"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <CheckBox
+                        android:id="@+id/updateOral_PC"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:backgroundTint="@color/not_blue"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:theme="@style/DialogTheme" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/space_5"
+                        android:text="Oral PC   "
+                        android:textColor="@color/black" />
+
+                </LinearLayout>
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:spinnerMode="dropdown"
-                android:textColor="@color/black"
-                android:theme="@style/SpinnerThemeLight"
-                app:hintText="Etiology" />
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/space_20"
+                    android:layout_marginBottom="@dimen/space_5"
+                    android:orientation="horizontal"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <CheckBox
+                        android:id="@+id/updateRio"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:backgroundTint="@color/not_blue"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:theme="@style/DialogTheme" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/space_5"
+                        android:text="Rio"
+                        android:textColor="@color/black" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="@dimen/space_20"
+                    android:layout_marginBottom="@dimen/space_5"
+                    android:orientation="horizontal"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <CheckBox
+                        android:id="@+id/updateother"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:backgroundTint="@color/not_blue"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:theme="@style/DialogTheme" />
+
+                    <TextView
+                        android:id="@+id/otherText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/space_5"
+                        android:text="Other PC"
+                        android:textColor="@color/black" />
+
+                </LinearLayout>
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/updateOpsumitLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/space_10"
-            android:layout_marginTop="@dimen/space_10"
-            android:layout_marginRight="@dimen/space_10"
-            android:background="@drawable/background_edittext"
-            android:orientation="horizontal">
+            android:orientation="vertical"
+            android:visibility="gone">
 
-            <com.toptoche.searchablespinnerlibrary.SearchableSpinner
-                android:id="@+id/marketAccessSpinner"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/space_20"
+                    android:layout_marginBottom="@dimen/space_5"
+                    android:orientation="horizontal"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <CheckBox
+                        android:id="@+id/updatePDE5iOpsumit"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:backgroundTint="@color/not_blue"
+                        android:checked="true"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:theme="@style/DialogTheme" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/space_5"
+                        android:text="PDE5i"
+                        android:textColor="@color/black" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="2dp"
+                    android:layout_marginRight="@dimen/space_20"
+                    android:layout_marginBottom="@dimen/space_5"
+                    android:orientation="horizontal"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <CheckBox
+                        android:id="@+id/updateMacitentan"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:backgroundTint="@color/not_blue"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:theme="@style/DialogTheme" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/space_5"
+                        android:text="Macitentan"
+                        android:textColor="@color/black" />
+
+                </LinearLayout>
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:spinnerMode="dropdown"
-                android:textColor="@color/black"
-                android:theme="@style/SpinnerThemeLight"
-                app:hintText="Other Medication" />
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/space_20"
+                    android:layout_marginBottom="@dimen/space_5"
+                    android:orientation="horizontal"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <CheckBox
+                        android:id="@+id/updateRioopsumit"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:backgroundTint="@color/not_blue"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:theme="@style/DialogTheme" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/space_5"
+                        android:text="Rio"
+                        android:textColor="@color/black" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="@dimen/space_20"
+                    android:layout_marginBottom="@dimen/space_5"
+                    android:orientation="horizontal"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <CheckBox
+                        android:id="@+id/updateOther_ERA"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:backgroundTint="@color/not_blue"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:theme="@style/DialogTheme" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/space_5"
+                        android:text="Other ERA  "
+                        android:textColor="@color/black" />
+
+                </LinearLayout>
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
         </LinearLayout>
 
@@ -210,7 +496,7 @@
     </LinearLayout>
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/continueButton"
+        android:id="@+id/updateButton"
         style="@style/Widget.MaterialComponents.Button.OutlinedButton"
         android:layout_width="match_parent"
         android:layout_height="70dp"
@@ -220,7 +506,7 @@
         android:layout_marginBottom="30dp"
         android:background="@color/not_blue"
         android:backgroundTint="@color/not_blue"
-        android:text="Continue"
+        android:text="Update"
         android:textColor="@color/white"
         android:textSize="@dimen/space_20"
         app:cornerRadius="@dimen/space_10"

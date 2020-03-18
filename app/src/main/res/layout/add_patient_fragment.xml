@@ -145,6 +145,28 @@
 
         </LinearLayout>
 
+        <LinearLayout
+            android:id="@+id/etiloigy"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/space_50"
+            android:layout_marginLeft="@dimen/space_10"
+            android:layout_marginTop="@dimen/space_10"
+            android:layout_marginRight="@dimen/space_10"
+            android:background="@drawable/background_edittext"
+            android:orientation="horizontal"
+            android:visibility="visible">
+
+            <com.toptoche.searchablespinnerlibrary.SearchableSpinner
+                android:id="@+id/etiloigySpinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:spinnerMode="dropdown"
+                android:textColor="@color/black"
+                android:theme="@style/SpinnerThemeLight"
+                app:hintText="Etiology" />
+
+        </LinearLayout>
+
         <TextView
             android:id="@+id/textView8"
             android:layout_width="match_parent"
@@ -226,6 +248,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:backgroundTint="@color/not_blue"
+                        android:checked="true"
                         android:clickable="true"
                         android:focusable="true"
                         android:theme="@style/DialogTheme" />
@@ -360,6 +383,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:backgroundTint="@color/not_blue"
+                        android:checked="true"
                         android:clickable="true"
                         android:focusable="true"
                         android:theme="@style/DialogTheme" />
