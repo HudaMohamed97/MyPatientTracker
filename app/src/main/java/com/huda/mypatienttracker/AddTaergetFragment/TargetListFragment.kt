@@ -8,21 +8,25 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.huda.mypatienttracker.Adapters.TargetAdapter
 import com.huda.mypatienttracker.Models.TargetData
 import com.huda.mypatienttracker.Models.TargetRequestModel
 import com.huda.mypatienttracker.R
+import com.toptoche.searchablespinnerlibrary.SearchableSpinner
 import kotlinx.android.synthetic.main.add_target_fragment.*
 import kotlinx.android.synthetic.main.add_target_fragment.view.*
+import java.util.ArrayList
 
-class AddTargetFragment : Fragment() {
+
+class TargetListFragment : Fragment() {
     private lateinit var root: View
     private lateinit var addTargetFragmentViewModel: AddTargetFragmentViewModel
     private lateinit var loginPreferences: SharedPreferences
@@ -32,11 +36,18 @@ class AddTargetFragment : Fragment() {
     private lateinit var targetAdapter: TargetAdapter
     private lateinit var recyclerView: RecyclerView
     private var hospitalId: Int = 0
+    private var targetYear: Int = -1
+    private var targetMonth: Int = -1
     var mHasReachedBottomOnce = false
     private var fromType: String = ""
     private lateinit var selectedImage: Uri
     var currentPageNum = 1
+    private var type = "All"
     var lastPageNum: Int = 0
+    private val medicalList = arrayListOf<String>()
+    private val monthList = arrayListOf<Int>()
+    private val yearList = arrayListOf<Int>()
+    private var flagSelected: Int = 0
 
 
     override fun onCreateView(
@@ -56,34 +67,196 @@ class AddTargetFragment : Fragment() {
         hospitalName = arguments?.getString("hospitalName")!!
         setClickListeners()
         initRecyclerView()
-        callTargetList(1, false, false)
+        callTargetList("All", 1, false, false)
+        intializeMedicalSpinner()
+        intializeMonthSpinner()
+        intializeYearSpinner()
+    }
+
+    private fun intializeMedicalSpinner() {
+        medicalList.clear()
+        medicalList.add("All")
+        medicalList.add("Opsumit")
+        medicalList.add("Uptravi")
+        medicalList.add("Tracleer")
+        initializeTypeSpinner(Type, medicalList)
+    }
+
+    private fun intializeYearSpinner() {
+        yearList.clear()
+        yearList.add(2020)
+        yearList.add(2021)
+        yearList.add(2022)
+        yearList.add(2023)
+        yearList.add(2024)
+        initializeYearSpinner(yearSpinner, yearList)
+    }
+
+    private fun intializeMonthSpinner() {
+        monthList.clear()
+        for (i in 1..12) {
+            monthList.add(i)
+        }
+        initializeMonthSpinner(monthSpinner, monthList)
+    }
+
+    private fun initializeTypeSpinner(spinnerType: SearchableSpinner, typeList: ArrayList<String>) {
+        val arrayAdapter =
+            context?.let {
+                ArrayAdapter(
+                    it,
+                    R.layout.support_simple_spinner_dropdown_item,
+                    typeList
+                )
+            }
+
+        spinnerType.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(
+                parentView: AdapterView<*>,
+                selectedItemView: View,
+                position: Int,
+                id: Long
+            ) {
+
+                val typeHospital = typeList[position]
+                type = when (typeHospital) {
+                    "All" -> {
+                        flagSelected = 1
+                        callTargetList("All", 1, false, false)
+                        "All"
+                    }
+                    "Opsumit" -> {
+                        flagSelected = 1
+                        callTargetList("opsumit", 1, false, false)
+                        "opsumit"
+                    }
+                    "Uptravi" -> {
+                        flagSelected = 1
+                        callTargetList("uptravi", 1, false, false)
+                        "uptravi"
+                    }
+                    else -> {
+                        flagSelected = 1
+                        callTargetList("tracleer", 1, false, false)
+                        "tracleer"
+                    }
+                }
+            }
+
+            override fun onNothingSelected(parentView: AdapterView<*>) {
+                // your code here
+            }
+
+        }
+        arrayAdapter?.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        if (arrayAdapter != null) {
+            spinnerType.adapter = arrayAdapter
+        }
+
+    }
+
+    private fun initializeYearSpinner(spinnerType: SearchableSpinner, typeList: ArrayList<Int>) {
+        val arrayAdapter =
+            context?.let {
+                ArrayAdapter(
+                    it,
+                    R.layout.support_simple_spinner_dropdown_item,
+                    typeList
+                )
+            }
+
+        spinnerType.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(
+                parentView: AdapterView<*>,
+                selectedItemView: View,
+                position: Int,
+                id: Long
+            ) {
+                targetYear = yearList[position]
+            }
+
+            override fun onNothingSelected(parentView: AdapterView<*>) {
+                // your code here
+            }
+
+        }
+        arrayAdapter?.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        if (arrayAdapter != null) {
+            spinnerType.adapter = arrayAdapter
+        }
+    }
+
+    private fun initializeMonthSpinner(
+        spinnerType: SearchableSpinner,
+        typeList: ArrayList<Int>
+    ) {
+        val arrayAdapter =
+            context?.let {
+                ArrayAdapter(
+                    it,
+                    R.layout.support_simple_spinner_dropdown_item,
+                    typeList
+                )
+            }
+
+        spinnerType.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(
+                parentView: AdapterView<*>,
+                selectedItemView: View,
+                position: Int,
+                id: Long
+            ) {
+                targetMonth = monthList[position]
+            }
+
+            override fun onNothingSelected(parentView: AdapterView<*>) {
+                // your code here
+            }
+
+        }
+        arrayAdapter?.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        if (arrayAdapter != null) {
+            spinnerType.adapter = arrayAdapter
+        }
     }
 
     private fun setClickListeners() {
+
+        mainLayout.setOnClickListener{
+            hideKeyboard()
+        }
+
+
+        type = "All"
         recyclerView = root.findViewById(R.id.targetRecycler)
 
+        targetNumber.onFocusChangeListener = View.OnFocusChangeListener { v, hasFocus ->
+            if (!hasFocus) {
+                hideKeyboard()
+            }
+        }
+
+
         AddTargetFragment.setOnClickListener {
-            if (targetNumber.text.toString().isEmpty() || targetYear.text.toString().isEmpty() || targetMonth.text.toString().isEmpty()) {
+            if (targetNumber.text.toString().isEmpty() || targetYear == -1 || targetMonth == -1) {
                 Toast.makeText(activity, "Please Fill All Data", Toast.LENGTH_SHORT).show()
 
-            } else if (targetMonth.text.toString().toInt() > 12) {
+            } else if (type == "All") {
                 Toast.makeText(
                     activity,
-                    "Month should not be grater than 12 thanks",
+                    "Please Select Specific Type",
                     Toast.LENGTH_SHORT
                 ).show()
             } else {
                 model = TargetRequestModel(
                     targetNumber.text.toString().toInt(),
-                    targetYear.text.toString().toInt(),
-                    targetMonth.text.toString().toInt(),
-                    hospitalId
+                    targetYear,
+                    targetMonth,
+                    type
                 )
-                callSubmitTarget()
+                callSubmitTarget(hospitalId)
             }
         }
-        HospitalName.text = hospitalName
-
         root.mainLayout.setOnClickListener {
             hideKeyboard()
         }
@@ -91,19 +264,20 @@ class AddTargetFragment : Fragment() {
 
     }
 
-    private fun callSubmitTarget() {
+
+    private fun callSubmitTarget(hospital: Int) {
         TargetProgressBar.visibility = View.VISIBLE
         val accessToken = loginPreferences.getString("accessToken", "")
         if (accessToken != null) {
-            addTargetFragmentViewModel.addTarget(model, accessToken)
+            addTargetFragmentViewModel.addTarget(hospital, model, accessToken)
         }
         addTargetFragmentViewModel.submitData().observe(this, Observer {
             TargetProgressBar.visibility = View.GONE
             if (it != null) {
-                if (it.type == "error")
+                if (it.title == "error")
                     Toast.makeText(
                         activity,
-                        it.title,
+                        it.type,
                         Toast.LENGTH_SHORT
                     ).show()
                 else {
@@ -119,7 +293,7 @@ class AddTargetFragment : Fragment() {
         TargetProgressBar.visibility = View.VISIBLE
         val accessToken = loginPreferences.getString("accessToken", "")
         if (accessToken != null) {
-            addTargetFragmentViewModel.deleteTarget(targetId, accessToken)
+            addTargetFragmentViewModel.deleteTarget(hospitalId, targetId, accessToken)
         }
         addTargetFragmentViewModel.submitDeleteData().observe(this, Observer {
             TargetProgressBar.visibility = View.GONE
@@ -182,6 +356,7 @@ class AddTargetFragment : Fragment() {
     }
 
     private fun callTargetList(
+        myType: String,
         page: Int,
         fromLoadMore: Boolean,
         fromRefresh: Boolean
@@ -193,7 +368,11 @@ class AddTargetFragment : Fragment() {
         }
         val accessToken = loginPreferences.getString("accessToken", "")
         if (accessToken != null) {
-            addTargetFragmentViewModel.getTarget(hospitalId, accessToken)
+            if (myType == "All") {
+                addTargetFragmentViewModel.getAllTarget(hospitalId, accessToken)
+            } else {
+                addTargetFragmentViewModel.getTarget(myType, hospitalId, accessToken)
+            }
         }
         addTargetFragmentViewModel.getTargetData().observe(this, Observer {
             if (fromLoadMore) {

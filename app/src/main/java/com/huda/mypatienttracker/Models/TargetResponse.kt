@@ -7,9 +7,9 @@ import com.google.gson.annotations.SerializedName
 class TargetResponse
     (
     @SerializedName("data")
-val data: List<TargetData>,
+    val data: List<TargetData>,
     @SerializedName("links")
-val links: Links,
+    val links: Links,
     @SerializedName("meta")
-val meta: Meta
+    val meta: Meta
 )

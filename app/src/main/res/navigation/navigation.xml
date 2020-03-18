@@ -104,7 +104,7 @@
     </fragment>
     <fragment
         android:id="@+id/AddTargetFragment"
-        android:name="com.huda.mypatienttracker.AddTaergetFragment.AddTargetFragment"
+        android:name="com.huda.mypatienttracker.AddTaergetFragment.TargetListFragment"
         tools:layout="@layout/add_target_fragment">
 
     </fragment>

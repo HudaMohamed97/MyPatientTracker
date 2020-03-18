@@ -3,9 +3,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:focusable="true"
-    android:id="@id/mainLayout"
-    android:clickable="true"
     android:background="@color/white">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -62,9 +59,9 @@
     <LinearLayout
         android:id="@+id/mainLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/space_20"
-        android:layout_marginTop="80dp"
+        android:layout_marginTop="50dp"
         android:layout_marginRight="@dimen/space_20"
         android:clickable="true"
         android:orientation="vertical"
@@ -81,33 +78,26 @@
             android:orientation="horizontal"
             android:weightSum="2">
 
-
-            <LinearLayout
+            <TextView
+                android:id="@+id/HospitalName"
                 android:layout_width="0dp"
-                android:layout_height="@dimen/space_50"
+                android:layout_height="match_parent"
                 android:layout_marginRight="@dimen/space_20"
                 android:layout_weight="1"
                 android:background="@drawable/background_edittext"
-                android:orientation="horizontal">
-
-                <com.toptoche.searchablespinnerlibrary.SearchableSpinner
-                    android:id="@+id/Type"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:spinnerMode="dropdown"
-                    android:textColor="@color/not_black"
-                    android:theme="@style/SpinnerThemeLight"
-                    app:hintText="Type" />
-
-            </LinearLayout>
+                android:ems="10"
+                android:focusable="false"
+                android:textColor="@color/black"
+                android:textColorHint="@color/not_black" />
 
             <EditText
                 android:id="@+id/targetNumber"
                 android:layout_width="0dp"
-                android:layout_height="@dimen/space_50"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:background="@drawable/background_edittext"
-                android:hint="   Number"
+                android:ems="10"
+                android:hint="Number"
                 android:imeOptions="actionDone"
                 android:inputType="number"
                 android:textColor="@color/black"
@@ -125,62 +115,38 @@
             android:orientation="horizontal"
             android:weightSum="2">
 
-            <LinearLayout
+            <EditText
+                android:id="@+id/targetYear"
                 android:layout_width="0dp"
-                android:layout_height="50dp"
+                android:layout_height="match_parent"
                 android:layout_marginRight="@dimen/space_20"
                 android:layout_weight="1"
                 android:background="@drawable/background_edittext"
-                android:orientation="horizontal">
+                android:ems="10"
+                android:hint="Year"
+                android:imeOptions="actionDone"
+                android:inputType="number"
+                android:maxLength="4"
+                android:textColor="@color/black"
+                android:textColorHint="@color/not_black"
+                android:theme="@style/AppTheme.EditText" />
 
-                <com.toptoche.searchablespinnerlibrary.SearchableSpinner
-                    android:id="@+id/yearSpinner"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:spinnerMode="dropdown"
-                    android:textColor="@color/not_black"
-                    android:theme="@style/SpinnerThemeLight"
-                    app:hintText="Year" />
-
-            </LinearLayout>
-
-
-            <LinearLayout
+            <EditText
+                android:id="@+id/targetMonth"
                 android:layout_width="0dp"
-                android:layout_height="50dp"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:background="@drawable/background_edittext"
-                android:orientation="horizontal">
-
-                <com.toptoche.searchablespinnerlibrary.SearchableSpinner
-                    android:id="@+id/monthSpinner"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:spinnerMode="dropdown"
-                    android:textColor="@color/not_black"
-                    android:theme="@style/SpinnerThemeLight"
-                    app:hintText="Month" />
-
-            </LinearLayout>
-
+                android:ems="10"
+                android:hint="Month"
+                android:imeOptions="actionDone"
+                android:inputType="number"
+                android:maxLength="2"
+                android:textColor="@color/black"
+                android:textColorHint="@color/not_black"
+                android:theme="@style/AppTheme.EditText" />
 
         </LinearLayout>
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/AddTargetFragment"
-            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-            android:layout_width="match_parent"
-            android:layout_height="70dp"
-            android:layout_gravity="center"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="@dimen/space_5"
-            android:layout_marginRight="20dp"
-            android:background="@color/not_blue"
-            android:backgroundTint="@color/not_blue"
-            android:text="Add"
-            android:textColor="@color/white"
-            android:textSize="@dimen/space_20"
-            app:cornerRadius="@dimen/space_10" />
 
         <ProgressBar
             android:id="@+id/TargetProgressBar"
@@ -193,17 +159,20 @@
             android:indeterminateTintMode="src_atop"
             android:visibility="gone" />
 
-        <LinearLayout
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/AddTargetFragment"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/targetRecycler"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="@dimen/space_10" />
-        </LinearLayout>
-
+            android:layout_height="70dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="@dimen/space_50"
+            android:layout_marginRight="20dp"
+            android:background="@color/not_blue"
+            android:backgroundTint="@color/not_blue"
+            android:text="Submit"
+            android:textColor="@color/white"
+            android:textSize="@dimen/space_20"
+            app:cornerRadius="@dimen/space_10" />
     </LinearLayout>
 
 

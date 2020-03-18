@@ -9,7 +9,6 @@ import com.huda.mypatienttracker.Models.CountriesResonse
 import com.huda.mypatienttracker.Models.HospitalModels.CitiesResponse
 import com.huda.mypatienttracker.Models.HospitalModels.HospitalResponseModel
 import com.huda.mypatienttracker.Models.HospitalModels.PatientReferalRequestModel
-import com.huda.mypatienttracker.Models.PatientRequestModel
 import com.huda.mypatienttracker.Models.SingelHospitalResponse
 import com.huda.mypatienttracker.patientListFragment.PatientRepository
 

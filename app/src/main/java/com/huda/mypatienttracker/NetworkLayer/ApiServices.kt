@@ -21,9 +21,9 @@ interface ApiServices {
         @Body body: addHospitalRequestModel, @Header("Authorization") authHeader: String
     ): Call<SubmitModel>
 
-    @POST("targets")
+    @POST("hospitals/{hospital}/targets")
     fun addTarget(
-        @Body body: TargetRequestModel, @Header("Authorization") authHeader: String
+        @Path("hospital") hospital: Int, @Body body: TargetRequestModel, @Header("Authorization") authHeader: String
     ): Call<SubmitModel>
 
     @POST("patients")
@@ -36,15 +36,25 @@ interface ApiServices {
         @Body body: PatientReferalRequestModel, @Header("Authorization") authHeader: String
     ): Call<SubmitModel>
 
-    @GET("targets")
+    @GET("hospitals/{hospital}/targets")
     fun getTarget(
-        @Query("hospital_id") hospitalId: Int, @Header("Authorization") authHeader: String
+        @Path("hospital") hospitalId: Int, @Query("product") product: String, @Header("Authorization") authHeader: String
+    ): Call<TargetResponse>
+
+    @GET("hospitals/{hospital}/targets")
+    fun getAllTarget(
+        @Path("hospital") hospitalId: Int, @Header("Authorization") authHeader: String
     ): Call<TargetResponse>
 
     @GET("activities")
     fun getActivity(
         @Header("Authorization") authHeader: String
     ): Call<ActivityModelResponse>
+
+    @DELETE("activities/{activity}")
+    fun deleteActivity(
+        @Path("activity") activity: Int, @Header("Authorization") authHeader: String
+    ): Call<SubmitModel>
 
     @GET("patients")
     fun getReferalPatient(
@@ -54,7 +64,7 @@ interface ApiServices {
 
     @POST("patients/{patient}/treatments")
     fun updatePatient(
-        @Path("patient") patient: Int,@Body body: updatePatientRequestModel, @Header("Authorization") authHeader: String
+        @Path("patient") patient: Int, @Body body: updatePatientRequestModel, @Header("Authorization") authHeader: String
     ): Call<SubmitModel>
 
     @GET("patients")
@@ -73,9 +83,9 @@ interface ApiServices {
         @Path("hospital") hospital: Int, @Header("Authorization") authHeader: String
     ): Call<SingelHospitalResponse>
 
-    @DELETE("targets/{target}")
+    @DELETE("hospitals/{hospital}/targets/{target}")
     fun deleteTarget(
-        @Path("target") target: Int, @Header("Authorization") authHeader: String
+        @Path("hospital") hospital: Int, @Path("target") target: Int, @Header("Authorization") authHeader: String
     ): Call<SubmitModel>
 
     @GET("countries/{country}")
@@ -105,8 +115,4 @@ interface ApiServices {
         @Part("email") email: RequestBody, @Part("password") password: RequestBody, @Part("name") name: RequestBody,
         @Part image: MultipartBody.Part
     ): Call<ResponseModelData>
-
-
-    /* @POST("auth/register")
-     fun register(@Body registerRequestModel: RegisterRequestModel): Call<ResponseModelData>*/
 }

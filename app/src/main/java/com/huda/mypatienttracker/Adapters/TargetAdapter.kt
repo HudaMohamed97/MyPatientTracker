@@ -43,7 +43,7 @@ class TargetAdapter(modelFeedArrayList: ArrayList<TargetData>) :
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val modelFeed = modelFeedArrayList[position]
-        holder.hospitalName.text = modelFeed.hospital_id.name
+        holder.hospitalName.text = modelFeed.hospital.name
         holder.targetText.text = modelFeed.number.toString()
         holder.dotsImage.setOnClickListener {
             if (onItemClickListener != null && position != RecyclerView.NO_POSITION) {

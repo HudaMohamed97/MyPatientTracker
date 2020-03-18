@@ -11,10 +11,11 @@ class AddTargetFragmentViewModel : ViewModel() {
     private lateinit var targetMutableLiveData: MutableLiveData<SubmitModel>
     private lateinit var deletetMutableLiveData: MutableLiveData<SubmitModel>
     private lateinit var mutableLiveData: MutableLiveData<TargetResponse>
+    private lateinit var allMutableLiveData: MutableLiveData<TargetResponse>
 
 
-    fun addTarget(model: TargetRequestModel, accessToken: String) {
-        targetMutableLiveData = repositoryHelper.addTarget(model, accessToken)
+    fun addTarget(hospitalId: Int, model: TargetRequestModel, accessToken: String) {
+        targetMutableLiveData = repositoryHelper.addTarget(hospitalId, model, accessToken)
 
     }
 
@@ -22,8 +23,8 @@ class AddTargetFragmentViewModel : ViewModel() {
         return targetMutableLiveData
     }
 
-    fun deleteTarget(tagetId: Int, accessToken: String) {
-        targetMutableLiveData = repositoryHelper.deleteTarget(tagetId, accessToken)
+    fun deleteTarget(hospitalId:Int,tagetId: Int, accessToken: String) {
+        targetMutableLiveData = repositoryHelper.deleteTarget(hospitalId,tagetId, accessToken)
 
     }
 
@@ -35,8 +36,13 @@ class AddTargetFragmentViewModel : ViewModel() {
         return mutableLiveData
     }
 
-    fun getTarget(hospitalId: Int, accessToken: String) {
-        mutableLiveData = repositoryHelper.getTarget(hospitalId, accessToken)
+    fun getTarget(type: String, hospitalId: Int, accessToken: String) {
+        mutableLiveData = repositoryHelper.getTarget(type, hospitalId, accessToken)
+
+    }
+
+    fun getAllTarget(hospitalId: Int, accessToken: String) {
+        mutableLiveData = repositoryHelper.getAllTarget(hospitalId, accessToken)
 
     }
 

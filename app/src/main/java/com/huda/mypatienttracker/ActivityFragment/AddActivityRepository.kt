@@ -1,6 +1,7 @@
 package com.huda.mypatienttracker.ActivityFragment
 
 import androidx.lifecycle.MutableLiveData
+import com.example.myapplication.Models.SubmitModel
 import com.huda.mypatienttracker.Models.ActivityModelResponse
 import com.huda.mypatienttracker.NetworkLayer.Webservice
 import retrofit2.Call
@@ -24,6 +25,28 @@ class AddActivityRepository {
                 }
 
                 override fun onFailure(call: Call<ActivityModelResponse>, t: Throwable) {
+                    activityData.value = null
+                }
+            })
+        return activityData
+    }
+
+    fun deleteActivity(activtiyId: Int, accessToken: String): MutableLiveData<SubmitModel> {
+        val activityData = MutableLiveData<SubmitModel>()
+        Webservice.getInstance().api.deleteActivity(activtiyId, accessToken)
+            .enqueue(object : Callback<SubmitModel> {
+                override fun onResponse(
+                    call: Call<SubmitModel>,
+                    response: Response<SubmitModel>
+                ) {
+                    if (response.isSuccessful) {
+                        activityData.value = response.body()
+                    } else {
+                        activityData.value = response.body()
+                    }
+                }
+
+                override fun onFailure(call: Call<SubmitModel>, t: Throwable) {
                     activityData.value = null
                 }
             })

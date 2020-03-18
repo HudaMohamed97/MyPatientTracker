@@ -75,18 +75,18 @@
             app:layout_constraintTop_toBottomOf="@+id/header">
 
             <TextView
-                android:id="@+id/textView5"
+                android:id="@+id/activityList"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="right"
                 android:background="@drawable/rounded_background_edittext_blue"
-                android:text="    ADD ACTIVITY     "
+                android:text="    ACTIVITY LIST     "
                 android:textColor="@color/black" />
 
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="@dimen/space_50"
                 android:layout_marginLeft="@dimen/space_10"
                 android:layout_marginTop="@dimen/space_10"
                 android:layout_marginRight="@dimen/space_10"
@@ -104,27 +104,32 @@
 
             </LinearLayout>
 
-            <EditText
-                android:id="@+id/editText"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="@dimen/space_50"
                 android:layout_marginLeft="@dimen/space_10"
                 android:layout_marginTop="@dimen/space_10"
                 android:layout_marginRight="@dimen/space_10"
                 android:background="@drawable/background_edittext"
-                android:ems="10"
-                android:hint="   SubType"
-                android:inputType="textPersonName"
-                android:textColorHint="@color/not_black" />
+                android:orientation="horizontal">
+
+                <com.toptoche.searchablespinnerlibrary.SearchableSpinner
+                    android:id="@+id/subTypespinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:spinnerMode="dropdown"
+                    android:textColor="@color/not_black"
+                    android:theme="@style/SpinnerThemeLight"
+                    app:hintText="SubType" />
+            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="@dimen/space_50"
                     android:layout_marginLeft="@dimen/space_10"
                     android:layout_marginTop="@dimen/space_10"
                     android:layout_marginRight="@dimen/space_10"
@@ -141,11 +146,91 @@
                 </LinearLayout>
             </LinearLayout>
 
+            <LinearLayout
+                android:id="@+id/IntrenationalSpeaker"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="visible">
+
+                <EditText
+                    android:id="@+id/speakerName"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/space_50"
+                    android:layout_marginLeft="@dimen/space_10"
+                    android:layout_marginTop="@dimen/space_10"
+                    android:layout_marginRight="@dimen/space_10"
+                    android:background="@drawable/background_edittext"
+                    android:ems="10"
+                    android:hint="   speakerName"
+                    android:inputType="textPersonName"
+                    android:textColorHint="@color/not_black" />
+
+                <EditText
+                    android:id="@+id/speakerSpeciality"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/space_50"
+                    android:layout_marginLeft="@dimen/space_10"
+                    android:layout_marginTop="@dimen/space_10"
+                    android:layout_marginRight="@dimen/space_10"
+                    android:background="@drawable/background_edittext"
+                    android:ems="10"
+                    android:hint="   speakerSpeciality"
+                    android:inputType="textPersonName"
+                    android:textColorHint="@color/not_black" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/space_50"
+                    android:layout_marginLeft="@dimen/space_10"
+                    android:layout_marginTop="@dimen/space_10"
+                    android:layout_marginRight="@dimen/space_10"
+                    android:background="@drawable/background_edittext"
+                    android:orientation="horizontal">
+
+                    <com.toptoche.searchablespinnerlibrary.SearchableSpinner
+                        android:id="@+id/speakerTypeSpinner"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:prompt="@string/app_name"
+                        android:theme="@style/SpinnerThemeLight"
+                        app:hintText="speakerType" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/localSpeaker"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/space_50"
+                    android:layout_marginLeft="@dimen/space_10"
+                    android:layout_marginTop="@dimen/space_10"
+                    android:layout_marginRight="@dimen/space_10"
+                    android:background="@drawable/background_edittext"
+                    android:orientation="horizontal">
+
+                    <com.toptoche.searchablespinnerlibrary.SearchableSpinner
+                        android:id="@+id/speakersSpinner"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:prompt="@string/app_name"
+                        android:theme="@style/SpinnerThemeLight"
+                        app:hintText="speakers" />
+                </LinearLayout>
+
+
+            </LinearLayout>
 
             <EditText
                 android:id="@+id/datePicker"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="@dimen/space_50"
                 android:layout_marginLeft="@dimen/space_10"
                 android:layout_marginTop="@dimen/space_10"
                 android:layout_marginRight="@dimen/space_10"
@@ -163,7 +248,7 @@
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="@dimen/space_50"
                     android:layout_marginLeft="@dimen/space_10"
                     android:layout_marginTop="@dimen/space_10"
                     android:layout_marginRight="@dimen/space_10"
@@ -171,7 +256,42 @@
                     android:orientation="horizontal">
 
                     <com.toptoche.searchablespinnerlibrary.SearchableSpinner
-                        android:id="@+id/citySpinner"
+                        android:id="@+id/activityCountrySpinner"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:prompt="@string/app_name"
+                        android:theme="@style/SpinnerThemeLight"
+                        app:hintText="Country" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <ProgressBar
+                android:id="@+id/activtyCityProgressBar"
+                style="?android:attr/progressBarStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="5dp"
+                android:indeterminate="true"
+                android:indeterminateTint="@color/not_blue"
+                android:indeterminateTintMode="src_atop"
+                android:visibility="gone" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/space_50"
+                    android:layout_marginLeft="@dimen/space_10"
+                    android:layout_marginTop="@dimen/space_10"
+                    android:layout_marginRight="@dimen/space_10"
+                    android:background="@drawable/background_edittext"
+                    android:orientation="horizontal">
+
+                    <com.toptoche.searchablespinnerlibrary.SearchableSpinner
+                        android:id="@+id/activityCitySpinner"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:prompt="@string/app_name"
@@ -183,7 +303,7 @@
             <EditText
                 android:id="@+id/specialityText"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="@dimen/space_50"
                 android:layout_marginLeft="@dimen/space_10"
                 android:layout_marginTop="@dimen/space_10"
                 android:layout_marginRight="@dimen/space_10"
@@ -191,12 +311,36 @@
                 android:ems="10"
                 android:hint="   Speciality"
                 android:inputType="textPersonName"
-                android:textColorHint="@color/not_black" />
+                android:textColorHint="@color/not_black"
+                android:visibility="gone" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/space_50"
+                    android:layout_marginLeft="@dimen/space_10"
+                    android:layout_marginTop="@dimen/space_10"
+                    android:layout_marginRight="@dimen/space_10"
+                    android:background="@drawable/background_edittext"
+                    android:orientation="horizontal">
+
+                    <com.toptoche.searchablespinnerlibrary.SearchableSpinner
+                        android:id="@+id/activitySpecialitySpinner"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:prompt="@string/app_name"
+                        android:theme="@style/SpinnerThemeLight"
+                        app:hintText="Speciality" />
+                </LinearLayout>
+            </LinearLayout>
 
             <EditText
                 android:id="@+id/numOfAttend"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="@dimen/space_50"
                 android:layout_marginLeft="@dimen/space_10"
                 android:layout_marginTop="@dimen/space_10"
                 android:layout_marginRight="@dimen/space_10"
