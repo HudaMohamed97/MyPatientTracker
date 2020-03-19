@@ -13,21 +13,19 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.huda.mypatienttracker.AddHospitalFragment.AddHospitalViewModel
-import com.huda.mypatienttracker.Models.AddDoctorModel
-import com.huda.mypatienttracker.Models.addHospitalRequestModel
+import com.huda.mypatienttracker.Models.HospitalModels.updateHospitalRequestModel
 import com.huda.mypatienttracker.R
-import kotlinx.android.synthetic.main.add_doctor.*
-import kotlinx.android.synthetic.main.hospital_coe.*
+import kotlinx.android.synthetic.main.update_hospital_coe.*
 
-class CeoFragment : Fragment() {
+class UpdateCeoFragment : Fragment() {
     private lateinit var root: View
     private lateinit var ceoFragmentViewModel: AddHospitalViewModel
     private lateinit var loginPreferences: SharedPreferences
-    private lateinit var add_hospitalRequestModel: addHospitalRequestModel
+    private lateinit var add_hospitalRequestModel: updateHospitalRequestModel
     private var pah: Int = 1
     private var rhc: Int = 1
     private var rwe: Int = 1
-
+    private var hospitalId: Int = 0
 
 
     override fun onCreateView(
@@ -35,13 +33,14 @@ class CeoFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        root = inflater.inflate(R.layout.hospital_coe, container, false)
+        root = inflater.inflate(R.layout.update_hospital_coe, container, false)
         ceoFragmentViewModel = ViewModelProviders.of(this).get(AddHospitalViewModel::class.java)
         return root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        hospitalId = arguments?.getInt("hospitalId")!!
         add_hospitalRequestModel = arguments?.getParcelable("Hospital")!!
         setClickListeners()
     }
@@ -96,20 +95,21 @@ class CeoFragment : Fragment() {
                 add_hospitalRequestModel.pah_expert = pah
                 add_hospitalRequestModel.rhc = rhc
                 add_hospitalRequestModel.rwe = rwe
-                callAddHospital(add_hospitalRequestModel)
+                add_hospitalRequestModel.put = "put"
+                updateHospital(hospitalId, add_hospitalRequestModel)
 
             }
         }
 
     }
 
-    private fun callAddHospital(model: addHospitalRequestModel) {
+    private fun updateHospital(hospitalId: Int, model: updateHospitalRequestModel) {
         ceoHospitalProgressBar.visibility = View.VISIBLE
         val accessToken = loginPreferences.getString("accessToken", "")
         if (accessToken != null) {
-            ceoFragmentViewModel.addHospitals(model, accessToken)
+            ceoFragmentViewModel.updateHospitals(hospitalId, model, accessToken)
         }
-        ceoFragmentViewModel.submitData().observe(this, Observer {
+        ceoFragmentViewModel.updateData().observe(this, Observer {
             ceoHospitalProgressBar.visibility = View.GONE
             if (it != null) {
                 if (it.type == "error")

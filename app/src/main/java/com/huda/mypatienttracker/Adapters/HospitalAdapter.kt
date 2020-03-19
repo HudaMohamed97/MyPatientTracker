@@ -83,7 +83,7 @@ class HospitalAdapter(modelFeedArrayList: ArrayList<HospitalData>) :
                             true
                         }
                         item.itemId == R.id.menu2 -> {
-                            fromTab = "update"
+                            fromTab = "Update"
                             onItemClickListener.onDotsImageClicked(position, fromTab)
                             true
                         }

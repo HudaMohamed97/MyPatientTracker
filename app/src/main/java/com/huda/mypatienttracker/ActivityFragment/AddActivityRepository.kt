@@ -7,6 +7,8 @@ import com.example.myapplication.Models.SubmitModel2
 import com.huda.mypatienttracker.Models.ActivityModelResponse
 import com.huda.mypatienttracker.Models.AddActivityRequestModel
 import com.huda.mypatienttracker.NetworkLayer.Webservice
+import okhttp3.MediaType
+import okhttp3.RequestBody
 import okhttp3.ResponseBody
 import org.json.JSONObject
 import retrofit2.Call
@@ -66,14 +68,20 @@ class AddActivityRepository {
         body: AddActivityRequestModel,
         accessToken: String
     ): MutableLiveData<SubmitModel> {
-        Log.i("hhhh", speakers.toString())
-        Log.i("hhhh", speciality.toString())
-        Log.i("hhhh", no_attendees.toString())
-        Log.i("hhhh", body.date + body.city_id + body.product)
+        val type = RequestBody.create(MediaType.parse("multipart/form-data"), body.type.toString())
+        val subType = RequestBody.create(MediaType.parse("multipart/form-data"), body.subtype)
+        val product = RequestBody.create(MediaType.parse("multipart/form-data"), "opsumit")
+        val date = RequestBody.create(MediaType.parse("multipart/form-data"), body.date)
+        val city = RequestBody.create(MediaType.parse("multipart/form-data"), body.city_id.toString())
+        /* val speaker = RequestBody.create(MediaType.parse("multipart/form-data"), speakers.toString())
+         val no_attendee = RequestBody.create(MediaType.parse("multipart/form-data"), no_attendees.toString())
+         val special = RequestBody.create(MediaType.parse("multipart/form-data"), speciality.toString())*/
+
+
         val activityData = MutableLiveData<SubmitModel>()
         Webservice.getInstance().api.addActivity(
-            body.type, "hhhhh", "opsumit",
-            body.date, speciality, speakers, no_attendees, body.city_id, accessToken
+            type, subType, product,
+            date, speciality, speakers, no_attendees, city, accessToken
         )
             .enqueue(object : Callback<SubmitModel> {
                 override fun onResponse(

@@ -1,4 +1,4 @@
-package com.huda.mypatienttracker.CeoFragment
+package com.huda.mypatienttracker.ReferalFragment
 
 import android.content.Context
 import android.content.SharedPreferences
@@ -13,21 +13,18 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.huda.mypatienttracker.AddHospitalFragment.AddHospitalViewModel
-import com.huda.mypatienttracker.Models.AddDoctorModel
-import com.huda.mypatienttracker.Models.addHospitalRequestModel
+import com.huda.mypatienttracker.Models.HospitalModels.updateHospitalRequestModel
 import com.huda.mypatienttracker.R
-import kotlinx.android.synthetic.main.add_doctor.*
-import kotlinx.android.synthetic.main.hospital_coe.*
+import kotlinx.android.synthetic.main.update_hospital_peferal.*
 
-class CeoFragment : Fragment() {
+class UpdateReferalFragment : Fragment() {
     private lateinit var root: View
-    private lateinit var ceoFragmentViewModel: AddHospitalViewModel
+    private lateinit var referalFragmentViewModel: AddHospitalViewModel
     private lateinit var loginPreferences: SharedPreferences
-    private lateinit var add_hospitalRequestModel: addHospitalRequestModel
-    private var pah: Int = 1
-    private var rhc: Int = 1
-    private var rwe: Int = 1
-
+    private lateinit var add_hospitalRequestModel: updateHospitalRequestModel
+    private var echo: Int = 1
+    private var attentive: Int = 1
+    private var hospitalId: Int = 0
 
 
     override fun onCreateView(
@@ -35,55 +32,44 @@ class CeoFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        root = inflater.inflate(R.layout.hospital_coe, container, false)
-        ceoFragmentViewModel = ViewModelProviders.of(this).get(AddHospitalViewModel::class.java)
+        root = inflater.inflate(R.layout.update_hospital_peferal, container, false)
+        referalFragmentViewModel = ViewModelProviders.of(this).get(AddHospitalViewModel::class.java)
         return root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         add_hospitalRequestModel = arguments?.getParcelable("Hospital")!!
+        hospitalId = arguments?.getInt("hospitalId")!!
         setClickListeners()
     }
 
     private fun setClickListeners() {
-
-        val radioPAH = root.findViewById(R.id.radioPAH) as RadioGroup
-        radioPAH.setOnCheckedChangeListener { _, checkedId ->
+        val radioECHO = root.findViewById(R.id.radioECHO) as RadioGroup
+        radioECHO.setOnCheckedChangeListener { _, checkedId ->
             when (checkedId) {
-                R.id.yesRadio -> {
-                    pah = 1
+                R.id.radioYes -> {
+                    echo = 1
                 }
-                R.id.noRadio -> {
-                    pah = 0
+                R.id.radioNo -> {
+                    echo = 0
                 }
 
             }
         }
 
-        val radiorhc = root.findViewById(R.id.radiorhc) as RadioGroup
-        radiorhc.setOnCheckedChangeListener { _, checkedId ->
+        val radioaTtentive = root.findViewById(R.id.radioaTTENTIVE) as RadioGroup
+        radioaTtentive.setOnCheckedChangeListener { _, checkedId ->
             when (checkedId) {
-                R.id.radio2 -> {
-                    rhc = 1
+                R.id.radio12 -> {
+                    attentive = 1
                 }
                 R.id.radio22 -> {
-                    rhc = 0
+                    attentive = 0
                 }
 
             }
-        }
-        val radioRwe = root.findViewById(R.id.radioRwe) as RadioGroup
-        radioRwe.setOnCheckedChangeListener { _, checkedId ->
-            when (checkedId) {
-                R.id.radio31 -> {
-                    rwe = 1
-                }
-                R.id.radio32 -> {
-                    rwe = 0
-                }
 
-            }
         }
         loginPreferences = activity!!.getSharedPreferences("loginPrefs", Context.MODE_PRIVATE)
         submitButton.setOnClickListener {
@@ -93,24 +79,25 @@ class CeoFragment : Fragment() {
                 add_hospitalRequestModel.rheuma = rheuma.text.toString().toInt()
                 add_hospitalRequestModel.crdio = cardio.text.toString().toInt()
                 add_hospitalRequestModel.pulmo = pulmo.text.toString().toInt()
-                add_hospitalRequestModel.pah_expert = pah
-                add_hospitalRequestModel.rhc = rhc
-                add_hospitalRequestModel.rwe = rwe
-                callAddHospital(add_hospitalRequestModel)
+                add_hospitalRequestModel.pah_expert = echo
+                add_hospitalRequestModel.echo = echo
+                add_hospitalRequestModel.pah_attentive = attentive
+                add_hospitalRequestModel.put = "put"
+                callUpdateHospital(hospitalId, add_hospitalRequestModel)
 
             }
         }
 
     }
 
-    private fun callAddHospital(model: addHospitalRequestModel) {
-        ceoHospitalProgressBar.visibility = View.VISIBLE
+    private fun callUpdateHospital(hospitalId: Int, model: updateHospitalRequestModel) {
+        referalHospitalProgressBar.visibility = View.VISIBLE
         val accessToken = loginPreferences.getString("accessToken", "")
         if (accessToken != null) {
-            ceoFragmentViewModel.addHospitals(model, accessToken)
+            referalFragmentViewModel.updateHospitals(hospitalId, model, accessToken)
         }
-        ceoFragmentViewModel.submitData().observe(this, Observer {
-            ceoHospitalProgressBar.visibility = View.GONE
+        referalFragmentViewModel.updateData().observe(this, Observer {
+            referalHospitalProgressBar.visibility = View.GONE
             if (it != null) {
                 if (it.type == "error")
                     Toast.makeText(
@@ -126,7 +113,6 @@ class CeoFragment : Fragment() {
             }
         })
     }
-
 
     private fun hideKeyboard() {
         val view = activity?.currentFocus

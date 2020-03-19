@@ -5,6 +5,7 @@ import com.huda.mypatienttracker.Models.*
 import com.huda.mypatienttracker.Models.HospitalModels.CitiesResponse
 import com.huda.mypatienttracker.Models.HospitalModels.HospitalResponseModel
 import com.huda.mypatienttracker.Models.HospitalModels.PatientReferalRequestModel
+import com.huda.mypatienttracker.Models.HospitalModels.updateHospitalRequestModel
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import okhttp3.ResponseBody
@@ -19,6 +20,11 @@ interface ApiServices {
     @POST("hospitals")
     fun addHospital(
         @Body body: addHospitalRequestModel, @Header("Authorization") authHeader: String
+    ): Call<SubmitModel>
+
+    @PUT("hospitals/{hospital}")
+    fun updateHospital(
+        @Path("hospital") hospital: Int, @Body body: updateHospitalRequestModel, @Header("Authorization") authHeader: String
     ): Call<SubmitModel>
 
     @POST("hospitals/{hospital}/targets")
@@ -51,17 +57,17 @@ interface ApiServices {
         @Header("Authorization") authHeader: String
     ): Call<ActivityModelResponse>
 
+    @Multipart
     @POST("activities")
-    @FormUrlEncoded
     fun addActivity(
-        @Field("type") type: Int,
-        @Field("subtype") subtype: String,
-        @Field("product") product: String,
-        @Field("date") date: String,
-        @FieldMap speciality: Map<String, String>,
-        @FieldMap speakers: Map<String, String>,
-        @FieldMap no_attendees: Map<String, String>,
-        @Field("city_id") city_id: Int,
+        @Part("type") type: RequestBody,
+        @Part("subtype") subtype: RequestBody,
+        @Part("product") product: RequestBody,
+        @Part("date") date: RequestBody,
+        @PartMap speciality: HashMap<String, String>,
+        @PartMap speakers: HashMap<String, String>,
+        @PartMap no_attendees: HashMap<String, String>,
+        @Part("city_id") city_id: RequestBody,
         @Header("Authorization") authHeader: String
     ): Call<SubmitModel>
 

@@ -46,6 +46,9 @@
             android:id="@+id/action_HospitalListFragment_to_addHospital"
             app:destination="@id/AddHospitalFragment" />
         <action
+            android:id="@+id/action_HospitalListFragment_to_UpdateHospital"
+            app:destination="@id/UpdateHospitalFragment" />
+        <action
             android:id="@+id/action_HospitalListFragment_to_targetFragment"
             app:destination="@id/AddTargetFragment" />
     </fragment>
@@ -70,6 +73,18 @@
         <action
             android:id="@+id/action_addHospital_ReferalFragment"
             app:destination="@id/ReferalFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/UpdateHospitalFragment"
+        android:name="com.huda.mypatienttracker.UpdateHospitalFragment.UpdateHospitalFragment"
+        tools:layout="@layout/update_hospital_fragment">
+
+        <action
+            android:id="@+id/action_updateHospital_coeFragment"
+            app:destination="@id/UpdateCeoFragment" />
+        <action
+            android:id="@+id/action_updateHospital_ReferalFragment"
+            app:destination="@id/UpdateReferalFargment" />
     </fragment>
     <fragment
         android:id="@+id/AddActivityFragment"
@@ -140,10 +155,18 @@
         android:name="com.huda.mypatienttracker.CeoFragment.CeoFragment"
         tools:layout="@layout/hospital_coe">
 
-        <!--  <action
-              android:id="@+id/action_LoginFragment_to_Home"
-              app:destination="@id/LocationFragment" />
-  -->
+    </fragment>
+    <fragment
+        android:id="@+id/UpdateCeoFragment"
+        android:name="com.huda.mypatienttracker.CeoFragment.UpdateCeoFragment"
+        tools:layout="@layout/update_hospital_coe">
+
+    </fragment>
+    <fragment
+        android:id="@+id/UpdateReferalFargment"
+        android:name="com.huda.mypatienttracker.ReferalFragment.UpdateReferalFragment"
+        tools:layout="@layout/update_hospital_peferal">
+
     </fragment>
     <fragment
         android:id="@+id/OpsumitFargment"

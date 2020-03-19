@@ -4,6 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import com.example.myapplication.Models.SubmitModel
 import com.huda.mypatienttracker.Models.CountriesResonse
 import com.huda.mypatienttracker.Models.HospitalModels.CitiesResponse
+import com.huda.mypatienttracker.Models.HospitalModels.updateHospitalRequestModel
 import com.huda.mypatienttracker.Models.addHospitalRequestModel
 import com.huda.mypatienttracker.NetworkLayer.Webservice
 import retrofit2.Call
@@ -17,6 +18,33 @@ class AddHospitalRepository {
     ): MutableLiveData<SubmitModel> {
         val hospitalData = MutableLiveData<SubmitModel>()
         Webservice.getInstance().api.addHospital(model, accessToken)
+            .enqueue(object : Callback<SubmitModel> {
+                override fun onResponse(
+                    call: Call<SubmitModel>,
+                    response: Response<SubmitModel>
+                ) {
+                    if (response.isSuccessful) {
+                        hospitalData.value = response.body()
+                    } else {
+                        hospitalData.value = response.body()
+                    }
+                }
+
+                override fun onFailure(call: Call<SubmitModel>, t: Throwable) {
+                    hospitalData.value = null
+                }
+            })
+        return hospitalData
+
+    }
+
+    fun updateHospital(
+        hospitalId: Int,
+        model: updateHospitalRequestModel,
+        accessToken: String
+    ): MutableLiveData<SubmitModel> {
+        val hospitalData = MutableLiveData<SubmitModel>()
+        Webservice.getInstance().api.updateHospital(hospitalId, model, accessToken)
             .enqueue(object : Callback<SubmitModel> {
                 override fun onResponse(
                     call: Call<SubmitModel>,
