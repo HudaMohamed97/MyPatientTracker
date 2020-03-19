@@ -1,5 +1,6 @@
 package com.huda.mypatienttracker.ActivityFragment
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.example.myapplication.Models.SubmitModel
 import com.example.myapplication.Models.SubmitModel2
@@ -7,6 +8,7 @@ import com.huda.mypatienttracker.Models.ActivityModelResponse
 import com.huda.mypatienttracker.Models.AddActivityRequestModel
 import com.huda.mypatienttracker.NetworkLayer.Webservice
 import okhttp3.ResponseBody
+import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -59,20 +61,24 @@ class AddActivityRepository {
 
     fun addActivity(
         speakers: HashMap<String, String>,
-        speciality: ArrayList<String>,
-        no_attendees: ArrayList<String>,
+        speciality: HashMap<String, String>,
+        no_attendees: HashMap<String, String>,
         body: AddActivityRequestModel,
         accessToken: String
-    ): MutableLiveData<ResponseBody> {
-        val activityData = MutableLiveData<ResponseBody>()
+    ): MutableLiveData<SubmitModel> {
+        Log.i("hhhh", speakers.toString())
+        Log.i("hhhh", speciality.toString())
+        Log.i("hhhh", no_attendees.toString())
+        Log.i("hhhh", body.date + body.city_id + body.product)
+        val activityData = MutableLiveData<SubmitModel>()
         Webservice.getInstance().api.addActivity(
-            body.type.toString(), body.subtype, "uptravi",
-            body.date, speciality,speakers, no_attendees, body.city_id.toString(), accessToken
+            body.type, "hhhhh", "opsumit",
+            body.date, speciality, speakers, no_attendees, body.city_id, accessToken
         )
-            .enqueue(object : Callback<ResponseBody> {
+            .enqueue(object : Callback<SubmitModel> {
                 override fun onResponse(
-                    call: Call<ResponseBody>,
-                    response: Response<ResponseBody>
+                    call: Call<SubmitModel>,
+                    response: Response<SubmitModel>
                 ) {
                     if (response.isSuccessful) {
                         activityData.value = response.body()
@@ -81,7 +87,7 @@ class AddActivityRepository {
                     }
                 }
 
-                override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                override fun onFailure(call: Call<SubmitModel>, t: Throwable) {
                     activityData.value = null
                 }
             })

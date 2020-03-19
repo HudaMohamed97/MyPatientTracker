@@ -54,16 +54,16 @@ interface ApiServices {
     @POST("activities")
     @FormUrlEncoded
     fun addActivity(
-        @Field("type") type: String,
+        @Field("type") type: Int,
         @Field("subtype") subtype: String,
         @Field("product") product: String,
         @Field("date") date: String,
-        @Field("speciality[]") speciality: ArrayList<String>,
+        @FieldMap speciality: Map<String, String>,
         @FieldMap speakers: Map<String, String>,
-        @Field("no_attendees[]") no_attendees: ArrayList<String>,
-        @Field("city_id") city_id: String,
+        @FieldMap no_attendees: Map<String, String>,
+        @Field("city_id") city_id: Int,
         @Header("Authorization") authHeader: String
-    ): Call<ResponseBody>
+    ): Call<SubmitModel>
 
     @DELETE("activities/{activity}")
     fun deleteActivity(
@@ -86,6 +86,14 @@ interface ApiServices {
         @Query("hospital_type")
         hospital_type: String, @Header("Authorization") authHeader: String
     ): Call<PatientResponse>
+
+    @PUT("hospitals/{hospital}/targets/{target}")
+    fun updateTarget(
+        @Path("hospital") hospital: Int,
+        @Path("target") target: Int,
+        @Body targetRequestModel: updateTargetRequestModel,
+        @Header("Authorization") authHeader: String
+    ): Call<SubmitModel>
 
     @DELETE("hospitals/{hospital}")
     fun deleteHospital(

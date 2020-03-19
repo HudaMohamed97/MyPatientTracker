@@ -2,7 +2,6 @@ package com.huda.mypatienttracker.ActivityFragment
 
 import android.content.Context
 import android.content.SharedPreferences
-import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -76,7 +75,6 @@ class ActivityFragment : Fragment() {
             if (it != null) {
                 lastPageNum = it.meta.last_page
                 for (data in it.data) {
-                    modelFeedArrayList.clear()
                     modelFeedArrayList.add(data)
                 }
                 if (modelFeedArrayList.size == 0) {
@@ -101,8 +99,8 @@ class ActivityFragment : Fragment() {
         recyclerView.adapter = activityAdapter
         activityAdapter.setOnCommentListener(object : ActivityAdapter.OnCommentClickListener {
             override fun onDotsImageClicked(position: Int, fromTab: String) {
-                if (fromTab == "AddActivity") {
-                    findNavController().navigate(R.id.action_Activity_to_Add_Activity)
+                if (fromTab == "Delete") {
+                    callDeletActivity(modelFeedArrayList[position].id, position)
 
                 } else if (fromTab == "") {
                     Toast.makeText(activity, "Please Select Action.", Toast.LENGTH_SHORT).show()
@@ -129,7 +127,35 @@ class ActivityFragment : Fragment() {
 
     }
 
+    private fun callDeletActivity(id: Int, position: Int) {
+        ActivityProgressBar.visibility = View.VISIBLE
+        val accessToken = loginPreferences.getString("accessToken", "")
+        if (accessToken != null) {
+            activityViewModel.deleteActivity(id, accessToken)
+        }
+        activityViewModel.getAactivityDeletedData().observe(this, Observer {
+            ActivityProgressBar.visibility = View.GONE
+            if (it != null) {
+                if (it.type == "error")
+                    Toast.makeText(
+                        activity,
+                        it.title,
+                        Toast.LENGTH_SHORT
+                    ).show()
+                else {
+                    Toast.makeText(activity, "Deleted Successfully", Toast.LENGTH_SHORT).show()
+                    modelFeedArrayList.removeAt(position)
+                    activityAdapter.notifyDataSetChanged()
+                }
+            } else {
+                Toast.makeText(activity, "Network Error", Toast.LENGTH_SHORT).show()
+            }
+        })
+
+    }
+
     private fun setClickListeners() {
+        modelFeedArrayList.clear()
         add_Activity_layout.setOnClickListener {
             findNavController().navigate(R.id.action_Activity_to_Add_Activity)
         }

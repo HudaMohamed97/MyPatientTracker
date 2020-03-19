@@ -163,8 +163,8 @@ class AddActivityFragment : Fragment() {
 
     private fun addActivity(
         speakers: HashMap<String, String>,
-        body: AddActivityRequestModel, speciality: ArrayList<String>,
-        no_attendees: ArrayList<String>
+        body: AddActivityRequestModel, speciality: HashMap<String, String>,
+        no_attendees: HashMap<String, String>
     ) {
         cityList.clear()
         val accessToken = loginPreferences.getString("accessToken", "")
@@ -574,7 +574,19 @@ class AddActivityFragment : Fragment() {
                     speakers["speakers[$i][speciality]"] = (orderitems.speciality)
                     speakers["speakers[$i][type]"] = (orderitems.type)
                 }
-                addActivity(speakers, body, specialityRequestedList, attandanceList)
+                val specialitList = HashMap<String, String>()
+                for (i in 0 until specialityRequestedList.size) {
+                    val orderitems = specialityRequestedList[i]
+                    specialitList["speciality[$i]"] = (orderitems)
+
+                }
+                val no_attendees = HashMap<String, String>()
+                for (i in 0 until attandanceList.size) {
+                    val orderitems = attandanceList[i]
+                    no_attendees["no_attendees[$i]"] = (orderitems)
+
+                }
+                addActivity(speakers, body, specialitList, no_attendees)
             }
         }
 

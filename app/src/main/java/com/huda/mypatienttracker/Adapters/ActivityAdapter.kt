@@ -83,7 +83,7 @@ class ActivityAdapter(modelFeedArrayList: ArrayList<ActivityData>) :
                             true
                         }
                         item.itemId == R.id.menu2 -> {
-                            fromTab = "update"
+                            fromTab = "Delete"
                             onItemClickListener.onDotsImageClicked(position, fromTab)
                             true
                         }

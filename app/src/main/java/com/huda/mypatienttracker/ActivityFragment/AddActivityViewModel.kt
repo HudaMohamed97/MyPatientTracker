@@ -22,11 +22,10 @@ class AddActivityViewModel : ViewModel() {
     private var addActivityRepository: AddActivityRepository = AddActivityRepository()
     private lateinit var counteyMutableLiveData: MutableLiveData<CountriesResonse>
     private lateinit var cityMutableLiveData: MutableLiveData<CitiesResponse>
-    private lateinit var activityMutableLiveData: MutableLiveData<ResponseBody>
-
-    private var repositoryHelper: AddActivityRepository =
-        AddActivityRepository()
+    private lateinit var activityMutableLiveData: MutableLiveData<SubmitModel>
+    private var repositoryHelper: AddActivityRepository = AddActivityRepository()
     private lateinit var mutableLiveData: MutableLiveData<ActivityModelResponse>
+    private lateinit var deletedMutableLiveData: MutableLiveData<SubmitModel>
 
     fun getActivity(accessToken: String) {
         mutableLiveData = repositoryHelper.getActivity(accessToken)
@@ -35,6 +34,15 @@ class AddActivityViewModel : ViewModel() {
 
     fun getData(): MutableLiveData<ActivityModelResponse> {
         return mutableLiveData
+    }
+
+    fun deleteActivity(activtiyId: Int, accessToken: String) {
+        deletedMutableLiveData = repositoryHelper.deleteActivity(activtiyId, accessToken)
+
+    }
+
+    fun getAactivityDeletedData(): MutableLiveData<SubmitModel> {
+        return deletedMutableLiveData
     }
 
     fun getCountries(accessToken: String) {
@@ -58,8 +66,8 @@ class AddActivityViewModel : ViewModel() {
     fun addActivity(
         speakers: HashMap<String, String>,
         body: AddActivityRequestModel,
-        speciality: ArrayList<String>,
-        no_attendees: ArrayList<String>
+        speciality: HashMap<String, String>,
+        no_attendees: HashMap<String, String>
         , accessToken: String
     ) {
         activityMutableLiveData =
@@ -67,7 +75,7 @@ class AddActivityViewModel : ViewModel() {
 
     }
 
-    fun getAddActivityData(): MutableLiveData<ResponseBody> {
+    fun getAddActivityData(): MutableLiveData<SubmitModel> {
         return activityMutableLiveData
     }
 

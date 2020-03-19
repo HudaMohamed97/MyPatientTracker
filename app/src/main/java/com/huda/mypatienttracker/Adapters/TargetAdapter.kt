@@ -78,7 +78,7 @@ class TargetAdapter(modelFeedArrayList: ArrayList<TargetData>) :
                 popup.setOnMenuItemClickListener { item ->
                     when {
                         item.itemId == R.id.menu1 -> {
-                            fromTab = "AddDoctor"
+                            fromTab = "UpdateTarget"
                             onItemClickListener.onDotsImageClicked(position, fromTab)
                             true
                         }

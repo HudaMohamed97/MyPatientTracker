@@ -5,10 +5,12 @@ import androidx.lifecycle.ViewModel
 import com.example.myapplication.Models.SubmitModel
 import com.huda.mypatienttracker.Models.TargetRequestModel
 import com.huda.mypatienttracker.Models.TargetResponse
+import com.huda.mypatienttracker.Models.updateTargetRequestModel
 
 class AddTargetFragmentViewModel : ViewModel() {
     private var repositoryHelper: TargetRepository = TargetRepository()
     private lateinit var targetMutableLiveData: MutableLiveData<SubmitModel>
+    private lateinit var updateMutableLiveData: MutableLiveData<SubmitModel>
     private lateinit var deletetMutableLiveData: MutableLiveData<SubmitModel>
     private lateinit var mutableLiveData: MutableLiveData<TargetResponse>
     private lateinit var allMutableLiveData: MutableLiveData<TargetResponse>
@@ -23,8 +25,23 @@ class AddTargetFragmentViewModel : ViewModel() {
         return targetMutableLiveData
     }
 
-    fun deleteTarget(hospitalId:Int,tagetId: Int, accessToken: String) {
-        targetMutableLiveData = repositoryHelper.deleteTarget(hospitalId,tagetId, accessToken)
+    fun updateTarget(
+        hospitalId: Int,
+        targetlId: Int,
+        model: updateTargetRequestModel,
+        accessToken: String
+    ) {
+        updateMutableLiveData =
+            repositoryHelper.updateTarget(model, hospitalId, targetlId, accessToken)
+
+    }
+
+    fun updateData(): MutableLiveData<SubmitModel> {
+        return updateMutableLiveData
+    }
+
+    fun deleteTarget(hospitalId: Int, tagetId: Int, accessToken: String) {
+        targetMutableLiveData = repositoryHelper.deleteTarget(hospitalId, tagetId, accessToken)
 
     }
 

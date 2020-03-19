@@ -19,10 +19,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.huda.mypatienttracker.Adapters.TargetAdapter
 import com.huda.mypatienttracker.Models.TargetData
 import com.huda.mypatienttracker.Models.TargetRequestModel
+import com.huda.mypatienttracker.Models.updateTargetRequestModel
 import com.huda.mypatienttracker.R
 import com.toptoche.searchablespinnerlibrary.SearchableSpinner
 import kotlinx.android.synthetic.main.add_target_fragment.*
 import kotlinx.android.synthetic.main.add_target_fragment.view.*
+import kotlinx.android.synthetic.main.update_target_fragment.*
 import java.util.ArrayList
 
 
@@ -48,6 +50,7 @@ class TargetListFragment : Fragment() {
     private val monthList = arrayListOf<Int>()
     private val yearList = arrayListOf<Int>()
     private var flagSelected: Int = 0
+    private lateinit var updateTargetBottomSheet: updateBottomSheet
 
 
     override fun onCreateView(
@@ -222,7 +225,7 @@ class TargetListFragment : Fragment() {
 
     private fun setClickListeners() {
 
-        mainLayout.setOnClickListener{
+        mainLayout.setOnClickListener {
             hideKeyboard()
         }
 
@@ -322,21 +325,30 @@ class TargetListFragment : Fragment() {
         recyclerView.adapter = targetAdapter
         targetAdapter.setOnCommentListener(object : TargetAdapter.OnDotsClickListener {
             override fun onDotsImageClicked(position: Int, fromTab: String) {
-                if (fromTab == "UpdateTarget") {
-                    /* val hospitalId = modelFeedArrayList[position].id
-                     val bundle = Bundle()
-                     bundle.putInt("hospitalId", hospitalId)
-                     findNavController().navigate(
-                         R.id.action_HospitalListFragment_to_addDoctor,
-                         bundle
-                     )*/
+                if (position != null) {
+                    if (fromTab == "UpdateTarget") {
+                        updateTargetBottomSheet = updateBottomSheet()
+                        fragmentManager?.let { it ->
+                            updateTargetBottomSheet.show(
+                                it,
+                                "DeleteBottomSheet"
+                            )
+                        }
+                        updateTargetBottomSheet.setOnAttendAddedListener(object :
+                            updateBottomSheet.AttendanceListener {
+                            override fun onTargetUpdated(number: Int) {
+                                callupdateTarget(position, modelFeedArrayList[position].id, number)
+                            }
 
-                } else if (fromTab == "Delete") {
-                    val targetId = modelFeedArrayList[position].id
-                    deleteTarget(targetId, position)
+
+                        })
+
+                    } else if (fromTab == "Delete") {
+                        val targetId = modelFeedArrayList[position].id
+                        deleteTarget(targetId, position)
+                    }
                 }
             }
-
 
         })
 
@@ -398,6 +410,38 @@ class TargetListFragment : Fragment() {
                 mHasReachedBottomOnce = false
                 currentPageNum++
 
+            } else {
+                Toast.makeText(activity, "Network Error", Toast.LENGTH_SHORT).show()
+            }
+        })
+    }
+
+    private fun callupdateTarget(position: Int, target: Int, number: Int) {
+        TargetProgressBar.visibility = View.VISIBLE
+        val accessToken = loginPreferences.getString("accessToken", "")
+        if (accessToken != null) {
+            val model = updateTargetRequestModel(
+                modelFeedArrayList[position].product,
+                number,
+                modelFeedArrayList[position].year,
+                modelFeedArrayList[position].month,
+                "put"
+            )
+            addTargetFragmentViewModel.updateTarget(hospitalId, target, model, accessToken)
+        }
+        addTargetFragmentViewModel.updateData().observe(this, Observer {
+            TargetProgressBar.visibility = View.GONE
+            if (it != null) {
+                if (it.title == "error")
+                    Toast.makeText(
+                        activity,
+                        it.type,
+                        Toast.LENGTH_SHORT
+                    ).show()
+                else {
+                    Toast.makeText(activity, "Updated Successfully", Toast.LENGTH_SHORT).show()
+                    callTargetList("All", 1, false, false)
+                }
             } else {
                 Toast.makeText(activity, "Network Error", Toast.LENGTH_SHORT).show()
             }
