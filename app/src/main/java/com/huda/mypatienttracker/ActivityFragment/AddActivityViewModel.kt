@@ -3,20 +3,26 @@ package com.huda.mypatienttracker.ActivityFragment
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.myapplication.Models.SubmitModel
+import com.example.myapplication.Models.SubmitModel2
 import com.huda.mypatienttracker.AddHospitalFragment.AddHospitalRepository
 import com.huda.mypatienttracker.HospitalList.HospitalRepository
 import com.huda.mypatienttracker.Models.ActivityModelResponse
+import com.huda.mypatienttracker.Models.AddActivityRequestModel
 import com.huda.mypatienttracker.Models.CountriesResonse
 import com.huda.mypatienttracker.Models.HospitalModels.CitiesResponse
 import com.huda.mypatienttracker.Models.HospitalModels.HospitalResponseModel
 import com.huda.mypatienttracker.Models.HospitalModels.PatientReferalRequestModel
 import com.huda.mypatienttracker.Models.SingelHospitalResponse
 import com.huda.mypatienttracker.patientListFragment.PatientRepository
+import okhttp3.ResponseBody
+import java.util.HashMap
 
 class AddActivityViewModel : ViewModel() {
     private var countryRepositoryHelper: AddHospitalRepository = AddHospitalRepository()
+    private var addActivityRepository: AddActivityRepository = AddActivityRepository()
     private lateinit var counteyMutableLiveData: MutableLiveData<CountriesResonse>
     private lateinit var cityMutableLiveData: MutableLiveData<CitiesResponse>
+    private lateinit var activityMutableLiveData: MutableLiveData<ResponseBody>
 
     private var repositoryHelper: AddActivityRepository =
         AddActivityRepository()
@@ -47,6 +53,22 @@ class AddActivityViewModel : ViewModel() {
 
     fun getCitiesData(): MutableLiveData<CitiesResponse> {
         return cityMutableLiveData
+    }
+
+    fun addActivity(
+        speakers: HashMap<String, String>,
+        body: AddActivityRequestModel,
+        speciality: ArrayList<String>,
+        no_attendees: ArrayList<String>
+        , accessToken: String
+    ) {
+        activityMutableLiveData =
+            addActivityRepository.addActivity(speakers, speciality, no_attendees, body, accessToken)
+
+    }
+
+    fun getAddActivityData(): MutableLiveData<ResponseBody> {
+        return activityMutableLiveData
     }
 
 

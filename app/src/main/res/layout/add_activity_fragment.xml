@@ -146,58 +146,24 @@
                 </LinearLayout>
             </LinearLayout>
 
-            <LinearLayout
-                android:id="@+id/IntrenationalSpeaker"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:visibility="visible">
-
-                <EditText
-                    android:id="@+id/speakerName"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/space_50"
-                    android:layout_marginLeft="@dimen/space_10"
-                    android:layout_marginTop="@dimen/space_10"
-                    android:layout_marginRight="@dimen/space_10"
-                    android:background="@drawable/background_edittext"
-                    android:ems="10"
-                    android:hint="   speakerName"
-                    android:inputType="textPersonName"
-                    android:textColorHint="@color/not_black" />
-
-                <EditText
-                    android:id="@+id/speakerSpeciality"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/space_50"
-                    android:layout_marginLeft="@dimen/space_10"
-                    android:layout_marginTop="@dimen/space_10"
-                    android:layout_marginRight="@dimen/space_10"
-                    android:background="@drawable/background_edittext"
-                    android:ems="10"
-                    android:hint="   speakerSpeciality"
-                    android:inputType="textPersonName"
-                    android:textColorHint="@color/not_black" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/space_50"
-                    android:layout_marginLeft="@dimen/space_10"
-                    android:layout_marginTop="@dimen/space_10"
-                    android:layout_marginRight="@dimen/space_10"
-                    android:background="@drawable/background_edittext"
-                    android:orientation="horizontal">
-
-                    <com.toptoche.searchablespinnerlibrary.SearchableSpinner
-                        android:id="@+id/speakerTypeSpinner"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:prompt="@string/app_name"
-                        android:theme="@style/SpinnerThemeLight"
-                        app:hintText="speakerType" />
-                </LinearLayout>
-
-            </LinearLayout>
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/addSpeaker"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="wrap_content"
+                android:layout_height="55dp"
+                android:layout_gravity="center"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="20dp"
+                android:background="@color/not_blue"
+                android:backgroundTint="@color/not_blue"
+                android:text="add Speaker"
+                android:textColor="@color/white"
+                android:textSize="@dimen/space_20"
+                app:cornerRadius="@dimen/space_10"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent" />
 
             <LinearLayout
                 android:id="@+id/localSpeaker"
@@ -316,43 +282,38 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/space_50"
-                    android:layout_marginLeft="@dimen/space_10"
-                    android:layout_marginTop="@dimen/space_10"
-                    android:layout_marginRight="@dimen/space_10"
-                    android:background="@drawable/background_edittext"
-                    android:orientation="horizontal">
-
-                    <com.toptoche.searchablespinnerlibrary.SearchableSpinner
-                        android:id="@+id/activitySpecialitySpinner"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:prompt="@string/app_name"
-                        android:theme="@style/SpinnerThemeLight"
-                        app:hintText="Speciality" />
-                </LinearLayout>
-            </LinearLayout>
-
-            <EditText
-                android:id="@+id/numOfAttend"
-                android:layout_width="match_parent"
                 android:layout_height="@dimen/space_50"
                 android:layout_marginLeft="@dimen/space_10"
                 android:layout_marginTop="@dimen/space_10"
                 android:layout_marginRight="@dimen/space_10"
                 android:background="@drawable/background_edittext"
-                android:ems="10"
-                android:hint="   No of Attendance"
-                android:inputType="textPersonName"
-                android:textColorHint="@color/not_black" />
+                android:orientation="horizontal">
 
+                <com.toptoche.searchablespinnerlibrary.SearchableSpinner
+                    android:id="@+id/Specialityspinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:spinnerMode="dropdown"
+                    android:textColor="@color/not_black"
+                    android:theme="@style/SpinnerThemeLight"
+                    app:hintText="Speciality" />
+
+            </LinearLayout>
+
+            <ProgressBar
+                android:id="@+id/activtyProgressBar"
+                style="?android:attr/progressBarStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="5dp"
+                android:indeterminate="true"
+                android:indeterminateTint="@color/not_blue"
+                android:indeterminateTintMode="src_atop"
+                android:visibility="gone" />
 
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/btn_login"
+                android:id="@+id/addActivityButtton"
                 style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                 android:layout_width="match_parent"
                 android:layout_height="70dp"

@@ -10,13 +10,16 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.ImageView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import com.huda.mypatienttracker.ActivityFragment.AddActivityViewModel
+import com.huda.mypatienttracker.Models.AddActivityRequestModel
 import com.huda.mypatienttracker.Models.Cities
 import com.huda.mypatienttracker.Models.CountryData
+import com.huda.mypatienttracker.Models.SpeakerRequestModel
 import com.huda.mypatienttracker.R
 import com.toptoche.searchablespinnerlibrary.SearchableSpinner
 import kotlinx.android.synthetic.main.add_activity_fragment.*
@@ -32,15 +35,21 @@ class AddActivityFragment : Fragment() {
     private lateinit var seakerType: SearchableSpinner
     private lateinit var citySpinner: SearchableSpinner
     private val medicalList = arrayListOf<String>()
+    private val specialityList = arrayListOf<String>()
     private val medicalSubList = arrayListOf<String>()
+    private val speakerRequestList = arrayListOf<SpeakerRequestModel>()
     private val commercialList = arrayListOf<String>()
     private val marketList = arrayListOf<String>()
+    private val attandanceList = arrayListOf<String>()
+    private val specialityRequestedList = arrayListOf<String>()
     private val speakerList = arrayListOf<String>()
-    private val speakerTypeList = arrayListOf<String>()
     private var type = ""
+    private var specialityText = ""
     private var Subtype = ""
-    private lateinit var speakerType: String
-    private lateinit var speakerInterType: String
+    private var date = ""
+    private lateinit var customBottomSheet: CustomBottomSheet
+    private lateinit var attendBottomSheet: AttendBottomSheet
+    private var speakerType = ""
     private val countryList = arrayListOf<CountryData>()
     private val countriesNameList = arrayListOf<String>()
     private var city_id: Int = -1
@@ -48,6 +57,7 @@ class AddActivityFragment : Fragment() {
     private val cityList = arrayListOf<Cities>()
     private val citiesNameList = arrayListOf<String>()
     private var flagSelected: Int = 0
+    private var selectedType: Int = -1
 
 
     override fun onCreateView(
@@ -66,6 +76,7 @@ class AddActivityFragment : Fragment() {
         setClickListeners()
         intializeMedicalSpinner()
         intializeSpeakerSpinner()
+        intializeSpecialitySpinner()
         getCountryList()
     }
 
@@ -115,7 +126,6 @@ class AddActivityFragment : Fragment() {
                 id: Long
             ) {
 
-                val cml = parentView.getItemAtPosition(position).toString()
                 country_id = countryList[position].id
                 callCitiesPerCountry(country_id)
             }
@@ -151,6 +161,38 @@ class AddActivityFragment : Fragment() {
         })
     }
 
+    private fun addActivity(
+        speakers: HashMap<String, String>,
+        body: AddActivityRequestModel, speciality: ArrayList<String>,
+        no_attendees: ArrayList<String>
+    ) {
+        cityList.clear()
+        val accessToken = loginPreferences.getString("accessToken", "")
+        if (accessToken != null) {
+            activtyProgressBar.visibility = View.VISIBLE
+            addActivityViewModel.addActivity(speakers, body, speciality, no_attendees, accessToken)
+        }
+        addActivityViewModel.getAddActivityData().observe(this, Observer {
+            activtyProgressBar.visibility = View.GONE
+            if (it != null) {
+                Toast.makeText(activity, "Submitted Successfully", Toast.LENGTH_SHORT).show()
+
+                /*if (it.type == "error")
+                    Toast.makeText(
+                        activity,
+                        it.title,
+                        Toast.LENGTH_SHORT
+                    ).show()
+                else {
+                    Toast.makeText(activity, "Submitted Successfully", Toast.LENGTH_SHORT).show()
+                }*/
+            } else {
+                Toast.makeText(activity, "Network Error", Toast.LENGTH_SHORT).show()
+
+            }
+        })
+    }
+
     private fun prepareCityList(cityList: ArrayList<Cities>) {
         citiesNameList.clear()
         for (city in cityList) {
@@ -173,8 +215,15 @@ class AddActivityFragment : Fragment() {
         medicalList.add("MarketAccess")
         medicalList.add("Commercial")
         initializeTypeSpinner(spinnerType, medicalList)
+    }
 
-
+    private fun intializeSpecialitySpinner() {
+        specialityList.clear()
+        specialityList.add("PH")
+        specialityList.add("RH")
+        specialityList.add("Cardio")
+        specialityList.add("Pharmacist")
+        initializeSpecialitySpinner(Specialityspinner, specialityList)
     }
 
     private fun initializeCitySpinner(
@@ -268,17 +317,20 @@ class AddActivityFragment : Fragment() {
                 val typeHospital = typeList[position]
                 type = when (typeHospital) {
                     "MedicalEducation" -> {
+                        selectedType = 1
                         flagSelected = 1
                         intializeMedicalSubSpinner()
                         "MedicalEducation"
 
                     }
                     "MarketAccess" -> {
+                        selectedType = 2
                         flagSelected = 1
                         intializeMarketSubSpinner()
                         "MarketAccess"
                     }
                     else -> {
+                        selectedType = 3
                         flagSelected = 1
                         intializCommercialSubSpinner()
                         "Commercial"
@@ -296,6 +348,62 @@ class AddActivityFragment : Fragment() {
             medicalspinner.adapter = arrayAdapter
         }
 
+    }
+
+    private fun initializeSpecialitySpinner(
+        spinnerType: SearchableSpinner,
+        typeList: ArrayList<String>
+    ) {
+        val arrayAdapter =
+            context?.let {
+                ArrayAdapter(
+                    it,
+                    R.layout.support_simple_spinner_dropdown_item,
+                    typeList
+                )
+            }
+
+        spinnerType.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(
+                parentView: AdapterView<*>,
+                selectedItemView: View,
+                position: Int,
+                id: Long
+            ) {
+                val specialityText = typeList[position]
+                specialityRequestedList.add(specialityText)
+                showNumOfAttend()
+
+            }
+
+            override fun onNothingSelected(parentView: AdapterView<*>) {
+                // your code here
+            }
+
+        }
+        arrayAdapter?.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        if (arrayAdapter != null) {
+            spinnerType.adapter = arrayAdapter
+        }
+
+    }
+
+    private fun showNumOfAttend() {
+        attendBottomSheet = AttendBottomSheet()
+        attendBottomSheet.setOnAttendAddedListener(object : AttendBottomSheet.AttendanceListener {
+            override fun onAttendedAdd(number: String) {
+                attandanceList.add(number)
+            }
+
+        }
+
+        )
+        fragmentManager?.let {
+            attendBottomSheet.show(
+                it,
+                ""
+            )
+        }
     }
 
     private fun initializeSubTypeSpinner(spinner: SearchableSpinner, typeList: ArrayList<String>) {
@@ -355,12 +463,10 @@ class AddActivityFragment : Fragment() {
                 speakerType = when (typeHospital) {
                     "Inter" -> {
                         flagSelected = 1
-                        showInterLayout()
                         "Inter"
                     }
                     else -> {
                         flagSelected = 1
-                        showLocalLayout()
                         "Local"
                     }
 
@@ -380,55 +486,26 @@ class AddActivityFragment : Fragment() {
     }
 
     private fun showInterLayout() {
-        IntrenationalSpeaker.visibility = View.VISIBLE
         localSpeaker.visibility = View.GONE
-        intializeSpeakerInterType()
-    }
-
-    private fun intializeSpeakerInterType() {
-        speakerTypeList.clear()
-        speakerTypeList.add("Expert Speaker")
-        speakerTypeList.add("Raising Start")
-        initializeInterTypeSpinner(speakerTypeSpinner, speakerTypeList)
-    }
-
-    private fun initializeInterTypeSpinner(
-        spinnerType: SearchableSpinner,
-        speakerTypeList: ArrayList<String>
-    ) {
-        val arrayAdapter =
-            context?.let {
-                ArrayAdapter(
-                    it,
-                    R.layout.support_simple_spinner_dropdown_item,
-                    speakerTypeList
-                )
+        customBottomSheet = CustomBottomSheet()
+        customBottomSheet.setOnSpeakerAddedListener(object :
+            CustomBottomSheet.OnSpeakerAddedListener {
+            override fun onSpeakerAdded(speakerRequestModel: SpeakerRequestModel) {
+                speakerRequestList.add(speakerRequestModel)
             }
 
-        spinnerType.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(
-                parentView: AdapterView<*>,
-                selectedItemView: View,
-                position: Int,
-                id: Long
-            ) {
-                speakerInterType = speakerTypeList[position]
-            }
 
-            override fun onNothingSelected(parentView: AdapterView<*>) {
-                // your code here
-            }
-
+        })
+        fragmentManager?.let {
+            customBottomSheet.show(
+                it,
+                ""
+            )
         }
-        arrayAdapter?.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        if (arrayAdapter != null) {
-            spinnerType.adapter = arrayAdapter
-        }
-
     }
+
 
     private fun showLocalLayout() {
-        IntrenationalSpeaker.visibility = View.GONE
         localSpeaker.visibility = View.VISIBLE
     }
 
@@ -474,6 +551,47 @@ class AddActivityFragment : Fragment() {
 
 
     private fun setClickListeners() {
+        addActivityButtton.setOnClickListener {
+            if (selectedType == -1 || city_id == -1 || specialityRequestedList.size == 0 || attandanceList.size == 0 || Subtype == "" ||
+                speakerRequestList.size == 0 || date == ""
+            ) {
+                Toast.makeText(activity, "Please Add All fields Thanks", Toast.LENGTH_SHORT).show()
+            } else {
+                val body = AddActivityRequestModel(
+                    selectedType,
+                    Subtype,
+                    "uptravi",
+                    date,
+                    speakerRequestList,
+                    city_id
+                )
+
+                val speakers = HashMap<String, String>()
+                for (i in 0 until speakerRequestList.size) {
+                    val orderitems = speakerRequestList[i]
+                    speakers["speakers[$i][name]"] = (orderitems.name)
+                    speakers["speakers[$i][speaker_type]"] = (orderitems.speaker_type)
+                    speakers["speakers[$i][speciality]"] = (orderitems.speciality)
+                    speakers["speakers[$i][type]"] = (orderitems.type)
+                }
+                addActivity(speakers, body, specialityRequestedList, attandanceList)
+            }
+        }
+
+        speakerRequestList.clear()
+        addSpeaker.setOnClickListener {
+            if (speakerType == "") {
+                Toast.makeText(activity, "Please Choose Speaker Type First", Toast.LENGTH_SHORT)
+                    .show()
+            } else if (speakerType == "Inter") {
+                showInterLayout()
+            } else {
+                showLocalLayout()
+            }
+
+        }
+
+
         activityList.setOnClickListener {
             findNavController().navigateUp()
         }
@@ -495,8 +613,9 @@ class AddActivityFragment : Fragment() {
                     c.set(Calendar.YEAR, year)
                     c.set(Calendar.MONTH, monthOfYear)
                     c.set(Calendar.DAY_OF_MONTH, dayOfMonth)
-                    val myFormat = "dd.MM.yyyy" // mention the format you need
+                    val myFormat = "dd-MM-yyyy" // mention the format you need
                     val sdf = SimpleDateFormat(myFormat, Locale.US)
+                    date = sdf.format(c.time)
                     datePicker.setText(sdf.format(c.time))
                 },
                 year,

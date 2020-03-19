@@ -51,6 +51,20 @@ interface ApiServices {
         @Header("Authorization") authHeader: String
     ): Call<ActivityModelResponse>
 
+    @POST("activities")
+    @FormUrlEncoded
+    fun addActivity(
+        @Field("type") type: String,
+        @Field("subtype") subtype: String,
+        @Field("product") product: String,
+        @Field("date") date: String,
+        @Field("speciality[]") speciality: ArrayList<String>,
+        @FieldMap speakers: Map<String, String>,
+        @Field("no_attendees[]") no_attendees: ArrayList<String>,
+        @Field("city_id") city_id: String,
+        @Header("Authorization") authHeader: String
+    ): Call<ResponseBody>
+
     @DELETE("activities/{activity}")
     fun deleteActivity(
         @Path("activity") activity: Int, @Header("Authorization") authHeader: String
