@@ -2,6 +2,7 @@ package com.huda.mypatienttracker.HospitalList
 
 import androidx.lifecycle.MutableLiveData
 import com.example.myapplication.Models.SubmitModel
+import com.huda.mypatienttracker.Models.DoctorsResponse
 import com.huda.mypatienttracker.Models.HospitalModels.HospitalResponseModel
 import com.huda.mypatienttracker.Models.PatientRequestModel
 import com.huda.mypatienttracker.Models.SingelHospitalResponse
@@ -53,6 +54,31 @@ class HospitalRepository {
                 }
 
                 override fun onFailure(call: Call<SingelHospitalResponse>, t: Throwable) {
+                    hospitalData.value = null
+                }
+            })
+        return hospitalData
+
+    }
+
+    fun getDoctors(
+        accessToken: String
+    ): MutableLiveData<DoctorsResponse> {
+        val hospitalData = MutableLiveData<DoctorsResponse>()
+        Webservice.getInstance().api.getDoctors(accessToken)
+            .enqueue(object : Callback<DoctorsResponse> {
+                override fun onResponse(
+                    call: Call<DoctorsResponse>,
+                    response: Response<DoctorsResponse>
+                ) {
+                    if (response.isSuccessful) {
+                        hospitalData.value = response.body()
+                    } else {
+                        hospitalData.value = response.body()
+                    }
+                }
+
+                override fun onFailure(call: Call<DoctorsResponse>, t: Throwable) {
                     hospitalData.value = null
                 }
             })

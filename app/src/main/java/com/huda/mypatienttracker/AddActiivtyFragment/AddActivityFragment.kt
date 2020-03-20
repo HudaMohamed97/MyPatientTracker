@@ -13,10 +13,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import com.huda.mypatienttracker.ActivityFragment.AddActivityViewModel
-import com.huda.mypatienttracker.Models.AddActivityRequestModel
-import com.huda.mypatienttracker.Models.Cities
-import com.huda.mypatienttracker.Models.CountryData
-import com.huda.mypatienttracker.Models.SpeakerRequestModel
+import com.huda.mypatienttracker.Models.*
 import com.huda.mypatienttracker.R
 import com.toptoche.searchablespinnerlibrary.SearchableSpinner
 import kotlinx.android.synthetic.main.add_activity_fragment.*
@@ -54,7 +51,9 @@ class AddActivityFragment : Fragment() {
     private var city_id: Int = -1
     private var country_id: Int = -1
     private val cityList = arrayListOf<Cities>()
+    private val DoctorList = arrayListOf<DoctorDate>()
     private val citiesNameList = arrayListOf<String>()
+    private val doctorNameList = arrayListOf<String>()
     private var flagSelected: Int = 0
     private var selectedType: Int = -1
 
@@ -160,6 +159,24 @@ class AddActivityFragment : Fragment() {
         })
     }
 
+    private fun callDoctors() {
+        DoctorList.clear()
+        val accessToken = loginPreferences.getString("accessToken", "")
+        if (accessToken != null) {
+            speakerProgressBar.visibility = View.VISIBLE
+            addActivityViewModel.getDoctors(accessToken)
+        }
+        addActivityViewModel.getDoctorData().observe(this, Observer {
+            if (it != null) {
+                speakerProgressBar.visibility = View.GONE
+                for (doctor in it.data) {
+                    DoctorList.add(doctor)
+                }
+                prepareDoctorList(DoctorList)
+            }
+        })
+    }
+
     private fun addActivity(
         speakers: HashMap<String, RequestBody>,
         body: AddActivityRequestModel, speciality: HashMap<String, RequestBody>,
@@ -198,6 +215,14 @@ class AddActivityFragment : Fragment() {
             citiesNameList.add(city.name)
         }
         initializeCitySpinner(activityCitySpinner, citiesNameList)
+    }
+
+    private fun prepareDoctorList(doctorList: ArrayList<DoctorDate>) {
+        doctorNameList.clear()
+        for (doctor in doctorList) {
+            doctorNameList.add(doctor.name)
+        }
+        initializeDoctorSpinner(speakersSpinner, doctorNameList)
     }
 
 
@@ -257,6 +282,46 @@ class AddActivityFragment : Fragment() {
         arrayAdapter?.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         if (arrayAdapter != null) {
             citySpinner.adapter = arrayAdapter
+        }
+
+    }
+
+    private fun initializeDoctorSpinner(
+        spinner: SearchableSpinner,
+        citiesNameList: ArrayList<String>
+    ) {
+        val arrayAdapter =
+            context?.let {
+                ArrayAdapter(
+                    it,
+                    R.layout.support_simple_spinner_dropdown_item,
+                    citiesNameList
+                )
+            }
+        spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(
+                parentView: AdapterView<*>,
+                selectedItemView: View,
+                position: Int,
+                id: Long
+            ) {
+                val speakerRequestModel = SpeakerRequestModel(
+                    "Local",
+                    DoctorList[position].type,
+                    DoctorList[position].speciality,
+                    DoctorList[position].name
+                )
+                speakerRequestList.add(speakerRequestModel)
+
+            }
+
+            override fun onNothingSelected(parentView: AdapterView<*>) {
+                // your code here
+            }
+        }
+        arrayAdapter?.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        if (arrayAdapter != null) {
+            spinner.adapter = arrayAdapter
         }
 
     }
@@ -507,47 +572,9 @@ class AddActivityFragment : Fragment() {
 
 
     private fun showLocalLayout() {
+        callDoctors()
         localSpeaker.visibility = View.VISIBLE
-    }
 
-
-    private fun callActivity(page: Int, fromLoadMore: Boolean, fromRefresh: Boolean) {
-        /*  if (fromLoadMore) {
-              postLoadProgressBar.visibility = View.VISIBLE
-          } else {
-              PostsProgressBar.visibility = View.VISIBLE
-          }
-          val accessToken = loginPreferences.getString("accessToken", "")
-          if (accessToken != null) {
-              hospitalViewModel.getPosts(page, accessToken)
-          }
-          hospitalViewModel.getData().observe(this, Observer {
-              if (fromLoadMore) {
-                  postLoadProgressBar.visibility = View.GONE
-              } else {
-                  PostsProgressBar.visibility = View.GONE
-              }
-              if (fromRefresh) {
-                  currentPageNum = 1
-                  modelFeedArrayList.clear()
-              }
-              if (it != null) {
-                  lastPageNum = it.meta.last_page
-                  for (data in it.data) {
-                      modelFeedArrayList.add(data)
-                  }
-                  if (modelFeedArrayList.size == 0) {
-                      Toast.makeText(activity, "No Posts Added Yet.", Toast.LENGTH_SHORT).show()
-
-                  }
-                  hospitalAdapter.notifyDataSetChanged()
-                  mHasReachedBottomOnce = false
-                  currentPageNum++
-
-              } else {
-                  Toast.makeText(activity, "Network Error", Toast.LENGTH_SHORT).show()
-              }
-          })*/
     }
 
 

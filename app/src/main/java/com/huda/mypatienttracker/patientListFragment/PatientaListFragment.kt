@@ -80,16 +80,16 @@ class PatientaListFragment : Fragment() {
                     modelFeedArrayList.add(data)
                 }
                 if (modelFeedArrayList.size == 0) {
-                    modelFeedArrayList.add(
-                        PatientResponseData(
-                            1,
-                            "name",
-                            "noUpdate",
-                            null,
-                            "kdkdsk"
-                        )
-                    )
-                    patientAdapter.notifyDataSetChanged()
+                    /* modelFeedArrayList.add(
+                         PatientResponseData(
+                             1,
+                             "name",
+                             "noUpdate",
+                             null,
+                             "kdkdsk"
+                         )
+                     )
+                     patientAdapter.notifyDataSetChanged()*/
                     Toast.makeText(activity, "No Patient Added Yet.", Toast.LENGTH_SHORT).show()
 
                 }

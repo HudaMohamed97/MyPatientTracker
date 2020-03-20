@@ -116,6 +116,11 @@ interface ApiServices {
         @Path("hospital") hospital: Int, @Header("Authorization") authHeader: String
     ): Call<SingelHospitalResponse>
 
+    @GET("doctors")
+    fun getDoctors(
+        @Header("Authorization") authHeader: String
+    ): Call<DoctorsResponse>
+
     @DELETE("hospitals/{hospital}/targets/{target}")
     fun deleteTarget(
         @Path("hospital") hospital: Int, @Path("target") target: Int, @Header("Authorization") authHeader: String

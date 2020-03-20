@@ -6,13 +6,10 @@ import com.example.myapplication.Models.SubmitModel
 import com.example.myapplication.Models.SubmitModel2
 import com.huda.mypatienttracker.AddHospitalFragment.AddHospitalRepository
 import com.huda.mypatienttracker.HospitalList.HospitalRepository
-import com.huda.mypatienttracker.Models.ActivityModelResponse
-import com.huda.mypatienttracker.Models.AddActivityRequestModel
-import com.huda.mypatienttracker.Models.CountriesResonse
+import com.huda.mypatienttracker.Models.*
 import com.huda.mypatienttracker.Models.HospitalModels.CitiesResponse
 import com.huda.mypatienttracker.Models.HospitalModels.HospitalResponseModel
 import com.huda.mypatienttracker.Models.HospitalModels.PatientReferalRequestModel
-import com.huda.mypatienttracker.Models.SingelHospitalResponse
 import com.huda.mypatienttracker.patientListFragment.PatientRepository
 import okhttp3.RequestBody
 import okhttp3.ResponseBody
@@ -20,12 +17,14 @@ import java.util.HashMap
 
 class AddActivityViewModel : ViewModel() {
     private var countryRepositoryHelper: AddHospitalRepository = AddHospitalRepository()
+    private var hospitalRepository: HospitalRepository = HospitalRepository()
     private var addActivityRepository: AddActivityRepository = AddActivityRepository()
     private lateinit var counteyMutableLiveData: MutableLiveData<CountriesResonse>
     private lateinit var cityMutableLiveData: MutableLiveData<CitiesResponse>
     private lateinit var activityMutableLiveData: MutableLiveData<SubmitModel>
     private var repositoryHelper: AddActivityRepository = AddActivityRepository()
     private lateinit var mutableLiveData: MutableLiveData<ActivityModelResponse>
+    private lateinit var doctorsMutableLiveData: MutableLiveData<DoctorsResponse>
     private lateinit var deletedMutableLiveData: MutableLiveData<SubmitModel>
 
     fun getActivity(accessToken: String) {
@@ -35,6 +34,15 @@ class AddActivityViewModel : ViewModel() {
 
     fun getData(): MutableLiveData<ActivityModelResponse> {
         return mutableLiveData
+    }
+
+    fun getDoctors(accessToken: String) {
+        doctorsMutableLiveData = hospitalRepository.getDoctors(accessToken)
+
+    }
+
+    fun getDoctorData(): MutableLiveData<DoctorsResponse> {
+        return doctorsMutableLiveData
     }
 
     fun deleteActivity(activtiyId: Int, accessToken: String) {
