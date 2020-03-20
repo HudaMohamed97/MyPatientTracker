@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
@@ -16,8 +17,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.huda.mypatienttracker.Adapters.PatientAdapter
 import com.huda.mypatienttracker.Models.PatientResponseData
+import com.huda.mypatienttracker.Models.updatePatientRequestModel
 import com.huda.mypatienttracker.R
 import kotlinx.android.synthetic.main.patient_fragment_list.*
+import kotlinx.android.synthetic.main.update_patient_fragment.*
 
 
 class PatientaListFragment : Fragment() {
@@ -77,6 +80,16 @@ class PatientaListFragment : Fragment() {
                     modelFeedArrayList.add(data)
                 }
                 if (modelFeedArrayList.size == 0) {
+                    modelFeedArrayList.add(
+                        PatientResponseData(
+                            1,
+                            "name",
+                            "noUpdate",
+                            null,
+                            "kdkdsk"
+                        )
+                    )
+                    patientAdapter.notifyDataSetChanged()
                     Toast.makeText(activity, "No Patient Added Yet.", Toast.LENGTH_SHORT).show()
 
                 }
@@ -98,13 +111,20 @@ class PatientaListFragment : Fragment() {
         recyclerView.adapter = patientAdapter
         patientAdapter.setOnCommentListener(object : PatientAdapter.OnCommentClickListener {
             override fun onDotsImageClicked(position: Int, fromTab: String) {
-                /* if (fromTab == "AddDoctor") {
-                     findNavController().navigate(R.id.action_HospitalListFragment_to_addDoctor)
+                if (fromTab == "Confirmed") {
+                    val bundle = Bundle()
+                    bundle.putInt("PatientId", modelFeedArrayList[position].id)
+                    findNavController().navigate(
+                        R.id.action_PatientList_updateReferalPatientFragment,
+                        bundle
+                    )
 
-                 } else if (fromTab == "") {
-                     Toast.makeText(activity, "Please Select Action.", Toast.LENGTH_SHORT).show()
+                } else if (fromTab == "") {
+                    Toast.makeText(activity, "Please Select Action.", Toast.LENGTH_SHORT).show()
 
-                 }*/
+                } else if (fromTab == "notPh") {
+                    callStatuesPatient(position, modelFeedArrayList[position].id, "no update")
+                }
 
             }
 
@@ -118,7 +138,6 @@ class PatientaListFragment : Fragment() {
                     mHasReachedBottomOnce = true
                     if (currentPageNum <= lastPageNum) {
                         // callPosts(currentPageNum, true, false)
-
                     }
                 }
             }
@@ -126,7 +145,39 @@ class PatientaListFragment : Fragment() {
 
     }
 
+    private fun callStatuesPatient(position: Int, PatientId: Int, statues: String) {
+        patientProgressBar.visibility = View.VISIBLE
+        val accessToken = loginPreferences.getString("accessToken", "")
+        if (accessToken != null) {
+            patientaListViewModel.updateStatuesPatient(PatientId, statues, accessToken)
+        }
+        patientaListViewModel.getUpdateStatuesPatient().observe(this, Observer {
+            patientProgressBar.visibility = View.GONE
+            if (it != null) {
+                if (it.type == "error")
+                    Toast.makeText(
+                        activity,
+                        it.title,
+                        Toast.LENGTH_SHORT
+                    ).show()
+                else {
+                    Toast.makeText(activity, "Submitted Successfully", Toast.LENGTH_SHORT).show()
+                    modelFeedArrayList.removeAt(position)
+                    patientAdapter.notifyDataSetChanged()
+                }
+            } else {
+                Toast.makeText(activity, "Network Error", Toast.LENGTH_SHORT).show()
+            }
+        })
+
+
+    }
+
     private fun setClickListeners() {
+        val backButton = root.findViewById(R.id.backButton) as ImageView
+        backButton.setOnClickListener {
+            findNavController().navigateUp()
+        }
         add_ref.setOnClickListener {
             findNavController().navigate(R.id.action_PatientList_addReferalFragment)
         }
@@ -137,10 +188,7 @@ class PatientaListFragment : Fragment() {
             findNavController().navigate(R.id.action_PatientList_CoePatientFragment)
         }
         recyclerView = root.findViewById(R.id.patientRecycler)
-        val logOutButton = root.findViewById(R.id.backButton) as ImageView
-        logOutButton.setOnClickListener {
-            activity!!.finish()
-        }
+
 
 
     }

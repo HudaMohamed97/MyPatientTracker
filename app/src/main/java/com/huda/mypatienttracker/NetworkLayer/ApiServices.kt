@@ -64,9 +64,9 @@ interface ApiServices {
         @Part("subtype") subtype: RequestBody,
         @Part("product") product: RequestBody,
         @Part("date") date: RequestBody,
-        @PartMap speciality: HashMap<String, String>,
-        @PartMap speakers: HashMap<String, String>,
-        @PartMap no_attendees: HashMap<String, String>,
+        @PartMap speciality: HashMap<String, RequestBody>,
+        @PartMap speakers: HashMap<String, RequestBody>,
+        @PartMap no_attendees: HashMap<String, RequestBody>,
         @Part("city_id") city_id: RequestBody,
         @Header("Authorization") authHeader: String
     ): Call<SubmitModel>
@@ -85,6 +85,11 @@ interface ApiServices {
     @POST("patients/{patient}/treatments")
     fun updatePatient(
         @Path("patient") patient: Int, @Body body: updatePatientRequestModel, @Header("Authorization") authHeader: String
+    ): Call<SubmitModel>
+
+    @POST("patients/{patient}/update-status")
+    fun updatePatientSatues(
+        @Path("patient") patient: Int, @Body status: Map<String, String>, @Header("Authorization") authHeader: String
     ): Call<SubmitModel>
 
     @GET("patients")

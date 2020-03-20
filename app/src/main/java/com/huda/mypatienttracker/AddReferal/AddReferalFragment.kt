@@ -7,12 +7,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
-import android.widget.Toast
+import android.widget.*
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.fragment.findNavController
 import com.huda.mypatienttracker.Models.Cities
 import com.huda.mypatienttracker.Models.CountryData
 import com.huda.mypatienttracker.Models.Doctors
@@ -69,6 +68,10 @@ class AddReferalFragment : Fragment() {
     }
 
     private fun setClickListeners() {
+        val backButton = root.findViewById(R.id.backButton) as ImageView
+        backButton.setOnClickListener {
+            findNavController().navigateUp()
+        }
         hospitalId = -1
         toHospitalId = -1
         doctorId = -1

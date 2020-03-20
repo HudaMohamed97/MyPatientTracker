@@ -44,7 +44,7 @@ class CoePatientAdapter(modelFeedArrayList: ArrayList<PatientResponseData>) :
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val modelFeed = modelFeedArrayList[position]
-        holder.hospitalNameCoe.text = modelFeed.hospital.name
+        holder.hospitalNameCoe.text = modelFeed.hospital?.name
         holder.doctorName.text = modelFeed.name
         holder.time.text = modelFeed.created_at
 

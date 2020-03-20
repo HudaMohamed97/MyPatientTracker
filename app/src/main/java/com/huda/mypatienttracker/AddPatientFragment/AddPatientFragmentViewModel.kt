@@ -45,6 +45,7 @@ class AddPatientFragmentViewModel : ViewModel() {
         return updateMutableLiveData
     }
 
+
     fun getSingelHospital(hospitalId: Int, accessToken: String) {
         singelMutableLiveData = repositoryHelper.getSingelHospital(hospitalId, accessToken)
 

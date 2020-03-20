@@ -14,6 +14,7 @@ import com.huda.mypatienttracker.Models.HospitalModels.HospitalResponseModel
 import com.huda.mypatienttracker.Models.HospitalModels.PatientReferalRequestModel
 import com.huda.mypatienttracker.Models.SingelHospitalResponse
 import com.huda.mypatienttracker.patientListFragment.PatientRepository
+import okhttp3.RequestBody
 import okhttp3.ResponseBody
 import java.util.HashMap
 
@@ -64,10 +65,10 @@ class AddActivityViewModel : ViewModel() {
     }
 
     fun addActivity(
-        speakers: HashMap<String, String>,
+        speakers: HashMap<String, RequestBody>,
         body: AddActivityRequestModel,
-        speciality: HashMap<String, String>,
-        no_attendees: HashMap<String, String>
+        speciality: HashMap<String, RequestBody>,
+        no_attendees: HashMap<String, RequestBody>
         , accessToken: String
     ) {
         activityMutableLiveData =

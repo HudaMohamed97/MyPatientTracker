@@ -62,9 +62,9 @@ class AddActivityRepository {
     }
 
     fun addActivity(
-        speakers: HashMap<String, String>,
-        speciality: HashMap<String, String>,
-        no_attendees: HashMap<String, String>,
+        speakers: HashMap<String, RequestBody>,
+        speciality: HashMap<String, RequestBody>,
+        no_attendees: HashMap<String, RequestBody>,
         body: AddActivityRequestModel,
         accessToken: String
     ): MutableLiveData<SubmitModel> {
@@ -72,13 +72,15 @@ class AddActivityRepository {
         val subType = RequestBody.create(MediaType.parse("multipart/form-data"), body.subtype)
         val product = RequestBody.create(MediaType.parse("multipart/form-data"), "opsumit")
         val date = RequestBody.create(MediaType.parse("multipart/form-data"), body.date)
-        val city = RequestBody.create(MediaType.parse("multipart/form-data"), body.city_id.toString())
-        /* val speaker = RequestBody.create(MediaType.parse("multipart/form-data"), speakers.toString())
-         val no_attendee = RequestBody.create(MediaType.parse("multipart/form-data"), no_attendees.toString())
-         val special = RequestBody.create(MediaType.parse("multipart/form-data"), speciality.toString())*/
+        val city =
+            RequestBody.create(MediaType.parse("multipart/form-data"), body.city_id.toString())
 
 
         val activityData = MutableLiveData<SubmitModel>()
+        Log.i(
+            "hhh",
+            "" + type + subType + product + date + speciality + speakers + no_attendees + city
+        )
         Webservice.getInstance().api.addActivity(
             type, subType, product,
             date, speciality, speakers, no_attendees, city, accessToken

@@ -7,6 +7,6 @@ data class PatientResponseData(
     @SerializedName("id") val id: Int,
     @SerializedName("name") val name: String,
     @SerializedName("status") val status: String,
-    @SerializedName("hospital") val hospital: HospitalData,
+    @SerializedName("hospital") val hospital: HospitalData?,
     @SerializedName("created_at") val created_at: String
 )

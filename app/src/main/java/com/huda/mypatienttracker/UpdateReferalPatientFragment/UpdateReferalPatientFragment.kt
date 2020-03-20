@@ -1,4 +1,4 @@
-package com.huda.mypatienttracker.AddPatientFragment
+package com.huda.mypatienttracker.UpdateReferalPatientFragment
 
 import android.content.Context
 import android.content.SharedPreferences
@@ -6,24 +6,25 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProviders
-import com.huda.mypatienttracker.R
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
+import com.huda.mypatienttracker.AddPatientFragment.AddPatientFragmentViewModel
 import com.huda.mypatienttracker.Models.Doctors
 import com.huda.mypatienttracker.Models.HospitalModels.HospitalData
-import com.huda.mypatienttracker.Models.PatientRequestModel
+import com.huda.mypatienttracker.Models.updatePatientRequestModel
+import com.huda.mypatienttracker.R
 import com.toptoche.searchablespinnerlibrary.SearchableSpinner
-import kotlinx.android.synthetic.main.add_patient_fragment.*
+import kotlinx.android.synthetic.main.update_patient_fragment.*
+import kotlinx.android.synthetic.main.update_preferal_fragment.*
 
-
-class AddPatientFragment : Fragment() {
+class UpdateReferalPatientFragment : Fragment() {
     companion object {
         val UPTRAVI: String = "UPTRAVIE"
         val OPSUMIT: String = "OPSUMIT"
+        val TRACLEER: String = "TRACLEER"
     }
 
     private lateinit var root: View
@@ -38,6 +39,7 @@ class AddPatientFragment : Fragment() {
     private val doctorist = arrayListOf<Doctors>()
     private val doctorNameList = arrayListOf<String>()
     private var hospitalId: Int = -1
+    private var PatientId: Int = 0
     private var doctorId: Int = -1
 
 
@@ -46,7 +48,7 @@ class AddPatientFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        root = inflater.inflate(R.layout.add_patient_fragment, container, false)
+        root = inflater.inflate(R.layout.update_preferal_fragment, container, false)
         addPatientFragmentViewModel =
             ViewModelProviders.of(this).get(AddPatientFragmentViewModel::class.java)
         return root
@@ -54,8 +56,9 @@ class AddPatientFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        PatientId = arguments?.getInt("PatientId")!!
         setClickListeners()
-        callHospitals("coe", false, false)
+        callHospitals("referal", false, false)
         intializeEtiologySpinner()
     }
 
@@ -66,112 +69,104 @@ class AddPatientFragment : Fragment() {
         etiologyList.add("CTP")
         etiologyList.add("PoPH")
         etiologyList.add("Others")
-        initializeEtiologySpinner(etiloigySpinner, etiologyList)
+        initializeEtiologySpinner(etiologyReferalSpinner, etiologyList)
     }
 
 
     private fun setClickListeners() {
+        val rg = root.findViewById(R.id.radioPatientReferalGroup) as RadioGroup
         val backButton = root.findViewById(R.id.backButton) as ImageView
         backButton.setOnClickListener {
             findNavController().navigateUp()
         }
 
-        val rg = root.findViewById(R.id.radioPatientGroup) as RadioGroup
         fromType = UPTRAVI
         otherMedication = "PDE5i"
         etiology = ""
 
-
-        PDE5i.setOnClickListener {
+        ReferalPDE5i.setOnClickListener {
             otherMedication = "PDE5i"
-            Oral_PC.isChecked = false
-            Rio.isChecked = false
-            other.isChecked = false
+            ReferalOral_PC.isChecked = false
+            ReferalRio.isChecked = false
+            Referalother.isChecked = false
         }
-        PDE5iOpsumit.setOnClickListener {
-            otherMedication = "PDE5i"
-            Macitentan.isChecked = false
-            Rioopsumit.isChecked = false
-            Other_ERA.isChecked = false
-        }
-
-        Oral_PC.setOnClickListener {
+        ReferalOral_PC.setOnClickListener {
             otherMedication = "Oral_PC"
-            PDE5i.isChecked = false
-            Rio.isChecked = false
-            other.isChecked = false
+            ReferalPDE5i.isChecked = false
+            ReferalRio.isChecked = false
+            Referalother.isChecked = false
         }
-
-        Macitentan.setOnClickListener {
-            otherMedication = "Macitentan"
-            PDE5iOpsumit.isChecked = false
-            Rioopsumit.isChecked = false
-            Other_ERA.isChecked = false
-        }
-
-        Other_ERA.setOnClickListener {
-            otherMedication = "Other_ERA"
-            PDE5iOpsumit.isChecked = false
-            Rioopsumit.isChecked = false
-            Macitentan.isChecked = false
-        }
-
-        Rioopsumit.setOnClickListener {
-            otherMedication = "Rioopsumit"
-            PDE5iOpsumit.isChecked = false
-            Macitentan.isChecked = false
-            Other_ERA.isChecked = false
-        }
-
-        Rio.setOnClickListener {
+        ReferalRio.setOnClickListener {
             otherMedication = "Rio"
-            Oral_PC.isChecked = false
-            PDE5i.isChecked = false
-            other.isChecked = false
+            ReferalPDE5i.isChecked = false
+            ReferalOral_PC.isChecked = false
+            Referalother.isChecked = false
         }
 
-        other.setOnClickListener {
+        Referalother.setOnClickListener {
+            otherMedication = "other"
+            ReferalPDE5i.isChecked = false
+            ReferalOral_PC.isChecked = false
+            ReferalRio.isChecked = false
+        }
+
+
+        PDE5iReferalOpsumit.setOnClickListener {
             otherMedication = "PDE5i"
-            Oral_PC.isChecked = false
-            Rio.isChecked = false
-            PDE5i.isChecked = false
+            ReferalMacitentan.isChecked = false
+            RioReferalopsumit.isChecked = false
+            ReferalOther_ERA.isChecked = false
         }
 
-        doctorText.setOnClickListener {
-            Toast.makeText(activity, "Please Select Hospital First Thanks.", Toast.LENGTH_SHORT)
-                .show()
+        ReferalMacitentan.setOnClickListener {
+            otherMedication = "Macitentan"
+            PDE5iReferalOpsumit.isChecked = false
+            RioReferalopsumit.isChecked = false
+            ReferalOther_ERA.isChecked = false
         }
 
-        continueButton.setOnClickListener {
+        ReferalOther_ERA.setOnClickListener {
+            otherMedication = "Other_ERA"
+            PDE5iReferalOpsumit.isChecked = false
+            RioReferalopsumit.isChecked = false
+            ReferalMacitentan.isChecked = false
+        }
+
+        RioReferalopsumit.setOnClickListener {
+            otherMedication = "Rioopsumit"
+            PDE5iReferalOpsumit.isChecked = false
+            ReferalMacitentan.isChecked = false
+            ReferalOther_ERA.isChecked = false
+        }
+
+
+        continueReferalButton.setOnClickListener {
             if (fromType == "" || hospitalId == -1 || doctorId == -1 || otherMedication == "" || etiology == "") {
                 Toast.makeText(activity, "Please fill All Fields Thanks", Toast.LENGTH_SHORT)
                     .show()
             } else {
-                val model = PatientRequestModel(
-                    "patient",
-                    1,
-                    1,
-                    hospitalId,
-                    doctorId,
-                    fromType,
-                    etiology,
-                    otherMedication
-                )
-                callAddPatient(model)
+                val model =
+                    updatePatientRequestModel(fromType, etiology, otherMedication)
+                callUpdatePatient(PatientId, model)
             }
         }
 
         rg.setOnCheckedChangeListener { _, checkedId ->
             when (checkedId) {
-                R.id.radioUptarvi -> {
+                R.id.radioReferalUptarvi -> {
                     fromType = UPTRAVI
-                    uptraviLayout.visibility = View.VISIBLE
-                    opsumitLayout.visibility = View.GONE
+                    uptraviReferalLayout.visibility = View.VISIBLE
+                    ReferalopsumitLayout.visibility = View.GONE
                 }
-                R.id.radioOpsumit -> {
+                R.id.radiotrReferalCeller -> {
                     fromType = OPSUMIT
-                    uptraviLayout.visibility = View.GONE
-                    opsumitLayout.visibility = View.VISIBLE
+                    uptraviReferalLayout.visibility = View.GONE
+                    ReferalopsumitLayout.visibility = View.VISIBLE
+                }
+                R.id.radioReferalOpsumit -> {
+                    fromType = TRACLEER
+                    uptraviReferalLayout.visibility = View.GONE
+                    ReferalopsumitLayout.visibility = View.VISIBLE
                 }
             }
         }
@@ -179,14 +174,14 @@ class AddPatientFragment : Fragment() {
 
     }
 
-    private fun callAddPatient(model: PatientRequestModel) {
-        patientProgressBar.visibility = View.VISIBLE
+    private fun callUpdatePatient(PatientId: Int, model: updatePatientRequestModel) {
+        updatepatientProgressBar.visibility = View.VISIBLE
         val accessToken = loginPreferences.getString("accessToken", "")
         if (accessToken != null) {
-            addPatientFragmentViewModel.submitPatient(model, accessToken)
+            addPatientFragmentViewModel.updatePatient(PatientId, model, accessToken)
         }
-        addPatientFragmentViewModel.getSubmitPatient().observe(this, Observer {
-            patientProgressBar.visibility = View.GONE
+        addPatientFragmentViewModel.getUpdatePatient().observe(this, Observer {
+            updatepatientProgressBar.visibility = View.GONE
             if (it != null) {
                 if (it.type == "error")
                     Toast.makeText(
@@ -211,9 +206,9 @@ class AddPatientFragment : Fragment() {
         fromRefresh: Boolean
     ) {
         if (fromLoadMore) {
-            patientProgressBar.visibility = View.VISIBLE
+            referalProgressBar.visibility = View.VISIBLE
         } else {
-            patientProgressBar.visibility = View.VISIBLE
+            referalProgressBar.visibility = View.VISIBLE
         }
         val accessToken = loginPreferences.getString("accessToken", "")
         if (accessToken != null) {
@@ -221,10 +216,10 @@ class AddPatientFragment : Fragment() {
         }
         addPatientFragmentViewModel.getData().observe(this, Observer {
             if (fromLoadMore) {
-                patientProgressBar.visibility = View.GONE
+                referalProgressBar.visibility = View.GONE
             } else {
                 hospitalList.clear()
-                patientProgressBar.visibility = View.GONE
+                referalProgressBar.visibility = View.GONE
             }
             if (it != null) {
                 hospitalList.clear()
@@ -244,12 +239,12 @@ class AddPatientFragment : Fragment() {
     ) {
         val accessToken = loginPreferences.getString("accessToken", "")
         if (accessToken != null) {
+            doctorProgressBar.visibility = View.VISIBLE
             addPatientFragmentViewModel.getSingelHospital(hospitalId, accessToken)
         }
         addPatientFragmentViewModel.getSingelData().observe(this, Observer {
+            doctorProgressBar.visibility = View.GONE
             if (it != null) {
-                doctorText.visibility = View.GONE
-                doctorSpinner.visibility = view?.visibility!!
                 doctorist.clear()
                 for (data in it.data.doctors) {
                     doctorist.add(data)
@@ -266,7 +261,7 @@ class AddPatientFragment : Fragment() {
         for (hospital in doctorist) {
             doctorNameList.add(hospital.name)
         }
-        initializeDoctorSpinner(drNameSpinner, doctorNameList)
+        initializeDoctorSpinner(ReferalDoctorSpinner, doctorNameList)
     }
 
 
@@ -275,7 +270,7 @@ class AddPatientFragment : Fragment() {
         for (hospital in hopital_List) {
             hospitalNameList.add(hospital.name)
         }
-        initializeHospitalSpinner(Hospitalspinner, hospitalNameList)
+        initializeHospitalSpinner(ReferalHospitalspinner, hospitalNameList)
     }
 
     private fun initializeHospitalSpinner(
@@ -291,24 +286,25 @@ class AddPatientFragment : Fragment() {
                 )
             }
 
-        countrySpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(
-                parentView: AdapterView<*>,
-                selectedItemView: View,
-                position: Int,
-                id: Long
-            ) {
-                hospitalId = hospitalList[position].id
-                callSingelHospital(hospitalId, false)
-            }
+        ReferalHospitalspinner.onItemSelectedListener =
+            object : AdapterView.OnItemSelectedListener {
+                override fun onItemSelected(
+                    parentView: AdapterView<*>,
+                    selectedItemView: View,
+                    position: Int,
+                    id: Long
+                ) {
+                    hospitalId = hospitalList[position].id
+                    callSingelHospital(hospitalId, false)
+                }
 
-            override fun onNothingSelected(parentView: AdapterView<*>) {
-                // your code here
+                override fun onNothingSelected(parentView: AdapterView<*>) {
+                    // your code here
+                }
             }
-        }
         arrayAdapter?.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         if (arrayAdapter != null) {
-            Hospitalspinner.adapter = arrayAdapter
+            ReferalHospitalspinner.adapter = arrayAdapter
         }
 
     }
@@ -360,7 +356,7 @@ class AddPatientFragment : Fragment() {
                 )
             }
 
-        drNameSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+        spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(
                 parentView: AdapterView<*>,
                 selectedItemView: View,
@@ -377,17 +373,8 @@ class AddPatientFragment : Fragment() {
         }
         arrayAdapter?.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         if (arrayAdapter != null) {
-            drNameSpinner.adapter = arrayAdapter
+            spinner.adapter = arrayAdapter
         }
 
-    }
-
-    private fun hideKeyboard() {
-        val view = activity?.currentFocus
-        if (view != null) {
-            val imm =
-                context!!.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager?
-            imm!!.hideSoftInputFromWindow(view.windowToken, 0)
-        }
     }
 }

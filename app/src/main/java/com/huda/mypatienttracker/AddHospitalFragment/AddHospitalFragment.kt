@@ -7,9 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
-import android.widget.Toast
+import android.widget.*
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -247,6 +245,10 @@ class AddHospitalFragment : Fragment() {
     }
 
     private fun setClickListeners() {
+        val backButton = root.findViewById(R.id.backButton) as ImageView
+        backButton.setOnClickListener {
+            findNavController().navigateUp()
+        }
         cityText.setOnClickListener {
             Toast.makeText(activity, "please Choose Country first Thanks.", Toast.LENGTH_SHORT)
                 .show()

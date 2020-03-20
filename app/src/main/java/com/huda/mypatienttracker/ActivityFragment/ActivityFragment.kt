@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
@@ -155,15 +156,16 @@ class ActivityFragment : Fragment() {
     }
 
     private fun setClickListeners() {
+        val backButton = root.findViewById(R.id.backButton) as ImageView
+        backButton.setOnClickListener {
+            findNavController().navigateUp()
+        }
         modelFeedArrayList.clear()
         add_Activity_layout.setOnClickListener {
             findNavController().navigate(R.id.action_Activity_to_Add_Activity)
         }
         recyclerView = root.findViewById(R.id.hospitalRecycler)
-        val logOutButton = root.findViewById(R.id.backButton) as ImageView
-        logOutButton.setOnClickListener {
-            activity!!.finish()
-        }
+
 
 
     }

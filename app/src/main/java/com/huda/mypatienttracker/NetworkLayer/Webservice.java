@@ -18,7 +18,7 @@ public class Webservice {
     private ApiServices api;
 
     public Webservice() {
-        OkHttpClient okHttpClient = new OkHttpClient.Builder().build();
+       // OkHttpClient okHttpClient = new OkHttpClient.Builder().build();
         Gson gson = new GsonBuilder()
                 .setLenient()
                 .create();
@@ -30,7 +30,7 @@ public class Webservice {
         httpClient.readTimeout(160, TimeUnit.SECONDS);
         httpClient.addInterceptor(logging);
         Retrofit retrofit = new Retrofit.Builder()
-                .client(okHttpClient)
+                .client(httpClient.build())
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .baseUrl(MAIN_URL)
                 .build();

@@ -115,6 +115,9 @@
         <action
             android:id="@+id/action_PatientList_CoePatientFragment"
             app:destination="@id/CeoPatientListFragment" />
+        <action
+            android:id="@+id/action_PatientList_updateReferalPatientFragment"
+            app:destination="@id/UpdatePatientReferalFragment" />
 
     </fragment>
     <fragment
@@ -196,6 +199,12 @@
         android:id="@+id/AddReferalFragment"
         android:name="com.huda.mypatienttracker.AddReferal.AddReferalFragment"
         tools:layout="@layout/add_referal">
+
+    </fragment>
+    <fragment
+        android:id="@+id/UpdatePatientReferalFragment"
+        android:name="com.huda.mypatienttracker.UpdateReferalPatientFragment.UpdateReferalPatientFragment"
+        tools:layout="@layout/update_preferal_fragment">
 
     </fragment>
 

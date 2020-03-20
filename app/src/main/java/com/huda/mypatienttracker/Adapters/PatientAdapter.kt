@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.widget.PopupMenu
 import androidx.recyclerview.widget.RecyclerView
@@ -43,7 +44,8 @@ class PatientAdapter(modelFeedArrayList: ArrayList<PatientResponseData>) :
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val modelFeed = modelFeedArrayList[position]
-        holder.tvName.text = modelFeed.hospital.name
+        holder.tvName.text = "hospital"
+         //   modelFeed.hospital?.name
         holder.doctorName.text = modelFeed.name
         holder.time.text = modelFeed.created_at
 
@@ -73,24 +75,19 @@ class PatientAdapter(modelFeedArrayList: ArrayList<PatientResponseData>) :
                 }
 
 
-                popup.inflate(R.menu.activity_menu)
+                popup.inflate(R.menu.patient_menu)
 
 
                 //adding click listener
                 popup.setOnMenuItemClickListener { item ->
                     when {
                         item.itemId == R.id.menu1 -> {
-                            fromTab = "AddDoctor"
+                            fromTab = "Confirmed"
                             onItemClickListener.onDotsImageClicked(position, fromTab)
                             true
                         }
                         item.itemId == R.id.menu2 -> {
-                            fromTab = "update"
-                            onItemClickListener.onDotsImageClicked(position, fromTab)
-                            true
-                        }
-                        item.itemId == R.id.menu3 -> {
-                            fromTab = "delete"
+                            fromTab = "notPh"
                             onItemClickListener.onDotsImageClicked(position, fromTab)
                             true
                         }
@@ -106,8 +103,7 @@ class PatientAdapter(modelFeedArrayList: ArrayList<PatientResponseData>) :
 
     class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-        var dotsImage: TextView = itemView.findViewById(R.id.textViewOptions)
-
+        var dotsImage:ImageView = itemView.findViewById(R.id.textViewOptions)
         var tvName: TextView = itemView.findViewById<View>(R.id.hospitalName) as TextView
         var doctorName: TextView = itemView.findViewById<View>(R.id.doctorName) as TextView
         var location: TextView = itemView.findViewById<View>(R.id.location) as TextView

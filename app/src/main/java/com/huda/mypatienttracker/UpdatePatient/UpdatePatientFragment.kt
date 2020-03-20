@@ -6,13 +6,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
-import android.widget.RadioGroup
-import android.widget.Toast
+import android.widget.*
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.fragment.findNavController
 import com.huda.mypatienttracker.AddPatientFragment.AddPatientFragmentViewModel
 import com.huda.mypatienttracker.Models.Doctors
 import com.huda.mypatienttracker.Models.HospitalModels.HospitalData
@@ -76,7 +74,10 @@ class UpdatePatientFragment : Fragment() {
 
 
     private fun setClickListeners() {
-
+        val backButton = root.findViewById(R.id.backButton) as ImageView
+        backButton.setOnClickListener {
+            findNavController().navigateUp()
+        }
         val rg = root.findViewById(R.id.updateRadioPatientGroup) as RadioGroup
         fromType = UPTRAVI
         otherMedication = "PDE5i"

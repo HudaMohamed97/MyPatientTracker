@@ -11,6 +11,7 @@ import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
@@ -45,6 +46,11 @@ class HomeFragment : Fragment() {
     }
 
     private fun setClickListeners() {
+        val backButton = root.findViewById(R.id.backButton) as ImageView
+        backButton.setOnClickListener {
+            findNavController().navigateUp()
+        }
+
         hospitalCard.setOnClickListener {
             findNavController().navigate(R.id.action_HomeFragment_to_HospitalList)
         }

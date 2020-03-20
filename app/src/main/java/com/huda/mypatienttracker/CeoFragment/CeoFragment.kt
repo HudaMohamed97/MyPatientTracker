@@ -7,11 +7,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
+import android.widget.Button
+import android.widget.ImageView
 import android.widget.RadioGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.fragment.findNavController
 import com.huda.mypatienttracker.AddHospitalFragment.AddHospitalViewModel
 import com.huda.mypatienttracker.Models.AddDoctorModel
 import com.huda.mypatienttracker.Models.addHospitalRequestModel
@@ -27,7 +30,6 @@ class CeoFragment : Fragment() {
     private var pah: Int = 1
     private var rhc: Int = 1
     private var rwe: Int = 1
-
 
 
     override fun onCreateView(
@@ -47,7 +49,10 @@ class CeoFragment : Fragment() {
     }
 
     private fun setClickListeners() {
-
+        val backButton = root.findViewById(R.id.backButton) as ImageView
+        backButton.setOnClickListener {
+            findNavController().navigateUp()
+        }
         val radioPAH = root.findViewById(R.id.radioPAH) as RadioGroup
         radioPAH.setOnCheckedChangeListener { _, checkedId ->
             when (checkedId) {

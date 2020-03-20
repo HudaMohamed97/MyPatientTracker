@@ -145,4 +145,35 @@ class PatientRepository {
 
     }
 
+    fun updateStatuesPatient(
+        patientId: Int,
+        model: String,
+        accessToken: String
+    ): MutableLiveData<SubmitModel> {
+        val hospitalData = MutableLiveData<SubmitModel>()
+        val body = mapOf(
+            "status" to model
+
+        )
+        Webservice.getInstance().api.updatePatientSatues(patientId, body, accessToken)
+            .enqueue(object : Callback<SubmitModel> {
+                override fun onResponse(
+                    call: Call<SubmitModel>,
+                    response: Response<SubmitModel>
+                ) {
+                    if (response.isSuccessful) {
+                        hospitalData.value = response.body()
+                    } else {
+                        hospitalData.value = response.body()
+                    }
+                }
+
+                override fun onFailure(call: Call<SubmitModel>, t: Throwable) {
+                    hospitalData.value = null
+                }
+            })
+        return hospitalData
+
+    }
+
 }

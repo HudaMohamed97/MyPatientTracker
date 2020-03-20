@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/menu1"
+        android:icon="@mipmap/update_icon"
+        android:title="Confirmed" />
+
+    <item
+        android:id="@+id/menu2"
+        android:icon="@mipmap/delete_icon"
+        android:title="Not PH" />
+
+
+</menu>

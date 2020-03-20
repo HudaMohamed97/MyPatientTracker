@@ -95,6 +95,7 @@
                 android:ems="10"
                 android:hint="RHEUMA"
                 android:inputType="textPersonName"
+                android:maxLength="2"
                 android:textColorHint="@color/not_black" />
 
 
@@ -109,6 +110,7 @@
                 android:ems="10"
                 android:hint="CARDIO"
                 android:inputType="textPersonName"
+                android:maxLength="2"
                 android:textColorHint="@color/not_black" />
 
             <EditText
@@ -123,6 +125,7 @@
                 android:ems="10"
                 android:hint="PULMO"
                 android:inputType="textPersonName"
+                android:maxLength="2"
                 android:textColorHint="@color/not_black" />
 
             <TextView
@@ -215,6 +218,7 @@
                 </RadioGroup>
 
             </LinearLayout>
+
             <ProgressBar
                 android:id="@+id/referalHospitalProgressBar"
                 style="?android:attr/progressBarStyle"

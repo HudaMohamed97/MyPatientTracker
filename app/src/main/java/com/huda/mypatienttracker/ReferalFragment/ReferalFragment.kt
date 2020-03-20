@@ -7,11 +7,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
+import android.widget.Button
+import android.widget.ImageView
 import android.widget.RadioGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.fragment.findNavController
 import com.huda.mypatienttracker.AddHospitalFragment.AddHospitalViewModel
 import com.huda.mypatienttracker.Models.addHospitalRequestModel
 import com.huda.mypatienttracker.R
@@ -43,6 +46,10 @@ class ReferalFragment : Fragment() {
     }
 
     private fun setClickListeners() {
+        val backButton = root.findViewById(R.id.backButton) as ImageView
+        backButton.setOnClickListener {
+            findNavController().navigateUp()
+        }
         val radioECHO = root.findViewById(R.id.radioECHO) as RadioGroup
         radioECHO.setOnCheckedChangeListener { _, checkedId ->
             when (checkedId) {

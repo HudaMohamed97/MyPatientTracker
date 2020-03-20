@@ -7,10 +7,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
-import android.widget.ImageView
-import android.widget.Toast
+import android.widget.*
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -23,6 +20,8 @@ import com.huda.mypatienttracker.Models.SpeakerRequestModel
 import com.huda.mypatienttracker.R
 import com.toptoche.searchablespinnerlibrary.SearchableSpinner
 import kotlinx.android.synthetic.main.add_activity_fragment.*
+import okhttp3.MediaType
+import okhttp3.RequestBody
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -162,9 +161,9 @@ class AddActivityFragment : Fragment() {
     }
 
     private fun addActivity(
-        speakers: HashMap<String, String>,
-        body: AddActivityRequestModel, speciality: HashMap<String, String>,
-        no_attendees: HashMap<String, String>
+        speakers: HashMap<String, RequestBody>,
+        body: AddActivityRequestModel, speciality: HashMap<String, RequestBody>,
+        no_attendees: HashMap<String, RequestBody>
     ) {
         cityList.clear()
         val accessToken = loginPreferences.getString("accessToken", "")
@@ -398,11 +397,13 @@ class AddActivityFragment : Fragment() {
         }
 
         )
-        fragmentManager?.let {
-            attendBottomSheet.show(
-                it,
-                ""
-            )
+        if (!attendBottomSheet.isAdded) {
+            fragmentManager?.let {
+                attendBottomSheet.show(
+                    it,
+                    ""
+                )
+            }
         }
     }
 
@@ -551,6 +552,10 @@ class AddActivityFragment : Fragment() {
 
 
     private fun setClickListeners() {
+        val backButton = root.findViewById(R.id.backButton) as ImageView
+        backButton.setOnClickListener {
+            findNavController().navigateUp()
+        }
         addActivityButtton.setOnClickListener {
             if (selectedType == -1 || city_id == -1 || specialityRequestedList.size == 0 || attandanceList.size == 0 || Subtype == "" ||
                 speakerRequestList.size == 0 || date == ""
@@ -566,23 +571,36 @@ class AddActivityFragment : Fragment() {
                     city_id
                 )
 
-                val speakers = HashMap<String, String>()
+                val speakers = HashMap<String, RequestBody>()
                 for (i in 0 until speakerRequestList.size) {
                     val orderitems = speakerRequestList[i]
-                    speakers["speakers[$i][name]"] = (orderitems.name)
-                    speakers["speakers[$i][speaker_type]"] = (orderitems.speaker_type)
-                    speakers["speakers[$i][speciality]"] = (orderitems.speciality)
-                    speakers["speakers[$i][type]"] = (orderitems.type)
+                    val name = RequestBody.create(MediaType.parse("text/plain"), orderitems.name)
+                    val speaker_type =
+                        RequestBody.create(MediaType.parse("text/plain"), orderitems.speaker_type)
+                    val speciality =
+                        RequestBody.create(MediaType.parse("text/plain"), orderitems.speciality)
+                    val type = RequestBody.create(MediaType.parse("text/plain"), orderitems.type)
+
+                    speakers["speakers[$i][name]"] = (name)
+                    speakers["speakers[$i][speaker_type]"] = (speaker_type)
+                    speakers["speakers[$i][speciality]"] = (speciality)
+                    speakers["speakers[$i][type]"] = (type)
                 }
-                val specialitList = HashMap<String, String>()
+                val specialitList = HashMap<String, RequestBody>()
                 for (i in 0 until specialityRequestedList.size) {
-                    val orderitems = specialityRequestedList[i]
-                    specialitList["speciality[$i]"] = (orderitems)
+                    val orderitems = RequestBody.create(
+                        MediaType.parse("text/plain"),
+                        specialityRequestedList[i]
+                    )
+                    specialitList["speciality[$i]"] = orderitems
 
                 }
-                val no_attendees = HashMap<String, String>()
+                val no_attendees = HashMap<String, RequestBody>()
                 for (i in 0 until attandanceList.size) {
-                    val orderitems = attandanceList[i]
+                    val orderitems = RequestBody.create(
+                        MediaType.parse("text/plain"),
+                        attandanceList[i]
+                    )
                     no_attendees["no_attendees[$i]"] = (orderitems)
 
                 }
