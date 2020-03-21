@@ -288,6 +288,7 @@ class TargetListFragment : Fragment() {
                     ).show()
                 else {
                     Toast.makeText(activity, "Submitted Successfully", Toast.LENGTH_SHORT).show()
+                    callTargetList("All", 1, false, true)
                 }
             } else {
                 Toast.makeText(activity, "Network Error", Toast.LENGTH_SHORT).show()
@@ -361,7 +362,7 @@ class TargetListFragment : Fragment() {
                 if (!recyclerView.canScrollVertically(1) && !mHasReachedBottomOnce) {
                     mHasReachedBottomOnce = true
                     if (currentPageNum <= lastPageNum) {
-                        //callHospitals("", currentPageNum, true, false)
+                        callTargetList("All", currentPageNum, true, false)
 
                     }
                 }
@@ -377,7 +378,7 @@ class TargetListFragment : Fragment() {
         fromRefresh: Boolean
     ) {
         if (fromLoadMore) {
-            TargetProgressBar.visibility = View.VISIBLE
+            LoadMoreTargetProgressBar.visibility = View.VISIBLE
         } else {
             TargetProgressBar.visibility = View.VISIBLE
         }
@@ -391,7 +392,7 @@ class TargetListFragment : Fragment() {
         }
         addTargetFragmentViewModel.getTargetData().observe(this, Observer {
             if (fromLoadMore) {
-                TargetProgressBar.visibility = View.GONE
+                LoadMoreTargetProgressBar.visibility = View.GONE
             } else {
                 modelFeedArrayList.clear()
                 TargetProgressBar.visibility = View.GONE
