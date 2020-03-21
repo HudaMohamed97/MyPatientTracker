@@ -78,7 +78,7 @@ class UpdateReferalPatientFragment : Fragment() {
 
 
     private fun setClickListeners() {
-        ReferalHospitalName.text = "   "+HospitalName
+        ReferalHospitalName.text = "   " + HospitalName
         // ReferalDoctorText.text = ""
         val rg = root.findViewById(R.id.radioPatientReferalGroup) as RadioGroup
         val backButton = root.findViewById(R.id.backButton) as ImageView
@@ -218,7 +218,7 @@ class UpdateReferalPatientFragment : Fragment() {
         }
         val accessToken = loginPreferences.getString("accessToken", "")
         if (accessToken != null) {
-            addPatientFragmentViewModel.getHospitals(type, accessToken)
+            addPatientFragmentViewModel.getHospitals(1, type, accessToken)
         }
         addPatientFragmentViewModel.getData().observe(this, Observer {
             if (fromLoadMore) {

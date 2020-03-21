@@ -12,9 +12,13 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class HospitalRepository {
-    fun getHospitals(type: String, accessToken: String): MutableLiveData<HospitalResponseModel> {
+    fun getHospitals(
+        page: Int,
+        type: String,
+        accessToken: String
+    ): MutableLiveData<HospitalResponseModel> {
         val hospitalData = MutableLiveData<HospitalResponseModel>()
-        Webservice.getInstance().api.getHospital(type, accessToken)
+        Webservice.getInstance().api.getHospital(type, page, accessToken)
             .enqueue(object : Callback<HospitalResponseModel> {
                 override fun onResponse(
                     call: Call<HospitalResponseModel>,

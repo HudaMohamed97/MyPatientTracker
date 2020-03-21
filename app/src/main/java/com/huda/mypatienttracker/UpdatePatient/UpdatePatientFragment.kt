@@ -216,7 +216,7 @@ class UpdatePatientFragment : Fragment() {
         }
         val accessToken = loginPreferences.getString("accessToken", "")
         if (accessToken != null) {
-            addPatientFragmentViewModel.getHospitals(type, accessToken)
+            addPatientFragmentViewModel.getHospitals(1, type, accessToken)
         }
         addPatientFragmentViewModel.getData().observe(this, Observer {
             if (fromLoadMore) {

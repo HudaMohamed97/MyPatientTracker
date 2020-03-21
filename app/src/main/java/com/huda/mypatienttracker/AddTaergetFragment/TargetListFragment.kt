@@ -69,7 +69,7 @@ class TargetListFragment : Fragment() {
         hospitalName = arguments?.getString("hospitalName")!!
         setClickListeners()
         initRecyclerView()
-        callTargetList("All", 1, false, false)
+        callTargetList("All", currentPageNum, false, false)
         intializeMedicalSpinner()
         intializeMonthSpinner()
         intializeYearSpinner()
@@ -119,7 +119,7 @@ class TargetListFragment : Fragment() {
                 position: Int,
                 id: Long
             ) {
-
+                hideKeyboard()
                 val typeHospital = typeList[position]
                 type = when (typeHospital) {
                     "All" -> {
@@ -174,6 +174,7 @@ class TargetListFragment : Fragment() {
                 position: Int,
                 id: Long
             ) {
+                hideKeyboard()
                 targetYear = yearList[position]
             }
 
@@ -208,6 +209,7 @@ class TargetListFragment : Fragment() {
                 position: Int,
                 id: Long
             ) {
+                hideKeyboard()
                 targetMonth = monthList[position]
             }
 
@@ -223,6 +225,7 @@ class TargetListFragment : Fragment() {
     }
 
     private fun setClickListeners() {
+        currentPageNum = 1
         val backButton = root.findViewById(R.id.backButton) as ImageView
         backButton.setOnClickListener {
             findNavController().navigateUp()
@@ -244,6 +247,8 @@ class TargetListFragment : Fragment() {
 
 
         AddTargetFragment.setOnClickListener {
+            val number = targetNumber.text.toString().toIntOrNull()
+            val isInteger = number != null
             if (targetNumber.text.toString().isEmpty() || targetYear == -1 || targetMonth == -1) {
                 Toast.makeText(activity, "Please Fill All Data", Toast.LENGTH_SHORT).show()
 
@@ -251,6 +256,12 @@ class TargetListFragment : Fragment() {
                 Toast.makeText(
                     activity,
                     "Please Select Specific Type",
+                    Toast.LENGTH_SHORT
+                ).show()
+            } else if (!isInteger) {
+                Toast.makeText(
+                    activity,
+                    "Please Enter Target As Numbers",
                     Toast.LENGTH_SHORT
                 ).show()
             } else {
@@ -288,9 +299,11 @@ class TargetListFragment : Fragment() {
                     ).show()
                 else {
                     Toast.makeText(activity, "Submitted Successfully", Toast.LENGTH_SHORT).show()
-                    callTargetList("All", 1, false, true)
+                    targetNumber.text.clear()
+                    callTargetList(type, 1, false, true)
                 }
             } else {
+                targetNumber.text.clear()
                 Toast.makeText(activity, "Network Error", Toast.LENGTH_SHORT).show()
             }
         })
@@ -362,7 +375,7 @@ class TargetListFragment : Fragment() {
                 if (!recyclerView.canScrollVertically(1) && !mHasReachedBottomOnce) {
                     mHasReachedBottomOnce = true
                     if (currentPageNum <= lastPageNum) {
-                        callTargetList("All", currentPageNum, true, false)
+                        callTargetList(type, currentPageNum, true, false)
 
                     }
                 }
@@ -385,7 +398,7 @@ class TargetListFragment : Fragment() {
         val accessToken = loginPreferences.getString("accessToken", "")
         if (accessToken != null) {
             if (myType == "All") {
-                addTargetFragmentViewModel.getAllTarget(hospitalId, accessToken)
+                addTargetFragmentViewModel.getAllTarget(page, hospitalId, accessToken)
             } else {
                 addTargetFragmentViewModel.getTarget(myType, hospitalId, accessToken)
             }
@@ -402,6 +415,7 @@ class TargetListFragment : Fragment() {
                 modelFeedArrayList.clear()
             }
             if (it != null) {
+                currentPageNum = it.meta.current_page
                 lastPageNum = it.meta.last_page
                 for (data in it.data) {
                     modelFeedArrayList.add(data)
@@ -444,7 +458,7 @@ class TargetListFragment : Fragment() {
                     ).show()
                 else {
                     Toast.makeText(activity, "Updated Successfully", Toast.LENGTH_SHORT).show()
-                    callTargetList("All", 1, false, false)
+                    callTargetList(type, 1, false, false)
                 }
             } else {
                 Toast.makeText(activity, "Network Error", Toast.LENGTH_SHORT).show()

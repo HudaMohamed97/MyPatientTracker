@@ -58,8 +58,8 @@ class AddTargetFragmentViewModel : ViewModel() {
 
     }
 
-    fun getAllTarget(hospitalId: Int, accessToken: String) {
-        mutableLiveData = repositoryHelper.getAllTarget(hospitalId, accessToken)
+    fun getAllTarget(page: Int, hospitalId: Int, accessToken: String) {
+        mutableLiveData = repositoryHelper.getAllTarget(page,hospitalId, accessToken)
 
     }
 

@@ -33,7 +33,7 @@ class AddReferalFragmentViewModel : ViewModel() {
 
 
     fun getHospitals(type: String, accessToken: String) {
-        mutableLiveData = repositoryHelper.getHospitals(type, accessToken)
+        mutableLiveData = repositoryHelper.getHospitals(1,type, accessToken)
 
     }
 

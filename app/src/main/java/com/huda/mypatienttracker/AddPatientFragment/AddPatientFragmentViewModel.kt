@@ -18,8 +18,8 @@ class AddPatientFragmentViewModel : ViewModel() {
     private lateinit var singelMutableLiveData: MutableLiveData<SingelHospitalResponse>
     private lateinit var updateMutableLiveData: MutableLiveData<SubmitModel>
 
-    fun getHospitals(type: String, accessToken: String) {
-        mutableLiveData = repositoryHelper.getHospitals(type, accessToken)
+    fun getHospitals(page: Int, type: String, accessToken: String) {
+        mutableLiveData = repositoryHelper.getHospitals(page, type, accessToken)
 
     }
 
@@ -36,8 +36,8 @@ class AddPatientFragmentViewModel : ViewModel() {
         return submitMutableLiveData
     }
 
-    fun updatePatient(patientId:Int,model: updatePatientRequestModel, accessToken: String) {
-        updateMutableLiveData = patientRepository.updateCoePatient(patientId,model, accessToken)
+    fun updatePatient(patientId: Int, model: updatePatientRequestModel, accessToken: String) {
+        updateMutableLiveData = patientRepository.updateCoePatient(patientId, model, accessToken)
 
     }
 

@@ -49,7 +49,7 @@ interface ApiServices {
 
     @GET("hospitals/{hospital}/targets")
     fun getAllTarget(
-        @Path("hospital") hospitalId: Int, @Header("Authorization") authHeader: String
+        @Path("hospital") hospitalId: Int,@Query("page") page: Int, @Header("Authorization") authHeader: String
     ): Call<TargetResponse>
 
     @GET("activities")
@@ -73,7 +73,7 @@ interface ApiServices {
     @POST("activities")
     @FormUrlEncoded
     fun addActivity(
-        @Field("type") type: String,
+        @Field("type") type: Int,
         @Field("subtype") subtype: String,
         @Field("product") product: String,
         @Field("date") date: String,
@@ -82,7 +82,7 @@ interface ApiServices {
         @FieldMap speakers: HashMap<String, String>,
         // @Field("no_attendees[]") no_attendees: List<String>,
         @FieldMap no_attendees: HashMap<String, String>,
-        @Field("city_id") city_id: String,
+        @Field("city_id") city_id: Int,
         @Header("Authorization") authHeader: String
     ): Call<SubmitModel>
 
@@ -154,7 +154,7 @@ interface ApiServices {
 
     @GET("hospitals")
     fun getHospital(
-        @Query("type") type: String, @Header("Authorization") authHeader: String
+        @Query("type") type: String, @Query("page") page: Int, @Header("Authorization") authHeader: String
     ): Call<HospitalResponseModel>
 
     @GET("countries")

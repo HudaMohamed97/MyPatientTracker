@@ -78,17 +78,17 @@ class HospitalFragment : Fragment() {
         fromRefresh: Boolean
     ) {
         if (fromLoadMore) {
-            hospitalProgressBar.visibility = View.VISIBLE
+            loadMoreHospitalProgressBar.visibility = View.VISIBLE
         } else {
             hospitalProgressBar.visibility = View.VISIBLE
         }
         val accessToken = loginPreferences.getString("accessToken", "")
         if (accessToken != null) {
-            hospitalViewModel.getHospitals(type, accessToken)
+            hospitalViewModel.getHospitals(page,type, accessToken)
         }
         hospitalViewModel.getData().observe(this, Observer {
             if (fromLoadMore) {
-                hospitalProgressBar.visibility = View.GONE
+                loadMoreHospitalProgressBar.visibility = View.GONE
             } else {
                 modelFeedArrayList.clear()
                 hospitalProgressBar.visibility = View.GONE
@@ -98,6 +98,7 @@ class HospitalFragment : Fragment() {
                 modelFeedArrayList.clear()
             }
             if (it != null) {
+                currentPageNum = it.meta.current_page
                 lastPageNum = it.meta.last_page
                 for (data in it.data) {
                     modelFeedArrayList.add(data)
@@ -168,7 +169,7 @@ class HospitalFragment : Fragment() {
                 if (!recyclerView.canScrollVertically(1) && !mHasReachedBottomOnce) {
                     mHasReachedBottomOnce = true
                     if (currentPageNum <= lastPageNum) {
-                        callHospitals("", currentPageNum, true, false)
+                        callHospitals(fromType, currentPageNum, true, false)
 
                     }
                 }

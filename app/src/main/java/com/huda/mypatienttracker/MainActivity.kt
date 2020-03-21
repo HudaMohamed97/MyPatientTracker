@@ -15,7 +15,6 @@ class MainActivity : AppCompatActivity() {
         FirebaseInstanceId.getInstance().instanceId
             .addOnCompleteListener(OnCompleteListener { task ->
                 if (!task.isSuccessful) {
-                    Log.i("hhhh", "getInstanceId failed", task.exception)
                     return@OnCompleteListener
                 }
 
@@ -23,8 +22,6 @@ class MainActivity : AppCompatActivity() {
                 val token = task.result?.token
 
                 // Log and toast
-                Log.i("hhhhh", "success"+token)
-                Toast.makeText(baseContext, "success", Toast.LENGTH_SHORT).show()
             })
 
     }

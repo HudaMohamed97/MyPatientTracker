@@ -135,11 +135,12 @@ class TargetRepository {
     }
 
     fun getAllTarget(
+        page: Int,
         hospitalId: Int,
         accessToken: String
     ): MutableLiveData<TargetResponse> {
         val hospitalData = MutableLiveData<TargetResponse>()
-        Webservice.getInstance().api.getAllTarget(hospitalId, accessToken)
+        Webservice.getInstance().api.getAllTarget(hospitalId, page, accessToken)
             .enqueue(object : Callback<TargetResponse> {
                 override fun onResponse(
                     call: Call<TargetResponse>,

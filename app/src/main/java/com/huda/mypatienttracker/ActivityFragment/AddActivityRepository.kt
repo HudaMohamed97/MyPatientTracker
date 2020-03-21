@@ -63,7 +63,7 @@ class AddActivityRepository {
 
     fun addActivity(
         speakers: HashMap<String, String>,
-        speciality:HashMap<String, String>,
+        speciality: HashMap<String, String>,
         no_attendees: HashMap<String, String>,
         body: AddActivityRequestModel,
         accessToken: String
@@ -82,8 +82,8 @@ class AddActivityRepository {
             "" + type + subType + product + date + speciality + speakers + no_attendees + city
         )
         Webservice.getInstance().api.addActivity(
-            body.type.toString(), body.subtype, body.product,
-            body.date, speciality, speakers, no_attendees, body.city_id.toString(), accessToken
+            body.type, body.subtype, body.product,
+            body.date, speciality, speakers, no_attendees, body.city_id, accessToken
         )
             .enqueue(object : Callback<SubmitModel> {
                 override fun onResponse(

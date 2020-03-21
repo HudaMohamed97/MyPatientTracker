@@ -10,8 +10,8 @@ class HospitalViewModel : ViewModel() {
     private lateinit var mutableLiveData: MutableLiveData<HospitalResponseModel>
     private lateinit var deleteMutableLiveData: MutableLiveData<SubmitModel>
 
-    fun getHospitals(type: String, accessToken: String) {
-        mutableLiveData = repositoryHelper.getHospitals(type, accessToken)
+    fun getHospitals(page:Int,type: String, accessToken: String) {
+        mutableLiveData = repositoryHelper.getHospitals(page,type, accessToken)
 
     }
 
