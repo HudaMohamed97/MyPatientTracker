@@ -62,9 +62,9 @@ class AddActivityRepository {
     }
 
     fun addActivity(
-        speakers: HashMap<String, RequestBody>,
-        speciality: HashMap<String, RequestBody>,
-        no_attendees: HashMap<String, RequestBody>,
+        speakers: HashMap<String, String>,
+        speciality:HashMap<String, String>,
+        no_attendees: HashMap<String, String>,
         body: AddActivityRequestModel,
         accessToken: String
     ): MutableLiveData<SubmitModel> {
@@ -82,8 +82,8 @@ class AddActivityRepository {
             "" + type + subType + product + date + speciality + speakers + no_attendees + city
         )
         Webservice.getInstance().api.addActivity(
-            type, subType, product,
-            date, speciality, speakers, no_attendees, city, accessToken
+            body.type.toString(), body.subtype, body.product,
+            body.date, speciality, speakers, no_attendees, body.city_id.toString(), accessToken
         )
             .enqueue(object : Callback<SubmitModel> {
                 override fun onResponse(

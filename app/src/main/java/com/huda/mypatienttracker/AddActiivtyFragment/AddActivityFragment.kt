@@ -21,6 +21,7 @@ import okhttp3.MediaType
 import okhttp3.RequestBody
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.collections.ArrayList
 
 
 class AddActivityFragment : Fragment() {
@@ -178,9 +179,9 @@ class AddActivityFragment : Fragment() {
     }
 
     private fun addActivity(
-        speakers: HashMap<String, RequestBody>,
-        body: AddActivityRequestModel, speciality: HashMap<String, RequestBody>,
-        no_attendees: HashMap<String, RequestBody>
+        speakers: HashMap<String, String>,
+        body: AddActivityRequestModel, speciality: HashMap<String, String>,
+        no_attendees: HashMap<String, String>
     ) {
         cityList.clear()
         val accessToken = loginPreferences.getString("accessToken", "")
@@ -598,37 +599,52 @@ class AddActivityFragment : Fragment() {
                     city_id
                 )
 
-                val speakers = HashMap<String, RequestBody>()
+                /* val speakers = HashMap<String, RequestBody>()
+                 for (i in 0 until speakerRequestList.size) {
+                     val orderitems = speakerRequestList[i]
+                     val name = RequestBody.create(MediaType.parse("text/plain"), orderitems.name)
+                     val speaker_type =
+                         RequestBody.create(MediaType.parse("text/plain"), orderitems.speaker_type)
+                     val speciality =
+                         RequestBody.create(MediaType.parse("text/plain"), orderitems.speciality)
+                     val type = RequestBody.create(MediaType.parse("text/plain"), orderitems.type)
+
+                     speakers["speakers[$i][name]"] = (name)
+                     speakers["speakers[$i][speaker_type]"] = (speaker_type)
+                     speakers["speakers[$i][speciality]"] = (speciality)
+                     speakers["speakers[$i][type]"] = (type)
+                 }*/
+                val speakers = HashMap<String, String>()
                 for (i in 0 until speakerRequestList.size) {
                     val orderitems = speakerRequestList[i]
-                    val name = RequestBody.create(MediaType.parse("text/plain"), orderitems.name)
-                    val speaker_type =
-                        RequestBody.create(MediaType.parse("text/plain"), orderitems.speaker_type)
-                    val speciality =
-                        RequestBody.create(MediaType.parse("text/plain"), orderitems.speciality)
+                    /*  val name = RequestBody.create(MediaType.parse("text/plain"), orderitems.name)
+                      val speaker_type =
+                          RequestBody.create(MediaType.parse("text/plain"), orderitems.speaker_type)
+                      val speciality =
+                          RequestBody.create(MediaType.parse("text/plain"), orderitems.speciality)*/
                     val type = RequestBody.create(MediaType.parse("text/plain"), orderitems.type)
 
-                    speakers["speakers[$i][name]"] = (name)
-                    speakers["speakers[$i][speaker_type]"] = (speaker_type)
-                    speakers["speakers[$i][speciality]"] = (speciality)
-                    speakers["speakers[$i][type]"] = (type)
+                    speakers["speakers[${i}][name]"] = (orderitems.name)
+                    speakers["speakers[${i}][speaker_type]"] = (orderitems.speaker_type)
+                    speakers["speakers[${i}][speciality]"] = (orderitems.speciality)
+                    speakers["speakers[${i}][type]"] = (orderitems.type)
                 }
-                val specialitList = HashMap<String, RequestBody>()
+                val specialitList = HashMap<String, String>()
                 for (i in 0 until specialityRequestedList.size) {
                     val orderitems = RequestBody.create(
                         MediaType.parse("text/plain"),
                         specialityRequestedList[i]
                     )
-                    specialitList["speciality[$i]"] = orderitems
+                    specialitList["speciality[${i}]"] = specialityRequestedList[i]
 
                 }
-                val no_attendees = HashMap<String, RequestBody>()
+                val no_attendees = HashMap<String, String>()
                 for (i in 0 until attandanceList.size) {
                     val orderitems = RequestBody.create(
                         MediaType.parse("text/plain"),
                         attandanceList[i]
                     )
-                    no_attendees["no_attendees[$i]"] = (orderitems)
+                    no_attendees["no_attendees[${i}]"] = attandanceList[i]
 
                 }
                 addActivity(speakers, body, specialitList, no_attendees)

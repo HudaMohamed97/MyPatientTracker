@@ -73,10 +73,10 @@ class AddActivityViewModel : ViewModel() {
     }
 
     fun addActivity(
-        speakers: HashMap<String, RequestBody>,
+        speakers: HashMap<String, String>,
         body: AddActivityRequestModel,
-        speciality: HashMap<String, RequestBody>,
-        no_attendees: HashMap<String, RequestBody>
+        speciality:HashMap<String, String>,
+        no_attendees: HashMap<String, String>
         , accessToken: String
     ) {
         activityMutableLiveData =

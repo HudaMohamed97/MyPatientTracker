@@ -57,17 +57,32 @@ interface ApiServices {
         @Header("Authorization") authHeader: String
     ): Call<ActivityModelResponse>
 
-    @Multipart
+    /*  @Multipart
+      @POST("activities")
+      fun addActivity(
+          @Part("type") type: RequestBody,
+          @Part("subtype") subtype: RequestBody,
+          @Part("product") product: RequestBody,
+          @Part("date") date: RequestBody,
+          @PartMap speciality: HashMap<String, RequestBody>,
+          @PartMap speakers: HashMap<String, RequestBody>,
+          @PartMap no_attendees: HashMap<String, RequestBody>,
+          @Part("city_id") city_id: RequestBody,
+          @Header("Authorization") authHeader: String
+      ): Call<SubmitModel>*/
     @POST("activities")
+    @FormUrlEncoded
     fun addActivity(
-        @Part("type") type: RequestBody,
-        @Part("subtype") subtype: RequestBody,
-        @Part("product") product: RequestBody,
-        @Part("date") date: RequestBody,
-        @PartMap speciality: HashMap<String, RequestBody>,
-        @PartMap speakers: HashMap<String, RequestBody>,
-        @PartMap no_attendees: HashMap<String, RequestBody>,
-        @Part("city_id") city_id: RequestBody,
+        @Field("type") type: String,
+        @Field("subtype") subtype: String,
+        @Field("product") product: String,
+        @Field("date") date: String,
+        //@Field("speciality[]") speciality: List<String>,
+        @FieldMap speciality: HashMap<String, String>,
+        @FieldMap speakers: HashMap<String, String>,
+        // @Field("no_attendees[]") no_attendees: List<String>,
+        @FieldMap no_attendees: HashMap<String, String>,
+        @Field("city_id") city_id: String,
         @Header("Authorization") authHeader: String
     ): Call<SubmitModel>
 
