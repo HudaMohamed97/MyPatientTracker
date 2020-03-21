@@ -9,8 +9,8 @@ class CeoPatientaListViewModel : ViewModel() {
     private var repositoryHelper: PatientRepository = PatientRepository()
     private lateinit var mutableLiveData: MutableLiveData<PatientResponse>
 
-    fun getPatients(hospital_type: String, accessToken: String) {
-        mutableLiveData = repositoryHelper.getCoePatients(hospital_type, accessToken)
+    fun getPatients(page:Int,hospital_type: String, accessToken: String) {
+        mutableLiveData = repositoryHelper.getCoePatients(page,hospital_type, accessToken)
 
     }
 

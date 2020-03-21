@@ -80,7 +80,7 @@ class PatientaListFragment : Fragment() {
                     modelFeedArrayList.add(data)
                 }
                 if (modelFeedArrayList.size == 0) {
-                    /* modelFeedArrayList.add(
+                     /*modelFeedArrayList.add(
                          PatientResponseData(
                              1,
                              "name",
@@ -114,6 +114,10 @@ class PatientaListFragment : Fragment() {
                 if (fromTab == "Confirmed") {
                     val bundle = Bundle()
                     bundle.putInt("PatientId", modelFeedArrayList[position].id)
+                   // bundle.putInt("HospitalId", modelFeedArrayList[position].hospital?.id!!)
+                    bundle.putInt("HospitalId", 1)
+                   // bundle.putString("HospitalName", modelFeedArrayList[position].hospital?.name)
+                    bundle.putString("HospitalName", "name")
                     findNavController().navigate(
                         R.id.action_PatientList_updateReferalPatientFragment,
                         bundle
@@ -188,7 +192,6 @@ class PatientaListFragment : Fragment() {
             findNavController().navigate(R.id.action_PatientList_CoePatientFragment)
         }
         recyclerView = root.findViewById(R.id.patientRecycler)
-
 
 
     }

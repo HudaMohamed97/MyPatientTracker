@@ -93,14 +93,12 @@
                 android:background="@drawable/background_edittext"
                 android:orientation="horizontal">
 
-                <com.toptoche.searchablespinnerlibrary.SearchableSpinner
-                    android:id="@+id/ReferalHospitalspinner"
+                <TextView
+                    android:id="@+id/ReferalHospitalName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:spinnerMode="dropdown"
                     android:textColor="@color/not_black"
-                    android:theme="@style/SpinnerThemeLight"
-                    app:hintText="Hospital Name" />
+                    android:theme="@style/SpinnerThemeLight" />
 
             </LinearLayout>
 
@@ -122,16 +120,14 @@
                 android:layout_marginTop="@dimen/space_10"
                 android:layout_marginRight="@dimen/space_10"
                 android:background="@drawable/background_edittext"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:visibility="gone">
 
-                <com.toptoche.searchablespinnerlibrary.SearchableSpinner
-                    android:id="@+id/ReferalDoctorSpinner"
+                <TextView
+                    android:id="@+id/ReferalDoctorText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:spinnerMode="dropdown"
-                    android:textColor="@color/black"
-                    android:theme="@style/SpinnerThemeLight"
-                    app:hintText="DR Name" />
+                    android:textColor="@color/black" />
 
             </LinearLayout>
 

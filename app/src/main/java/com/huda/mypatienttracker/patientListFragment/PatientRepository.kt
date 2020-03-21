@@ -41,11 +41,12 @@ class PatientRepository {
     }
 
     fun getCoePatients(
+        page: Int,
         hospitalType: String,
         accessToken: String
     ): MutableLiveData<PatientResponse> {
         val hospitalData = MutableLiveData<PatientResponse>()
-        Webservice.getInstance().api.getCoePatient(hospitalType, accessToken)
+        Webservice.getInstance().api.getCoePatient(page, hospitalType, accessToken)
             .enqueue(object : Callback<PatientResponse> {
                 override fun onResponse(
                     call: Call<PatientResponse>,

@@ -54,17 +54,17 @@ class CeoPatientListFragment : Fragment() {
 
     private fun callPatients(page: Int, fromLoadMore: Boolean, fromRefresh: Boolean) {
         if (fromLoadMore) {
-            coePatientProgressBar.visibility = View.VISIBLE
+            coeLoadMoreProgressBar.visibility = View.VISIBLE
         } else {
             coePatientProgressBar.visibility = View.VISIBLE
         }
         val accessToken = loginPreferences.getString("accessToken", "")
         if (accessToken != null) {
-            ceoPatientaListViewModel.getPatients("coe", accessToken)
+            ceoPatientaListViewModel.getPatients(page, "coe", accessToken)
         }
         ceoPatientaListViewModel.getData().observe(this, Observer {
             if (fromLoadMore) {
-                coePatientProgressBar.visibility = View.GONE
+                coeLoadMoreProgressBar.visibility = View.GONE
             } else {
                 modelFeedArrayList.clear()
                 coePatientProgressBar.visibility = View.GONE
@@ -75,6 +75,7 @@ class CeoPatientListFragment : Fragment() {
             }
             if (it != null) {
                 lastPageNum = it.meta.last_page
+                currentPageNum = it.meta.current_page
                 for (data in it.data) {
                     modelFeedArrayList.add(data)
                 }
@@ -120,7 +121,7 @@ class CeoPatientListFragment : Fragment() {
                 if (!recyclerView.canScrollVertically(1) && !mHasReachedBottomOnce) {
                     mHasReachedBottomOnce = true
                     if (currentPageNum <= lastPageNum) {
-                        // callPosts(currentPageNum, true, false)
+                        callPatients(currentPageNum, true, false)
 
                     }
                 }
@@ -135,7 +136,6 @@ class CeoPatientListFragment : Fragment() {
             findNavController().navigateUp()
         }
         recyclerView = root.findViewById(R.id.patientRecycler)
-
 
 
     }

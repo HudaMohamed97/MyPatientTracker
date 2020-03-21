@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.widget.PopupMenu
 import androidx.recyclerview.widget.RecyclerView
@@ -96,7 +97,7 @@ class CoePatientAdapter(modelFeedArrayList: ArrayList<PatientResponseData>) :
 
     class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-        var dotsImage: TextView = itemView.findViewById(R.id.textViewOptions)
+        var dotsImage: ImageView = itemView.findViewById(R.id.textViewOptions)
         var hospitalNameCoe: TextView =
             itemView.findViewById<View>(R.id.hospitalNameCoe) as TextView
         var doctorName: TextView = itemView.findViewById<View>(R.id.doctor) as TextView

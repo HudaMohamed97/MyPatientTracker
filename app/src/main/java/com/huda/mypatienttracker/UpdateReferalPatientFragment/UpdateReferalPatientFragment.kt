@@ -40,6 +40,8 @@ class UpdateReferalPatientFragment : Fragment() {
     private val doctorNameList = arrayListOf<String>()
     private var hospitalId: Int = -1
     private var PatientId: Int = 0
+    private var HospitalName: String = ""
+    private var HospitalId: Int = 0
     private var doctorId: Int = -1
 
 
@@ -57,8 +59,10 @@ class UpdateReferalPatientFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         PatientId = arguments?.getInt("PatientId")!!
+        HospitalId = arguments?.getInt("HospitalId")!!
+        HospitalName = arguments?.getString("HospitalName")!!
         setClickListeners()
-        callHospitals("referal", false, false)
+        callHospitals("coe", false, false)
         intializeEtiologySpinner()
     }
 
@@ -74,6 +78,8 @@ class UpdateReferalPatientFragment : Fragment() {
 
 
     private fun setClickListeners() {
+        ReferalHospitalName.text = "   "+HospitalName
+        // ReferalDoctorText.text = ""
         val rg = root.findViewById(R.id.radioPatientReferalGroup) as RadioGroup
         val backButton = root.findViewById(R.id.backButton) as ImageView
         backButton.setOnClickListener {
@@ -261,7 +267,7 @@ class UpdateReferalPatientFragment : Fragment() {
         for (hospital in doctorist) {
             doctorNameList.add(hospital.name)
         }
-        initializeDoctorSpinner(ReferalDoctorSpinner, doctorNameList)
+        initializeDoctorSpinner(ReferalToDrNameSpinner, doctorNameList)
     }
 
 
@@ -270,11 +276,11 @@ class UpdateReferalPatientFragment : Fragment() {
         for (hospital in hopital_List) {
             hospitalNameList.add(hospital.name)
         }
-        initializeHospitalSpinner(ReferalHospitalspinner, hospitalNameList)
+        initializeHospitalSpinner(ReferaltoHospitalSpinner, hospitalNameList)
     }
 
     private fun initializeHospitalSpinner(
-        countrySpinner: SearchableSpinner,
+        spinner: SearchableSpinner,
         countriesNameList: ArrayList<String>
     ) {
         val arrayAdapter =
@@ -286,7 +292,7 @@ class UpdateReferalPatientFragment : Fragment() {
                 )
             }
 
-        ReferalHospitalspinner.onItemSelectedListener =
+        spinner.onItemSelectedListener =
             object : AdapterView.OnItemSelectedListener {
                 override fun onItemSelected(
                     parentView: AdapterView<*>,
@@ -304,7 +310,7 @@ class UpdateReferalPatientFragment : Fragment() {
             }
         arrayAdapter?.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         if (arrayAdapter != null) {
-            ReferalHospitalspinner.adapter = arrayAdapter
+            spinner.adapter = arrayAdapter
         }
 
     }

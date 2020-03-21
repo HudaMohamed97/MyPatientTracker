@@ -94,6 +94,7 @@ interface ApiServices {
 
     @GET("patients")
     fun getCoePatient(
+        @Query("page") page: Int,
         @Query("hospital_type")
         hospital_type: String, @Header("Authorization") authHeader: String
     ): Call<PatientResponse>

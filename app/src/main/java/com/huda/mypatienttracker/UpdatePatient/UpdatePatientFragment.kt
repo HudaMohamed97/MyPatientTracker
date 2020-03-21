@@ -23,8 +23,9 @@ import kotlinx.android.synthetic.main.update_patient_fragment.*
 
 class UpdatePatientFragment : Fragment() {
     companion object {
-        val UPTRAVI: String = "UPTRAVIE"
-        val OPSUMIT: String = "OPSUMIT"
+        val UPTRAVI: String = "uptravi"
+        val OPSUMIT: String = "opsumit"
+        val TRACLEER: String = "tracleer"
     }
 
     private lateinit var root: View
@@ -158,8 +159,13 @@ class UpdatePatientFragment : Fragment() {
             when (checkedId) {
                 R.id.updateRadioUptarvi -> {
                     fromType = UPTRAVI
-                    uptraviLayout.visibility = View.VISIBLE
-                    opsumitLayout.visibility = View.GONE
+                    updateUptraviLayout.visibility = View.VISIBLE
+                    updateOpsumitLayout.visibility = View.GONE
+                }
+                R.id.updateRadioTraceller -> {
+                    fromType = TRACLEER
+                    updateUptraviLayout.visibility = View.GONE
+                    updateOpsumitLayout.visibility = View.VISIBLE
                 }
                 R.id.updateRadioOpsumit -> {
                     fromType = OPSUMIT

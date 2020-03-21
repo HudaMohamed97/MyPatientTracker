@@ -187,7 +187,8 @@
                 android:id="@+id/updateRadioPatientGroup"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/space_20"
+                android:layout_marginTop="@dimen/space_10"
+                android:layout_marginBottom="@dimen/space_10"
                 android:orientation="horizontal">
 
 
@@ -200,6 +201,16 @@
                     android:buttonTint="@color/not_blue"
                     android:checked="true"
                     android:text="   Uptravi"
+                    android:textColor="@color/black" />
+
+                <RadioButton
+                    android:id="@+id/updateRadioTraceller"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="@dimen/space_20"
+                    android:layout_weight="1"
+                    android:buttonTint="@color/not_blue"
+                    android:text="   Tracleer"
                     android:textColor="@color/black" />
 
                 <RadioButton
