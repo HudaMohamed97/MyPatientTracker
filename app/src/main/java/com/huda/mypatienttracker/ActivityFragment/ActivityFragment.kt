@@ -55,32 +55,29 @@ class ActivityFragment : Fragment() {
 
     private fun callActivity(page: Int, fromLoadMore: Boolean, fromRefresh: Boolean) {
         if (fromLoadMore) {
-            ActivityProgressBar.visibility = View.VISIBLE
+            LoadMoreActivityListProgressBar.visibility = View.VISIBLE
         } else {
             ActivityProgressBar.visibility = View.VISIBLE
         }
         val accessToken = loginPreferences.getString("accessToken", "")
         if (accessToken != null) {
-            activityViewModel.getActivity(accessToken)
+            activityViewModel.getActivity(page, accessToken)
         }
         activityViewModel.getData().observe(this, Observer {
             if (fromLoadMore) {
-                ActivityProgressBar.visibility = View.GONE
+                LoadMoreActivityListProgressBar.visibility = View.GONE
             } else {
-                ActivityProgressBar.visibility = View.GONE
-            }
-            if (fromRefresh) {
-                currentPageNum = 1
                 modelFeedArrayList.clear()
+                ActivityProgressBar.visibility = View.GONE
             }
             if (it != null) {
+                currentPageNum = it.meta.current_page
                 lastPageNum = it.meta.last_page
                 for (data in it.data) {
                     modelFeedArrayList.add(data)
                 }
                 if (modelFeedArrayList.size == 0) {
                     Toast.makeText(activity, "No Activity Added Yet.", Toast.LENGTH_SHORT).show()
-
                 }
                 activityAdapter.notifyDataSetChanged()
                 mHasReachedBottomOnce = false
@@ -102,10 +99,8 @@ class ActivityFragment : Fragment() {
             override fun onDotsImageClicked(position: Int, fromTab: String) {
                 if (fromTab == "Delete") {
                     callDeletActivity(modelFeedArrayList[position].id, position)
-
                 } else if (fromTab == "") {
                     Toast.makeText(activity, "Please Select Action.", Toast.LENGTH_SHORT).show()
-
                 }
 
             }
@@ -119,7 +114,7 @@ class ActivityFragment : Fragment() {
                 if (!recyclerView.canScrollVertically(1) && !mHasReachedBottomOnce) {
                     mHasReachedBottomOnce = true
                     if (currentPageNum <= lastPageNum) {
-                        //  callPosts(currentPageNum, true, false)
+                        callActivity(currentPageNum, true, false)
 
                     }
                 }
@@ -156,6 +151,8 @@ class ActivityFragment : Fragment() {
     }
 
     private fun setClickListeners() {
+        currentPageNum = 1
+        lastPageNum = 0
         val backButton = root.findViewById(R.id.backButton) as ImageView
         backButton.setOnClickListener {
             findNavController().navigateUp()
@@ -165,9 +162,6 @@ class ActivityFragment : Fragment() {
             findNavController().navigate(R.id.action_Activity_to_Add_Activity)
         }
         recyclerView = root.findViewById(R.id.hospitalRecycler)
-
-
-
     }
 
 

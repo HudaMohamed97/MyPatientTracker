@@ -43,8 +43,8 @@ class CustomBottomSheet :
                     val model = SpeakerRequestModel(
                         "international",
                         speakerInterType,
-                        speakerName.text.toString(),
-                        speakerSpeciality.text.toString()
+                        speakerSpeciality.text.toString(),
+                        speakerName.text.toString()
                     )
                     speakerClickListener.onSpeakerAdded(model)
                     Toast.makeText(activity, "Added successfully Thanks", Toast.LENGTH_SHORT).show()

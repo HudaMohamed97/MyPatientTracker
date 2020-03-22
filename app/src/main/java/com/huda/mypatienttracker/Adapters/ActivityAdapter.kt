@@ -43,7 +43,10 @@ class ActivityAdapter(modelFeedArrayList: ArrayList<ActivityData>) :
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val modelFeed = modelFeedArrayList[position]
         holder.activityName.text = modelFeed.subtype
-        holder.speakerName.text = modelFeed.speakers[0].name
+        for (i in modelFeed.speakers) {
+            holder.speakerName.append(i.name + " ")
+        }
+        //holder.speakerName.text = modelFeed.speakers[0].name
 
         holder.dotsImage.setOnClickListener {
             if (onItemClickListener != null && position != RecyclerView.NO_POSITION) {

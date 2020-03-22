@@ -49,11 +49,12 @@ interface ApiServices {
 
     @GET("hospitals/{hospital}/targets")
     fun getAllTarget(
-        @Path("hospital") hospitalId: Int,@Query("page") page: Int, @Header("Authorization") authHeader: String
+        @Path("hospital") hospitalId: Int, @Query("page") page: Int, @Header("Authorization") authHeader: String
     ): Call<TargetResponse>
 
     @GET("activities")
     fun getActivity(
+        @Query("page") page: Int,
         @Header("Authorization") authHeader: String
     ): Call<ActivityModelResponse>
 
@@ -77,10 +78,8 @@ interface ApiServices {
         @Field("subtype") subtype: String,
         @Field("product") product: String,
         @Field("date") date: String,
-        //@Field("speciality[]") speciality: List<String>,
         @FieldMap speciality: HashMap<String, String>,
         @FieldMap speakers: HashMap<String, String>,
-        // @Field("no_attendees[]") no_attendees: List<String>,
         @FieldMap no_attendees: HashMap<String, String>,
         @Field("city_id") city_id: Int,
         @Header("Authorization") authHeader: String
@@ -93,7 +92,7 @@ interface ApiServices {
 
     @GET("patients")
     fun getReferalPatient(
-        @Query("status") status: String, @Query("hospital_type")
+        @Query("page") page: Int, @Query("status") status: String, @Query("hospital_type")
         hospital_type: String, @Header("Authorization") authHeader: String
     ): Call<PatientResponse>
 

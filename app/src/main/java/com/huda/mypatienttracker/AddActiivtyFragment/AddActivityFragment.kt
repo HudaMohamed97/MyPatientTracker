@@ -32,6 +32,7 @@ class AddActivityFragment : Fragment() {
     private lateinit var seakerType: SearchableSpinner
     private lateinit var citySpinner: SearchableSpinner
     private val medicalList = arrayListOf<String>()
+    private val productList = arrayListOf<String>()
     private val specialityList = arrayListOf<String>()
     private val medicalSubList = arrayListOf<String>()
     private val speakerRequestList = arrayListOf<SpeakerRequestModel>()
@@ -41,6 +42,7 @@ class AddActivityFragment : Fragment() {
     private val specialityRequestedList = arrayListOf<String>()
     private val speakerList = arrayListOf<String>()
     private var type = ""
+    private var productType = ""
     private var specialityText = ""
     private var Subtype = ""
     private var date = ""
@@ -76,6 +78,7 @@ class AddActivityFragment : Fragment() {
         intializeMedicalSpinner()
         intializeSpeakerSpinner()
         intializeSpecialitySpinner()
+        intializeProductSpinner()
         getCountryList()
     }
 
@@ -242,6 +245,14 @@ class AddActivityFragment : Fragment() {
         initializeTypeSpinner(spinnerType, medicalList)
     }
 
+    private fun intializeProductSpinner() {
+        productList.clear()
+        productList.add("opsumit")
+        productList.add("uptravi")
+        productList.add("tracleer")
+        initialiProductSpinner(ActivityProductTypespinner, productList)
+    }
+
     private fun intializeSpecialitySpinner() {
         specialityList.clear()
         specialityList.add("PH")
@@ -358,7 +369,7 @@ class AddActivityFragment : Fragment() {
     private fun intializCommercialSubSpinner() {
         commercialList.clear()
         commercialList.add("AV Action Awareness")
-        initializeTypeSpinner(spinnerType, commercialList)
+        initializeTypeSpinner(subTypespinner, commercialList)
     }
 
     private fun initializeTypeSpinner(spinnerType: SearchableSpinner, typeList: ArrayList<String>) {
@@ -411,6 +422,43 @@ class AddActivityFragment : Fragment() {
         arrayAdapter?.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         if (arrayAdapter != null) {
             medicalspinner.adapter = arrayAdapter
+        }
+
+    }
+
+    private fun initialiProductSpinner(
+        spinnerType: SearchableSpinner,
+        typeList: ArrayList<String>
+    ) {
+        val arrayAdapter =
+            context?.let {
+                ArrayAdapter(
+                    it,
+                    R.layout.support_simple_spinner_dropdown_item,
+                    typeList
+                )
+            }
+
+        spinnerType.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(
+                parentView: AdapterView<*>,
+                selectedItemView: View,
+                position: Int,
+                id: Long
+            ) {
+
+                productType = productList[position]
+
+            }
+
+            override fun onNothingSelected(parentView: AdapterView<*>) {
+                // your code here
+            }
+
+        }
+        arrayAdapter?.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        if (arrayAdapter != null) {
+            spinnerType.adapter = arrayAdapter
         }
 
     }
@@ -586,34 +634,19 @@ class AddActivityFragment : Fragment() {
         }
         addActivityButtton.setOnClickListener {
             if (selectedType == -1 || city_id == -1 || specialityRequestedList.size == 0 || attandanceList.size == 0 || Subtype == "" ||
-                speakerRequestList.size == 0 || date == ""
+                speakerRequestList.size == 0 || date == "" || productType == ""
             ) {
                 Toast.makeText(activity, "Please Add All fields Thanks", Toast.LENGTH_SHORT).show()
             } else {
                 val body = AddActivityRequestModel(
                     selectedType,
                     Subtype,
-                    "uptravi",
+                    productType,
                     date,
                     speakerRequestList,
                     city_id
                 )
 
-                /* val speakers = HashMap<String, RequestBody>()
-                 for (i in 0 until speakerRequestList.size) {
-                     val orderitems = speakerRequestList[i]
-                     val name = RequestBody.create(MediaType.parse("text/plain"), orderitems.name)
-                     val speaker_type =
-                         RequestBody.create(MediaType.parse("text/plain"), orderitems.speaker_type)
-                     val speciality =
-                         RequestBody.create(MediaType.parse("text/plain"), orderitems.speciality)
-                     val type = RequestBody.create(MediaType.parse("text/plain"), orderitems.type)
-
-                     speakers["speakers[$i][name]"] = (name)
-                     speakers["speakers[$i][speaker_type]"] = (speaker_type)
-                     speakers["speakers[$i][speciality]"] = (speciality)
-                     speakers["speakers[$i][type]"] = (type)
-                 }*/
                 val speakers = HashMap<String, String>()
                 for (i in 0 until speakerRequestList.size) {
                     val orderitems = speakerRequestList[i]
@@ -664,7 +697,6 @@ class AddActivityFragment : Fragment() {
 
         }
 
-
         activityList.setOnClickListener {
             findNavController().navigateUp()
         }
@@ -686,7 +718,8 @@ class AddActivityFragment : Fragment() {
                     c.set(Calendar.YEAR, year)
                     c.set(Calendar.MONTH, monthOfYear)
                     c.set(Calendar.DAY_OF_MONTH, dayOfMonth)
-                    val myFormat = "dd-MM-yyyy" // mention the format you need
+                    //  val myFormat = "dd-MM-yyyy" // mention the format you need
+                    val myFormat = "yyyy-MM-dd" // mention the format you need
                     val sdf = SimpleDateFormat(myFormat, Locale.US)
                     date = sdf.format(c.time)
                     datePicker.setText(sdf.format(c.time))

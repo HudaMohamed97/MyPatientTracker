@@ -13,8 +13,8 @@ class PatientaListViewModel : ViewModel() {
     private lateinit var updateStatuesMutableLiveData: MutableLiveData<SubmitModel>
 
 
-    fun getPatients(status: String, hospital_type: String, accessToken: String) {
-        mutableLiveData = repositoryHelper.getPatients(status, hospital_type, accessToken)
+    fun getPatients(page: Int, status: String, hospital_type: String, accessToken: String) {
+        mutableLiveData = repositoryHelper.getPatients(page, status, hospital_type, accessToken)
 
     }
 

@@ -75,7 +75,6 @@
             android:layout_marginLeft="@dimen/space_20"
             android:layout_marginTop="@dimen/space_20"
             android:layout_weight="1"
-            android:text="welcom huda hi ....."
             android:textColor="@color/black" />
 
         <LinearLayout

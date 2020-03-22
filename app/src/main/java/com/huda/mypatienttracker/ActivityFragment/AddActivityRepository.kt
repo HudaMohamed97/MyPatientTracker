@@ -17,9 +17,9 @@ import retrofit2.Response
 import java.util.HashMap
 
 class AddActivityRepository {
-    fun getActivity(accessToken: String): MutableLiveData<ActivityModelResponse> {
+    fun getActivity(page:Int,accessToken: String): MutableLiveData<ActivityModelResponse> {
         val activityData = MutableLiveData<ActivityModelResponse>()
-        Webservice.getInstance().api.getActivity(accessToken)
+        Webservice.getInstance().api.getActivity(page,accessToken)
             .enqueue(object : Callback<ActivityModelResponse> {
                 override fun onResponse(
                     call: Call<ActivityModelResponse>,

@@ -27,8 +27,8 @@ class AddActivityViewModel : ViewModel() {
     private lateinit var doctorsMutableLiveData: MutableLiveData<DoctorsResponse>
     private lateinit var deletedMutableLiveData: MutableLiveData<SubmitModel>
 
-    fun getActivity(accessToken: String) {
-        mutableLiveData = repositoryHelper.getActivity(accessToken)
+    fun getActivity(page: Int, accessToken: String) {
+        mutableLiveData = repositoryHelper.getActivity(page, accessToken)
 
     }
 
@@ -75,7 +75,7 @@ class AddActivityViewModel : ViewModel() {
     fun addActivity(
         speakers: HashMap<String, String>,
         body: AddActivityRequestModel,
-        speciality:HashMap<String, String>,
+        speciality: HashMap<String, String>,
         no_attendees: HashMap<String, String>
         , accessToken: String
     ) {

@@ -55,17 +55,17 @@ class PatientaListFragment : Fragment() {
 
     private fun callPatients(page: Int, fromLoadMore: Boolean, fromRefresh: Boolean) {
         if (fromLoadMore) {
-            patientProgressBar.visibility = View.VISIBLE
+            LoadMorepatientProgressBar.visibility = View.VISIBLE
         } else {
             patientProgressBar.visibility = View.VISIBLE
         }
         val accessToken = loginPreferences.getString("accessToken", "")
         if (accessToken != null) {
-            patientaListViewModel.getPatients("no update", "referal", accessToken)
+            patientaListViewModel.getPatients(page, "no update", "referal", accessToken)
         }
         patientaListViewModel.getData().observe(this, Observer {
             if (fromLoadMore) {
-                patientProgressBar.visibility = View.GONE
+                LoadMorepatientProgressBar.visibility = View.GONE
             } else {
                 modelFeedArrayList.clear()
                 patientProgressBar.visibility = View.GONE
@@ -75,21 +75,22 @@ class PatientaListFragment : Fragment() {
                 modelFeedArrayList.clear()
             }
             if (it != null) {
+                currentPageNum = it.meta.current_page
                 lastPageNum = it.meta.last_page
                 for (data in it.data) {
                     modelFeedArrayList.add(data)
                 }
                 if (modelFeedArrayList.size == 0) {
-                     /*modelFeedArrayList.add(
-                         PatientResponseData(
-                             1,
-                             "name",
-                             "noUpdate",
-                             null,
-                             "kdkdsk"
-                         )
-                     )
-                     patientAdapter.notifyDataSetChanged()*/
+                    /*modelFeedArrayList.add(
+                        PatientResponseData(
+                            1,
+                            "name",
+                            "noUpdate",
+                            null,
+                            "kdkdsk"
+                        )
+                    )
+                    patientAdapter.notifyDataSetChanged()*/
                     Toast.makeText(activity, "No Patient Added Yet.", Toast.LENGTH_SHORT).show()
 
                 }
@@ -114,9 +115,9 @@ class PatientaListFragment : Fragment() {
                 if (fromTab == "Confirmed") {
                     val bundle = Bundle()
                     bundle.putInt("PatientId", modelFeedArrayList[position].id)
-                   // bundle.putInt("HospitalId", modelFeedArrayList[position].hospital?.id!!)
+                    // bundle.putInt("HospitalId", modelFeedArrayList[position].hospital?.id!!)
                     bundle.putInt("HospitalId", 1)
-                   // bundle.putString("HospitalName", modelFeedArrayList[position].hospital?.name)
+                    // bundle.putString("HospitalName", modelFeedArrayList[position].hospital?.name)
                     bundle.putString("HospitalName", "name")
                     findNavController().navigate(
                         R.id.action_PatientList_updateReferalPatientFragment,
@@ -141,7 +142,7 @@ class PatientaListFragment : Fragment() {
                 if (!recyclerView.canScrollVertically(1) && !mHasReachedBottomOnce) {
                     mHasReachedBottomOnce = true
                     if (currentPageNum <= lastPageNum) {
-                        // callPosts(currentPageNum, true, false)
+                        callPatients(currentPageNum, true, false)
                     }
                 }
             }
@@ -178,6 +179,8 @@ class PatientaListFragment : Fragment() {
     }
 
     private fun setClickListeners() {
+        currentPageNum = 1
+        lastPageNum = 0
         val backButton = root.findViewById(R.id.backButton) as ImageView
         backButton.setOnClickListener {
             findNavController().navigateUp()

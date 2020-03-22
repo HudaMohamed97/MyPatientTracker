@@ -27,7 +27,7 @@ class HomeFragment : Fragment() {
     private lateinit var email: EditText
     private lateinit var passwordEt: EditText
     private lateinit var loginPreferences: SharedPreferences
-    private lateinit var loginPrefsEditor: SharedPreferences.Editor
+    private var Name = ""
 
 
     override fun onCreateView(
@@ -62,6 +62,8 @@ class HomeFragment : Fragment() {
         }
 
         loginPreferences = activity!!.getSharedPreferences("loginPrefs", Context.MODE_PRIVATE)
+        Name = loginPreferences.getString("Name", "").toString()
+        textView.text = "welcom  " + Name + "  hi ..."
 
     }
 
