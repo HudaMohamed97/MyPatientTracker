@@ -178,6 +178,10 @@ class LoginFragment : Fragment(), LoginInterface {
         loginPrefsEditor.putString("accessToken", token)
         loginPrefsEditor.putString("Name", responseModelData.account.name)
         loginPrefsEditor.putInt("userId", responseModelData.account.id)
+        loginPrefsEditor.putInt("TargetAll", responseModelData.account.target?.all!!)
+        loginPrefsEditor.putInt("TargetNoUpdate", responseModelData.account.target.all)
+        loginPrefsEditor.putInt("TargetNotPh", responseModelData.account.target.all)
+        loginPrefsEditor.putInt("TargetConfirmed", responseModelData.account.target.all)
         loginPrefsEditor.commit()
     }
 }

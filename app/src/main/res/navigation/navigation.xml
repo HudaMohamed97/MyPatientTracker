@@ -33,6 +33,9 @@
         <action
             android:id="@+id/action_HomeFragment_toPatientFragment"
             app:destination="@id/PatientListFragment" />
+        <action
+            android:id="@+id/action_HomeFragment_toNotification"
+            app:destination="@id/NotificationFragment" />
     </fragment>
     <fragment
         android:id="@+id/HospitalListFragment"
@@ -205,6 +208,12 @@
         android:id="@+id/UpdatePatientReferalFragment"
         android:name="com.huda.mypatienttracker.UpdateReferalPatientFragment.UpdateReferalPatientFragment"
         tools:layout="@layout/update_preferal_fragment">
+
+    </fragment>
+    <fragment
+        android:id="@+id/NotificationFragment"
+        android:name="com.huda.mypatienttracker.NotificationFragment.NotificationListFragment"
+        tools:layout="@layout/notification_fragment_list">
 
     </fragment>
 

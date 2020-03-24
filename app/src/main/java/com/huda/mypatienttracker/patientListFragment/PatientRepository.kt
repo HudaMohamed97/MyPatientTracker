@@ -6,6 +6,7 @@ import com.huda.mypatienttracker.Models.HospitalModels.PatientReferalRequestMode
 import com.huda.mypatienttracker.Models.PatientRequestModel
 import com.huda.mypatienttracker.Models.PatientResponse
 import com.huda.mypatienttracker.Models.updatePatientRequestModel
+import com.huda.mypatienttracker.Models.updateReferalPatientRequestModel
 import com.huda.mypatienttracker.NetworkLayer.Webservice
 import okhttp3.ResponseBody
 import retrofit2.Call
@@ -127,6 +128,33 @@ class PatientRepository {
     ): MutableLiveData<SubmitModel> {
         val hospitalData = MutableLiveData<SubmitModel>()
         Webservice.getInstance().api.updatePatient(patientId, model, accessToken)
+            .enqueue(object : Callback<SubmitModel> {
+                override fun onResponse(
+                    call: Call<SubmitModel>,
+                    response: Response<SubmitModel>
+                ) {
+                    if (response.isSuccessful) {
+                        hospitalData.value = response.body()
+                    } else {
+                        hospitalData.value = response.body()
+                    }
+                }
+
+                override fun onFailure(call: Call<SubmitModel>, t: Throwable) {
+                    hospitalData.value = null
+                }
+            })
+        return hospitalData
+
+    }
+
+    fun updateReferalPatient(
+        patientId: Int,
+        model: updateReferalPatientRequestModel,
+        accessToken: String
+    ): MutableLiveData<SubmitModel> {
+        val hospitalData = MutableLiveData<SubmitModel>()
+        Webservice.getInstance().api.updateReferalPatient(patientId, model, accessToken)
             .enqueue(object : Callback<SubmitModel> {
                 override fun onResponse(
                     call: Call<SubmitModel>,

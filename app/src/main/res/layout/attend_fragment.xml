@@ -33,7 +33,7 @@
             android:background="@drawable/background_edittext"
             android:ems="10"
             android:hint="   Number of Attendees"
-            android:inputType="textPersonName"
+            android:inputType="number"
             android:textColorHint="@color/not_black" />
 
     </LinearLayout>

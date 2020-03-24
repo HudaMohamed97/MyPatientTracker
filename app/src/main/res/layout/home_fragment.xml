@@ -93,11 +93,12 @@
                 android:textColor="@color/black" />
 
             <TextView
-                android:id="@+id/textView3"
-                android:layout_width="80dp"
-                android:layout_height="40dp"
+                android:id="@+id/targetText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/space_10"
                 android:background="@drawable/rounded_background_orange"
-                android:text="5698  "
+                android:minWidth="@dimen/space_60"
                 android:textColor="@color/black" />
         </LinearLayout>
 
@@ -163,8 +164,8 @@
         </com.google.android.material.card.MaterialCardView>
 
         <com.google.android.material.card.MaterialCardView
-            android:layout_width="match_parent"
             android:id="@+id/patientCard"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:layout_weight="1"

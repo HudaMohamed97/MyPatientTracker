@@ -1,5 +1,6 @@
 package com.huda.mypatienttracker.HomeFragment
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
@@ -24,8 +25,6 @@ import kotlinx.android.synthetic.main.login_fragment.*
 class HomeFragment : Fragment() {
     private lateinit var root: View
     private lateinit var homeViewModel: HomeViewModel
-    private lateinit var email: EditText
-    private lateinit var passwordEt: EditText
     private lateinit var loginPreferences: SharedPreferences
     private var Name = ""
 
@@ -45,6 +44,7 @@ class HomeFragment : Fragment() {
         setClickListeners()
     }
 
+    @SuppressLint("SetTextI18n")
     private fun setClickListeners() {
         val backButton = root.findViewById(R.id.backButton) as ImageView
         backButton.setOnClickListener {
@@ -60,57 +60,29 @@ class HomeFragment : Fragment() {
         patientCard.setOnClickListener {
             findNavController().navigate(R.id.action_HomeFragment_toPatientFragment)
         }
+        notification.setOnClickListener {
+            findNavController().navigate(R.id.action_HomeFragment_toNotification)
+        }
 
         loginPreferences = activity!!.getSharedPreferences("loginPrefs", Context.MODE_PRIVATE)
         Name = loginPreferences.getString("Name", "").toString()
-        textView.text = "welcom  " + Name + "  hi ..."
+        targetText.text = "All Target  " + loginPreferences.getInt(
+            "TargetAll",
+            0
+        ).toString() + "  Not PH  " + loginPreferences.getInt(
+            "TargetNotPh",
+            0
+        ).toString() + "  Confirmed   " +
+                loginPreferences.getInt(
+                    "TargetConfirmed",
+                    0
+                ).toString() + "  No Update  " + loginPreferences.getInt(
+            "TargetNoUpdate",
+            0
+        ).toString()
 
-    }
+        textView.text = "welcom  " + Name + " ..."
 
-    private fun callLoginRequest() {
-        progressBar.visibility = View.VISIBLE
-        /* homeViewModel.login(
-             email.text.toString(),
-             passwordEt.text.toString()
-         )*/
-        /* loginViewModel.getData().observe(this, Observer {
-             progressBar.visibility = View.GONE
-             if (it != null) {
-                 if (it.access_token != "") {
-                     saveData(it)
-                     saveUserData()
-                     if (findNavController().currentDestination?.id == R.id.loginFragment) {
-                         //   findNavController().navigate(R.id.action_LoginFragment_to_Home)
-                     }
-                 } else {
-                     var error = it.token_type.replace("[", "")
-                     error = error.replace("]", "")
-                     Toast.makeText(activity, error, Toast.LENGTH_SHORT).show()
-                 }
-             } else {
-                 Toast.makeText(activity, "Network Error", Toast.LENGTH_SHORT).show()
-             }
-
-
-         })*/
-
-    }
-
-    private fun checkErrorEnabled() {
-        if (!Validation.validate(email.text.toString())) {
-            Toast.makeText(activity, "empty Email please fill it", Toast.LENGTH_SHORT).show()
-        } else if (!Validation.validateEmail(email.text.toString())) {
-            Toast.makeText(
-                activity,
-                "Invalid Email Format Please enter valid mail",
-                Toast.LENGTH_SHORT
-            ).show()
-
-        } else {
-            if (!Validation.validate(passwordEt.text.toString())) {
-                Toast.makeText(activity, "empty password please fill it", Toast.LENGTH_SHORT).show()
-            }
-        }
     }
 
 

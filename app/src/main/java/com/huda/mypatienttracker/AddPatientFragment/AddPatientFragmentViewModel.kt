@@ -8,6 +8,7 @@ import com.huda.mypatienttracker.Models.HospitalModels.HospitalResponseModel
 import com.huda.mypatienttracker.Models.PatientRequestModel
 import com.huda.mypatienttracker.Models.SingelHospitalResponse
 import com.huda.mypatienttracker.Models.updatePatientRequestModel
+import com.huda.mypatienttracker.Models.updateReferalPatientRequestModel
 import com.huda.mypatienttracker.patientListFragment.PatientRepository
 
 class AddPatientFragmentViewModel : ViewModel() {
@@ -17,6 +18,7 @@ class AddPatientFragmentViewModel : ViewModel() {
     private lateinit var submitMutableLiveData: MutableLiveData<SubmitModel>
     private lateinit var singelMutableLiveData: MutableLiveData<SingelHospitalResponse>
     private lateinit var updateMutableLiveData: MutableLiveData<SubmitModel>
+    private lateinit var updateReferalMutableLiveData: MutableLiveData<SubmitModel>
 
     fun getHospitals(page: Int, type: String, accessToken: String) {
         mutableLiveData = repositoryHelper.getHospitals(page, type, accessToken)
@@ -43,6 +45,20 @@ class AddPatientFragmentViewModel : ViewModel() {
 
     fun getUpdatePatient(): MutableLiveData<SubmitModel> {
         return updateMutableLiveData
+    }
+
+    fun updateReferalPatient(
+        patientId: Int,
+        model: updateReferalPatientRequestModel,
+        accessToken: String
+    ) {
+        updateReferalMutableLiveData =
+            patientRepository.updateReferalPatient(patientId, model, accessToken)
+
+    }
+
+    fun getUpdateReferalPatient(): MutableLiveData<SubmitModel> {
+        return updateReferalMutableLiveData
     }
 
 

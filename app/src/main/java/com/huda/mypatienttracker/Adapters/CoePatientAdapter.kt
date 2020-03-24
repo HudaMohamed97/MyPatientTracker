@@ -46,7 +46,7 @@ class CoePatientAdapter(modelFeedArrayList: ArrayList<PatientResponseData>) :
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val modelFeed = modelFeedArrayList[position]
         holder.hospitalNameCoe.text = modelFeed.hospital?.name
-        holder.doctorName.text = modelFeed.name
+        holder.doctorName.text = modelFeed.doctor.name
         holder.time.text = modelFeed.created_at
 
         holder.dotsImage.setOnClickListener {

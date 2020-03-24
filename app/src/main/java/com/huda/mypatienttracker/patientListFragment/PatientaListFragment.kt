@@ -16,6 +16,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.huda.mypatienttracker.Adapters.PatientAdapter
+import com.huda.mypatienttracker.Models.DoctorDate
 import com.huda.mypatienttracker.Models.PatientResponseData
 import com.huda.mypatienttracker.Models.updatePatientRequestModel
 import com.huda.mypatienttracker.R
@@ -81,13 +82,14 @@ class PatientaListFragment : Fragment() {
                     modelFeedArrayList.add(data)
                 }
                 if (modelFeedArrayList.size == 0) {
-                    /*modelFeedArrayList.add(
+                   /* modelFeedArrayList.add(
                         PatientResponseData(
                             1,
                             "name",
                             "noUpdate",
-                            null,
-                            "kdkdsk"
+                            false,
+                            DoctorDate(0, "doc", "", ""),
+                            null, ""
                         )
                     )
                     patientAdapter.notifyDataSetChanged()*/
@@ -115,10 +117,12 @@ class PatientaListFragment : Fragment() {
                 if (fromTab == "Confirmed") {
                     val bundle = Bundle()
                     bundle.putInt("PatientId", modelFeedArrayList[position].id)
-                    // bundle.putInt("HospitalId", modelFeedArrayList[position].hospital?.id!!)
-                    bundle.putInt("HospitalId", 1)
-                    // bundle.putString("HospitalName", modelFeedArrayList[position].hospital?.name)
-                    bundle.putString("HospitalName", "name")
+                    bundle.putInt("HospitalId", modelFeedArrayList[position].hospital?.id!!)
+                   // bundle.putInt("HospitalId", 1)
+                   // bundle.putInt("DoctorId", 1)
+                    bundle.putString("HospitalName", modelFeedArrayList[position].hospital?.name)
+                    bundle.putInt("DoctorId", modelFeedArrayList[position].doctor.id)
+                    //bundle.putString("HospitalName", "name")
                     findNavController().navigate(
                         R.id.action_PatientList_updateReferalPatientFragment,
                         bundle

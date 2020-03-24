@@ -101,6 +101,11 @@ interface ApiServices {
         @Path("patient") patient: Int, @Body body: updatePatientRequestModel, @Header("Authorization") authHeader: String
     ): Call<SubmitModel>
 
+    @POST("patients/{patient}/update-referal")
+    fun updateReferalPatient(
+        @Path("patient") patient: Int, @Body body: updateReferalPatientRequestModel, @Header("Authorization") authHeader: String
+    ): Call<SubmitModel>
+
     @POST("patients/{patient}/update-status")
     fun updatePatientSatues(
         @Path("patient") patient: Int, @Body status: Map<String, String>, @Header("Authorization") authHeader: String

@@ -14,10 +14,9 @@ import androidx.navigation.fragment.findNavController
 import com.huda.mypatienttracker.AddPatientFragment.AddPatientFragmentViewModel
 import com.huda.mypatienttracker.Models.Doctors
 import com.huda.mypatienttracker.Models.HospitalModels.HospitalData
-import com.huda.mypatienttracker.Models.updatePatientRequestModel
+import com.huda.mypatienttracker.Models.updateReferalPatientRequestModel
 import com.huda.mypatienttracker.R
 import com.toptoche.searchablespinnerlibrary.SearchableSpinner
-import kotlinx.android.synthetic.main.update_patient_fragment.*
 import kotlinx.android.synthetic.main.update_preferal_fragment.*
 
 class UpdateReferalPatientFragment : Fragment() {
@@ -28,9 +27,9 @@ class UpdateReferalPatientFragment : Fragment() {
     }
 
     private lateinit var root: View
-    private var fromType: String = ""
-    private var etiology: String = ""
-    private var otherMedication: String = ""
+    private var fromType: String? = null
+    private var etiology: String? = null
+    private var otherMedication: String? = null
     private lateinit var addPatientFragmentViewModel: AddPatientFragmentViewModel
     private lateinit var loginPreferences: SharedPreferences
     private val hospitalList = arrayListOf<HospitalData>()
@@ -38,11 +37,14 @@ class UpdateReferalPatientFragment : Fragment() {
     private val etiologyList = arrayListOf<String>()
     private val doctorist = arrayListOf<Doctors>()
     private val doctorNameList = arrayListOf<String>()
-    private var hospitalId: Int = -1
+    private val doctorReferalList = arrayListOf<Doctors>()
+    private val doctorReferalNameList = arrayListOf<String>()
+    private var toHospitalId: Int = -1
     private var PatientId: Int = 0
     private var HospitalName: String = ""
     private var HospitalId: Int = 0
     private var doctorId: Int = -1
+    private var doctorReferalId: Int = -1
 
 
     override fun onCreateView(
@@ -61,8 +63,10 @@ class UpdateReferalPatientFragment : Fragment() {
         PatientId = arguments?.getInt("PatientId")!!
         HospitalId = arguments?.getInt("HospitalId")!!
         HospitalName = arguments?.getString("HospitalName")!!
+        doctorReferalId = arguments?.getInt("DoctorId")!!
         setClickListeners()
         callHospitals("coe", false, false)
+        callReferalSingelHospital(8, false)
         intializeEtiologySpinner()
     }
 
@@ -79,17 +83,11 @@ class UpdateReferalPatientFragment : Fragment() {
 
     private fun setClickListeners() {
         ReferalHospitalName.text = "   " + HospitalName
-        // ReferalDoctorText.text = ""
         val rg = root.findViewById(R.id.radioPatientReferalGroup) as RadioGroup
         val backButton = root.findViewById(R.id.backButton) as ImageView
         backButton.setOnClickListener {
             findNavController().navigateUp()
         }
-
-        fromType = UPTRAVI
-        otherMedication = "PDE5i"
-        etiology = ""
-
         ReferalPDE5i.setOnClickListener {
             otherMedication = "PDE5i"
             ReferalOral_PC.isChecked = false
@@ -147,12 +145,25 @@ class UpdateReferalPatientFragment : Fragment() {
 
 
         continueReferalButton.setOnClickListener {
-            if (fromType == "" || hospitalId == -1 || doctorId == -1 || otherMedication == "" || etiology == "") {
-                Toast.makeText(activity, "Please fill All Fields Thanks", Toast.LENGTH_SHORT)
-                    .show()
+            if (toHospitalId == -1) {
+                val model = updateReferalPatientRequestModel(
+                    HospitalId, doctorReferalId,
+                    null,
+                    null,
+                    fromType,
+                    etiology,
+                    otherMedication
+                )
+                callUpdatePatient(PatientId, model)
             } else {
-                val model =
-                    updatePatientRequestModel(fromType, etiology, otherMedication)
+                val model = updateReferalPatientRequestModel(
+                    HospitalId, doctorReferalId,
+                    toHospitalId,
+                    doctorId,
+                    fromType,
+                    etiology,
+                    otherMedication
+                )
                 callUpdatePatient(PatientId, model)
             }
         }
@@ -180,14 +191,14 @@ class UpdateReferalPatientFragment : Fragment() {
 
     }
 
-    private fun callUpdatePatient(PatientId: Int, model: updatePatientRequestModel) {
-        updatepatientProgressBar.visibility = View.VISIBLE
+    private fun callUpdatePatient(PatientId: Int, model: updateReferalPatientRequestModel) {
+        updateReferalProgressBar.visibility = View.VISIBLE
         val accessToken = loginPreferences.getString("accessToken", "")
         if (accessToken != null) {
-            addPatientFragmentViewModel.updatePatient(PatientId, model, accessToken)
+            addPatientFragmentViewModel.updateReferalPatient(PatientId, model, accessToken)
         }
-        addPatientFragmentViewModel.getUpdatePatient().observe(this, Observer {
-            updatepatientProgressBar.visibility = View.GONE
+        addPatientFragmentViewModel.getUpdateReferalPatient().observe(this, Observer {
+            updateReferalProgressBar.visibility = View.GONE
             if (it != null) {
                 if (it.type == "error")
                     Toast.makeText(
@@ -262,12 +273,41 @@ class UpdateReferalPatientFragment : Fragment() {
         })
     }
 
+    private fun callReferalSingelHospital(
+        hospitalId: Int,
+        fromLoadMore: Boolean
+    ) {
+        val accessToken = loginPreferences.getString("accessToken", "")
+        if (accessToken != null) {
+            addPatientFragmentViewModel.getSingelHospital(hospitalId, accessToken)
+        }
+        addPatientFragmentViewModel.getSingelData().observe(this, Observer {
+            if (it != null) {
+                doctorReferalList.clear()
+                for (data in it.data.doctors) {
+                    doctorReferalList.add(data)
+                }
+                preparReferalDoctorsList(doctorReferalList)
+            } else {
+                Toast.makeText(activity, "Network Error", Toast.LENGTH_SHORT).show()
+            }
+        })
+    }
+
     private fun preparDoctorsList(doctorist: ArrayList<Doctors>) {
         doctorNameList.clear()
         for (hospital in doctorist) {
             doctorNameList.add(hospital.name)
         }
         initializeDoctorSpinner(ReferalToDrNameSpinner, doctorNameList)
+    }
+
+    private fun preparReferalDoctorsList(doctorist: ArrayList<Doctors>) {
+        doctorReferalNameList.clear()
+        for (hospital in doctorist) {
+            doctorReferalNameList.add(hospital.name)
+        }
+        initializeReferalDoctorSpinner(ReferalDoctorSpinner, doctorReferalNameList)
     }
 
 
@@ -300,8 +340,8 @@ class UpdateReferalPatientFragment : Fragment() {
                     position: Int,
                     id: Long
                 ) {
-                    hospitalId = hospitalList[position].id
-                    callSingelHospital(hospitalId, false)
+                    toHospitalId = hospitalList[position].id
+                    callSingelHospital(toHospitalId, false)
                 }
 
                 override fun onNothingSelected(parentView: AdapterView<*>) {
@@ -371,6 +411,40 @@ class UpdateReferalPatientFragment : Fragment() {
             ) {
 
                 doctorId = doctorist[position].id
+            }
+
+            override fun onNothingSelected(parentView: AdapterView<*>) {
+                // your code here
+            }
+        }
+        arrayAdapter?.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        if (arrayAdapter != null) {
+            spinner.adapter = arrayAdapter
+        }
+
+    }
+
+    private fun initializeReferalDoctorSpinner(
+        spinner: SearchableSpinner,
+        doctorsNameList: ArrayList<String>
+    ) {
+        val arrayAdapter =
+            context?.let {
+                ArrayAdapter(
+                    it,
+                    R.layout.support_simple_spinner_dropdown_item,
+                    doctorsNameList
+                )
+            }
+
+        spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(
+                parentView: AdapterView<*>,
+                selectedItemView: View,
+                position: Int,
+                id: Long
+            ) {
+                doctorReferalId = doctorReferalList[position].id
             }
 
             override fun onNothingSelected(parentView: AdapterView<*>) {

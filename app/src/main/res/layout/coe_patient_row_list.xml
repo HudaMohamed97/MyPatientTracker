@@ -80,6 +80,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/space_60"
         android:layout_marginBottom="@dimen/space_5"
+        android:visibility="gone"
         android:orientation="horizontal">
 
         <TextView
