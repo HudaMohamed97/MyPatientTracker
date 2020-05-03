@@ -84,7 +84,7 @@ class HospitalFragment : Fragment() {
         }
         val accessToken = loginPreferences.getString("accessToken", "")
         if (accessToken != null) {
-            hospitalViewModel.getHospitals(page,type, accessToken)
+            hospitalViewModel.getHospitals(page, type, accessToken)
         }
         hospitalViewModel.getData().observe(this, Observer {
             if (fromLoadMore) {

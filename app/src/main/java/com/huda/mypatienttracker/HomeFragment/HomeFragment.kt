@@ -4,23 +4,16 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
-import android.text.method.HideReturnsTransformationMethod
-import android.text.method.PasswordTransformationMethod
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
-import android.widget.Button
-import android.widget.EditText
 import android.widget.ImageView
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
-import com.example.catapplication.utilies.Validation
 import com.huda.mypatienttracker.R
 import kotlinx.android.synthetic.main.home_fragment.*
-import kotlinx.android.synthetic.main.login_fragment.*
 
 class HomeFragment : Fragment() {
     private lateinit var root: View
