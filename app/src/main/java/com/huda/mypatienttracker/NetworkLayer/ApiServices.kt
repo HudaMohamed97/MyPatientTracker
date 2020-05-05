@@ -58,19 +58,6 @@ interface ApiServices {
         @Header("Authorization") authHeader: String
     ): Call<ActivityModelResponse>
 
-    /*  @Multipart
-      @POST("activities")
-      fun addActivity(
-          @Part("type") type: RequestBody,
-          @Part("subtype") subtype: RequestBody,
-          @Part("product") product: RequestBody,
-          @Part("date") date: RequestBody,
-          @PartMap speciality: HashMap<String, RequestBody>,
-          @PartMap speakers: HashMap<String, RequestBody>,
-          @PartMap no_attendees: HashMap<String, RequestBody>,
-          @Part("city_id") city_id: RequestBody,
-          @Header("Authorization") authHeader: String
-      ): Call<SubmitModel>*/
     @POST("activities")
     @FormUrlEncoded
     fun addActivity(

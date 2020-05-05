@@ -16,14 +16,18 @@ import androidx.navigation.fragment.findNavController
 import com.huda.mypatienttracker.Models.Doctors
 import com.huda.mypatienttracker.Models.HospitalModels.HospitalData
 import com.huda.mypatienttracker.Models.PatientRequestModel
+import com.huda.mypatienttracker.UpdatePatient.UpdatePatientFragment
 import com.toptoche.searchablespinnerlibrary.SearchableSpinner
 import kotlinx.android.synthetic.main.add_patient_fragment.*
+import kotlinx.android.synthetic.main.update_patient_fragment.*
 
 
 class AddPatientFragment : Fragment() {
     companion object {
         val UPTRAVI: String = "UPTRAVIE"
         val OPSUMIT: String = "OPSUMIT"
+        val TRACLEER: String = "tracleer"
+
     }
 
     private lateinit var root: View
@@ -168,6 +172,12 @@ class AddPatientFragment : Fragment() {
                     uptraviLayout.visibility = View.VISIBLE
                     opsumitLayout.visibility = View.GONE
                 }
+                R.id.addRadioTraceller -> {
+                    fromType = TRACLEER
+                    uptraviLayout.visibility = View.GONE
+                    opsumitLayout.visibility = View.VISIBLE
+                }
+
                 R.id.radioOpsumit -> {
                     fromType = OPSUMIT
                     uptraviLayout.visibility = View.GONE

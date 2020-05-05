@@ -20,7 +20,7 @@ class MainActivity : AppCompatActivity() {
 
                 // Get new Instance ID token
                 val token = task.result?.token
-
+                Log.i("hhhh", token + "")
                 // Log and toast
             })
 
