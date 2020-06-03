@@ -62,7 +62,7 @@ class PatientaListFragment : Fragment() {
         }
         val accessToken = loginPreferences.getString("accessToken", "")
         if (accessToken != null) {
-            patientaListViewModel.getPatients(page, "no update", "referal", accessToken)
+            patientaListViewModel.getPatients(page, accessToken)
         }
         patientaListViewModel.getData().observe(this, Observer {
             if (fromLoadMore) {
@@ -82,17 +82,17 @@ class PatientaListFragment : Fragment() {
                     modelFeedArrayList.add(data)
                 }
                 if (modelFeedArrayList.size == 0) {
-                   /* modelFeedArrayList.add(
-                        PatientResponseData(
-                            1,
-                            "name",
-                            "noUpdate",
-                            false,
-                            DoctorDate(0, "doc", "", ""),
-                            null, ""
-                        )
-                    )
-                    patientAdapter.notifyDataSetChanged()*/
+                    /* modelFeedArrayList.add(
+                         PatientResponseData(
+                             1,
+                             "name",
+                             "noUpdate",
+                             false,
+                             DoctorDate(0, "doc", "", ""),
+                             null, ""
+                         )
+                     )
+                     patientAdapter.notifyDataSetChanged()*/
                     Toast.makeText(activity, "No Patient Added Yet.", Toast.LENGTH_SHORT).show()
 
                 }
@@ -115,24 +115,37 @@ class PatientaListFragment : Fragment() {
         patientAdapter.setOnCommentListener(object : PatientAdapter.OnCommentClickListener {
             override fun onDotsImageClicked(position: Int, fromTab: String) {
                 if (fromTab == "Confirmed") {
-                    val bundle = Bundle()
-                    bundle.putInt("PatientId", modelFeedArrayList[position].id)
-                    bundle.putInt("HospitalId", modelFeedArrayList[position].hospital?.id!!)
-                   // bundle.putInt("HospitalId", 1)
-                   // bundle.putInt("DoctorId", 1)
-                    bundle.putString("HospitalName", modelFeedArrayList[position].hospital?.name)
-                    bundle.putInt("DoctorId", modelFeedArrayList[position].doctor.id)
-                    //bundle.putString("HospitalName", "name")
-                    findNavController().navigate(
-                        R.id.action_PatientList_updateReferalPatientFragment,
-                        bundle
+                    callStatuesPatient(
+                        "confirmed",
+                        position,
+                        modelFeedArrayList[position].id,
+                        "confirmed"
                     )
+
+
+                    /* val bundle = Bundle()
+                     bundle.putInt("PatientId", modelFeedArrayList[position].id)
+                     bundle.putInt("HospitalId", modelFeedArrayList[position].hospital?.id!!)
+                    // bundle.putInt("HospitalId", 1)
+                    // bundle.putInt("DoctorId", 1)
+                     bundle.putString("HospitalName", modelFeedArrayList[position].hospital?.name)
+                     bundle.putInt("DoctorId", modelFeedArrayList[position].doctor.id)
+                     //bundle.putString("HospitalName", "name")
+                     findNavController().navigate(
+                         R.id.action_PatientList_updateReferalPatientFragment,
+                         bundle
+                     )*/
 
                 } else if (fromTab == "") {
                     Toast.makeText(activity, "Please Select Action.", Toast.LENGTH_SHORT).show()
 
                 } else if (fromTab == "notPh") {
-                    callStatuesPatient(position, modelFeedArrayList[position].id, "no update")
+                    callStatuesPatient(
+                        "not Ph",
+                        position,
+                        modelFeedArrayList[position].id,
+                        "not ph"
+                    )
                 }
 
             }
@@ -154,7 +167,7 @@ class PatientaListFragment : Fragment() {
 
     }
 
-    private fun callStatuesPatient(position: Int, PatientId: Int, statues: String) {
+    private fun callStatuesPatient(from: String, position: Int, PatientId: Int, statues: String) {
         patientProgressBar.visibility = View.VISIBLE
         val accessToken = loginPreferences.getString("accessToken", "")
         if (accessToken != null) {
@@ -171,8 +184,15 @@ class PatientaListFragment : Fragment() {
                     ).show()
                 else {
                     Toast.makeText(activity, "Submitted Successfully", Toast.LENGTH_SHORT).show()
-                    modelFeedArrayList.removeAt(position)
-                    patientAdapter.notifyDataSetChanged()
+                    if (from == "not Ph") {
+                        modelFeedArrayList[position].status = "not Ph"
+                        patientAdapter.notifyItemChanged(position);
+                    } else {
+                        modelFeedArrayList.removeAt(position)
+                        //callPatients(1,false,false)
+                        patientAdapter.notifyDataSetChanged()
+                    }
+
                 }
             } else {
                 Toast.makeText(activity, "Network Error", Toast.LENGTH_SHORT).show()

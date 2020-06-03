@@ -43,6 +43,7 @@ class ActivityAdapter(modelFeedArrayList: ArrayList<ActivityData>) :
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val modelFeed = modelFeedArrayList[position]
         holder.activityName.text = modelFeed.subtype
+        holder.speakerName.text=""
         for (i in modelFeed.speakers) {
             holder.speakerName.append(i.name + " ")
         }

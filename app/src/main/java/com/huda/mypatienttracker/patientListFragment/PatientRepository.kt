@@ -16,12 +16,12 @@ import retrofit2.Response
 class PatientRepository {
     fun getPatients(
         page: Int,
-        status: String,
-        hospitalType: String,
+      /*  status: String,
+        hospitalType: String,*/
         accessToken: String
     ): MutableLiveData<PatientResponse> {
         val hospitalData = MutableLiveData<PatientResponse>()
-        Webservice.getInstance().api.getReferalPatient(page, status, hospitalType, accessToken)
+        Webservice.getInstance().api.getReferalPatient(page, accessToken)
             .enqueue(object : Callback<PatientResponse> {
                 override fun onResponse(
                     call: Call<PatientResponse>,
@@ -44,11 +44,11 @@ class PatientRepository {
 
     fun getCoePatients(
         page: Int,
-        hospitalType: String,
+        status: String,
         accessToken: String
     ): MutableLiveData<PatientResponse> {
         val hospitalData = MutableLiveData<PatientResponse>()
-        Webservice.getInstance().api.getCoePatient(page, hospitalType, accessToken)
+        Webservice.getInstance().api.getCoePatient(page, status, accessToken)
             .enqueue(object : Callback<PatientResponse> {
                 override fun onResponse(
                     call: Call<PatientResponse>,

@@ -60,7 +60,7 @@ class CeoPatientListFragment : Fragment() {
         }
         val accessToken = loginPreferences.getString("accessToken", "")
         if (accessToken != null) {
-            ceoPatientaListViewModel.getPatients(page, "coe", accessToken)
+            ceoPatientaListViewModel.getPatients(page, "confirmed", accessToken)
         }
         ceoPatientaListViewModel.getData().observe(this, Observer {
             if (fromLoadMore) {

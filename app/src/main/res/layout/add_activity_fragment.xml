@@ -173,6 +173,7 @@
                 android:layout_gravity="center"
                 android:layout_marginLeft="20dp"
                 android:layout_marginTop="10dp"
+                android:visibility="gone"
                 android:layout_marginRight="20dp"
                 android:background="@color/not_blue"
                 android:backgroundTint="@color/not_blue"

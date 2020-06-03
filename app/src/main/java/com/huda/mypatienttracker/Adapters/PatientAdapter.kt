@@ -44,10 +44,10 @@ class PatientAdapter(modelFeedArrayList: ArrayList<PatientResponseData>) :
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val modelFeed = modelFeedArrayList[position]
-        holder.tvName.text = "hospital"
-         //   modelFeed.hospital?.name
-        holder.doctorName.text = modelFeed.name
-        holder.time.text = modelFeed.created_at
+        holder.tvName.text =modelFeed.hospital?.name
+        holder.doctorName.text = modelFeed.doctor.name
+        holder.referalView.text = modelFeed.status
+        holder.location.text = modelFeed.hospital?.country?.name
 
         holder.dotsImage.setOnClickListener {
             if (onItemClickListener != null && position != RecyclerView.NO_POSITION) {
@@ -106,9 +106,8 @@ class PatientAdapter(modelFeedArrayList: ArrayList<PatientResponseData>) :
         var dotsImage:ImageView = itemView.findViewById(R.id.textViewOptions)
         var tvName: TextView = itemView.findViewById<View>(R.id.hospitalName) as TextView
         var doctorName: TextView = itemView.findViewById<View>(R.id.doctorName) as TextView
-        var location: TextView = itemView.findViewById<View>(R.id.location) as TextView
-        var time: TextView = itemView.findViewById<View>(R.id.time) as TextView
-        var city: TextView = itemView.findViewById<View>(R.id.city) as TextView
+        var location: TextView = itemView.findViewById<View>(R.id.city) as TextView
+        var referalView: TextView = itemView.findViewById<View>(R.id.referalView) as TextView
 
 
     }

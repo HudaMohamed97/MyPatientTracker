@@ -578,10 +578,12 @@ class AddActivityFragment : Fragment() {
                 speakerType = when (typeHospital) {
                     "Inter" -> {
                         flagSelected = 1
+                        showInterLayout()
                         "Inter"
                     }
                     else -> {
                         flagSelected = 1
+                        showLocalLayout()
                         "Local"
                     }
 

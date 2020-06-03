@@ -6,7 +6,7 @@ import com.huda.mypatienttracker.Models.HospitalModels.HospitalData
 data class PatientResponseData(
     @SerializedName("id") val id: Int,
     @SerializedName("name") val name: String,
-    @SerializedName("status") val status: String,
+    @SerializedName("status") var status: String,
     @SerializedName("is_referral") val is_referral: Boolean,
     @SerializedName("doctor") val doctor: DoctorDate,
     @SerializedName("hospital") val hospital: HospitalData?,

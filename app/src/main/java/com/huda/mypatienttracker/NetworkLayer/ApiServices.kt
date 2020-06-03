@@ -24,12 +24,16 @@ interface ApiServices {
 
     @PUT("hospitals/{hospital}")
     fun updateHospital(
-        @Path("hospital") hospital: Int, @Body body: updateHospitalRequestModel, @Header("Authorization") authHeader: String
+        @Path("hospital") hospital: Int,
+        @Body body: updateHospitalRequestModel,
+        @Header("Authorization") authHeader: String
     ): Call<SubmitModel>
 
     @POST("hospitals/{hospital}/targets")
     fun addTarget(
-        @Path("hospital") hospital: Int, @Body body: TargetRequestModel, @Header("Authorization") authHeader: String
+        @Path("hospital") hospital: Int,
+        @Body body: TargetRequestModel,
+        @Header("Authorization") authHeader: String
     ): Call<SubmitModel>
 
     @POST("patients")
@@ -44,12 +48,16 @@ interface ApiServices {
 
     @GET("hospitals/{hospital}/targets")
     fun getTarget(
-        @Path("hospital") hospitalId: Int, @Query("product") product: String, @Header("Authorization") authHeader: String
+        @Path("hospital") hospitalId: Int,
+        @Query("product") product: String,
+        @Header("Authorization") authHeader: String
     ): Call<TargetResponse>
 
     @GET("hospitals/{hospital}/targets")
     fun getAllTarget(
-        @Path("hospital") hospitalId: Int, @Query("page") page: Int, @Header("Authorization") authHeader: String
+        @Path("hospital") hospitalId: Int,
+        @Query("page") page: Int,
+        @Header("Authorization") authHeader: String
     ): Call<TargetResponse>
 
     @GET("activities")
@@ -79,30 +87,34 @@ interface ApiServices {
 
     @GET("patients")
     fun getReferalPatient(
-        @Query("page") page: Int, @Query("status") status: String, @Query("hospital_type")
-        hospital_type: String, @Header("Authorization") authHeader: String
+        @Query("page") page: Int, @Header("Authorization") authHeader: String
     ): Call<PatientResponse>
 
     @POST("patients/{patient}/treatments")
     fun updatePatient(
-        @Path("patient") patient: Int, @Body body: updatePatientRequestModel, @Header("Authorization") authHeader: String
+        @Path("patient") patient: Int,
+        @Body body: updatePatientRequestModel,
+        @Header("Authorization") authHeader: String
     ): Call<SubmitModel>
 
     @POST("patients/{patient}/update-referal")
     fun updateReferalPatient(
-        @Path("patient") patient: Int, @Body body: updateReferalPatientRequestModel, @Header("Authorization") authHeader: String
+        @Path("patient") patient: Int,
+        @Body body: updateReferalPatientRequestModel,
+        @Header("Authorization") authHeader: String
     ): Call<SubmitModel>
 
     @POST("patients/{patient}/update-status")
     fun updatePatientSatues(
-        @Path("patient") patient: Int, @Body status: Map<String, String>, @Header("Authorization") authHeader: String
+        @Path("patient") patient: Int,
+        @Body status: Map<String, String>,
+        @Header("Authorization") authHeader: String
     ): Call<SubmitModel>
 
     @GET("patients")
     fun getCoePatient(
         @Query("page") page: Int,
-        @Query("hospital_type")
-        hospital_type: String, @Header("Authorization") authHeader: String
+        @Query("status") status: String, @Header("Authorization") authHeader: String
     ): Call<PatientResponse>
 
     @PUT("hospitals/{hospital}/targets/{target}")
@@ -130,7 +142,9 @@ interface ApiServices {
 
     @DELETE("hospitals/{hospital}/targets/{target}")
     fun deleteTarget(
-        @Path("hospital") hospital: Int, @Path("target") target: Int, @Header("Authorization") authHeader: String
+        @Path("hospital") hospital: Int,
+        @Path("target") target: Int,
+        @Header("Authorization") authHeader: String
     ): Call<SubmitModel>
 
     @GET("countries/{country}")
@@ -145,7 +159,9 @@ interface ApiServices {
 
     @GET("hospitals")
     fun getHospital(
-        @Query("type") type: String, @Query("page") page: Int, @Header("Authorization") authHeader: String
+        @Query("type") type: String,
+        @Query("page") page: Int,
+        @Header("Authorization") authHeader: String
     ): Call<HospitalResponseModel>
 
     @GET("countries")
@@ -157,7 +173,9 @@ interface ApiServices {
     @Multipart
     @POST("auth/register")
     fun register(
-        @Part("email") email: RequestBody, @Part("password") password: RequestBody, @Part("name") name: RequestBody,
+        @Part("email") email: RequestBody,
+        @Part("password") password: RequestBody,
+        @Part("name") name: RequestBody,
         @Part image: MultipartBody.Part
     ): Call<ResponseModelData>
 }
