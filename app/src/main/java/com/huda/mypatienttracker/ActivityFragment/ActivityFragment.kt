@@ -101,6 +101,10 @@ class ActivityFragment : Fragment() {
                     callDeletActivity(modelFeedArrayList[position].id, position)
                 } else if (fromTab == "") {
                     Toast.makeText(activity, "Please Select Action.", Toast.LENGTH_SHORT).show()
+                } else if (fromTab == "Update") {
+                    val bundle = Bundle()
+                    bundle.putInt("ActivityId", modelFeedArrayList[position].id)
+                    findNavController().navigate(R.id.action_Activity_to_Update_Activity, bundle)
                 }
 
             }

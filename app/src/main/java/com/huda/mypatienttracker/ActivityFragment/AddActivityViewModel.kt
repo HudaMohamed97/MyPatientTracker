@@ -22,8 +22,10 @@ class AddActivityViewModel : ViewModel() {
     private lateinit var counteyMutableLiveData: MutableLiveData<CountriesResonse>
     private lateinit var cityMutableLiveData: MutableLiveData<CitiesResponse>
     private lateinit var activityMutableLiveData: MutableLiveData<SubmitModel>
+    private lateinit var updateActivityMutableLiveData: MutableLiveData<SubmitModel>
     private var repositoryHelper: AddActivityRepository = AddActivityRepository()
     private lateinit var mutableLiveData: MutableLiveData<ActivityModelResponse>
+    private lateinit var singelMutableLiveData: MutableLiveData<SingelActivity>
     private lateinit var doctorsMutableLiveData: MutableLiveData<DoctorsResponse>
     private lateinit var deletedMutableLiveData: MutableLiveData<SubmitModel>
 
@@ -34,6 +36,15 @@ class AddActivityViewModel : ViewModel() {
 
     fun getData(): MutableLiveData<ActivityModelResponse> {
         return mutableLiveData
+    }
+
+    fun getSingelActivity(ActivityId: Int, accessToken: String) {
+        singelMutableLiveData = repositoryHelper.getSingelActivity(ActivityId, accessToken)
+
+    }
+
+    fun getSingelData(): MutableLiveData<SingelActivity> {
+        return singelMutableLiveData
     }
 
     fun getDoctors(accessToken: String) {
@@ -86,6 +97,30 @@ class AddActivityViewModel : ViewModel() {
 
     fun getAddActivityData(): MutableLiveData<SubmitModel> {
         return activityMutableLiveData
+    }
+
+    fun updateActivity(
+        activityId: Int,
+        speakers: HashMap<String, String>,
+        body: AddActivityRequestModel,
+        speciality: HashMap<String, String>,
+        no_attendees: HashMap<String, String>
+        , accessToken: String
+    ) {
+        updateActivityMutableLiveData =
+            addActivityRepository.updateActivity(
+                activityId,
+                speakers,
+                speciality,
+                no_attendees,
+                body,
+                accessToken
+            )
+
+    }
+
+    fun getupdateActivityData(): MutableLiveData<SubmitModel> {
+        return updateActivityMutableLiveData
     }
 
 

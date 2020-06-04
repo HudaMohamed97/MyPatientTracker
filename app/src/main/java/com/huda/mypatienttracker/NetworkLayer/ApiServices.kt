@@ -66,9 +66,30 @@ interface ApiServices {
         @Header("Authorization") authHeader: String
     ): Call<ActivityModelResponse>
 
+    @GET("activities/{activity}")
+    fun getSingelActivity(
+        @Path("activity") activity: Int,
+        @Header("Authorization") authHeader: String
+    ): Call<SingelActivity>
+
     @POST("activities")
     @FormUrlEncoded
     fun addActivity(
+        @Field("type") type: Int,
+        @Field("subtype") subtype: String,
+        @Field("product") product: String,
+        @Field("date") date: String,
+        @FieldMap speciality: HashMap<String, String>,
+        @FieldMap speakers: HashMap<String, String>,
+        @FieldMap no_attendees: HashMap<String, String>,
+        @Field("city_id") city_id: Int,
+        @Header("Authorization") authHeader: String
+    ): Call<SubmitModel>
+
+    @PUT("activities/{activity}")
+    @FormUrlEncoded
+    fun updateActivity(
+        @Path("activity") activity: Int,
         @Field("type") type: Int,
         @Field("subtype") subtype: String,
         @Field("product") product: String,

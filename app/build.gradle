@@ -26,6 +26,9 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+    repositories {
+        maven { url 'https://jitpack.io' }
+    }
     configurations {
         all {
             exclude group: 'org.json', module: 'json'
@@ -64,6 +67,7 @@ dependencies {
 
 
     //networking
+    implementation 'com.github.MdFarhanRaja:SearchableSpinner:2.0'
 
     implementation "com.squareup.retrofit2:retrofit:2.6.2"
     implementation "com.squareup.retrofit2:converter-gson:2.6.2"

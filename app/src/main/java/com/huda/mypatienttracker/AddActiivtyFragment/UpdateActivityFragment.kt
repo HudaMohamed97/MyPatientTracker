@@ -1,5 +1,7 @@
 package com.huda.mypatienttracker.AddActiivtyFragment
 
+import `in`.galaxyofandroid.spinerdialog.OnSpinerItemClick
+import `in`.galaxyofandroid.spinerdialog.SpinnerDialog
 import android.app.DatePickerDialog
 import android.content.Context
 import android.content.SharedPreferences
@@ -7,7 +9,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.*
+import android.widget.ImageView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -16,28 +19,30 @@ import com.huda.mypatienttracker.ActivityFragment.AddActivityViewModel
 import com.huda.mypatienttracker.Models.*
 import com.huda.mypatienttracker.R
 import com.toptoche.searchablespinnerlibrary.SearchableSpinner
-import kotlinx.android.synthetic.main.add_activity_fragment.*
+import kotlinx.android.synthetic.main.update_activity_fragment.*
 import okhttp3.MediaType
 import okhttp3.RequestBody
 import java.text.SimpleDateFormat
 import java.util.*
-import kotlin.collections.ArrayList
 
 
-class AddActivityFragment : Fragment() {
+class UpdateActivityFragment : Fragment() {
     private lateinit var root: View
     private lateinit var addActivityViewModel: AddActivityViewModel
     private lateinit var loginPreferences: SharedPreferences
-    private lateinit var spinnerType: SearchableSpinner
-    private lateinit var seakerType: SearchableSpinner
-    private lateinit var citySpinner: SearchableSpinner
+    private lateinit var spinnerType: SpinnerDialog
+    private lateinit var subTypespinner: SpinnerDialog
+    private lateinit var typeSpinner: SpinnerDialog
+    private lateinit var seakerspinner: SpinnerDialog
+    private lateinit var citySpinner: SpinnerDialog
+    private lateinit var localSpeakersSpinner: SpinnerDialog
+    private lateinit var specialitySpinner: SpinnerDialog
+    private lateinit var countrySpinner: SpinnerDialog
     private val medicalList = arrayListOf<String>()
     private val productList = arrayListOf<String>()
     private val specialityList = arrayListOf<String>()
     private val medicalSubList = arrayListOf<String>()
     private val speakerRequestList = arrayListOf<SpeakerRequestModel>()
-    private val commercialList = arrayListOf<String>()
-    private val marketList = arrayListOf<String>()
     private val attandanceList = arrayListOf<String>()
     private val specialityRequestedList = arrayListOf<String>()
     private val speakerList = arrayListOf<String>()
@@ -58,6 +63,7 @@ class AddActivityFragment : Fragment() {
     private val citiesNameList = arrayListOf<String>()
     private val doctorNameList = arrayListOf<String>()
     private var flagSelected: Int = 0
+    private var activityId: Int = 0
     private var selectedType: Int = -1
 
 
@@ -66,19 +72,20 @@ class AddActivityFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        root = inflater.inflate(R.layout.add_activity_fragment, container, false)
+        root = inflater.inflate(R.layout.update_activity_fragment, container, false)
         addActivityViewModel = ViewModelProviders.of(this).get(AddActivityViewModel::class.java)
         return root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        activityId = arguments?.getInt("ActivityId")!!
         loginPreferences = activity!!.getSharedPreferences("loginPrefs", Context.MODE_PRIVATE)
-        setClickListeners()
         intializeMedicalSpinner()
         intializeSpeakerSpinner()
         intializeSpecialitySpinner()
         intializeProductSpinner()
+        setClickListeners()
         getCountryList()
     }
 
@@ -103,46 +110,23 @@ class AddActivityFragment : Fragment() {
         for (country in countryList) {
             countriesNameList.add(country.name)
         }
-        initializeCountrySpinner(activityCountrySpinner, countriesNameList)
-
+        initializeCountrySpinner(countriesNameList)
     }
 
     private fun initializeCountrySpinner(
-        countrySpinner: SearchableSpinner,
         countriesNameList: ArrayList<String>
     ) {
-        val arrayAdapter =
-            context?.let {
-                ArrayAdapter(
-                    it,
-                    R.layout.support_simple_spinner_dropdown_item,
-                    countriesNameList
-                )
-            }
 
-        countrySpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(
-                parentView: AdapterView<*>,
-                selectedItemView: View,
-                position: Int,
-                id: Long
-            ) {
-
+        countrySpinner = SpinnerDialog(activity!!, countriesNameList, "") // With No Animation
+        countrySpinner.setCancellable(true) // for cancellable
+        countrySpinner.setShowKeyboard(false) // for open keyboard by default
+        countrySpinner.bindOnSpinerListener(object : OnSpinerItemClick {
+            override fun onClick(item: String?, position: Int) {
                 country_id = countryList[position].id
+                activity_Country_Spinner.text = countriesNameList[position]
                 callCitiesPerCountry(country_id)
             }
-
-            override fun onNothingSelected(parentView: AdapterView<*>) {
-                // your code here
-            }
-
-
-        }
-        arrayAdapter?.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        if (arrayAdapter != null) {
-            countrySpinner.adapter = arrayAdapter
-        }
-
+        })
     }
 
     private fun callCitiesPerCountry(countryId: Int) {
@@ -181,7 +165,7 @@ class AddActivityFragment : Fragment() {
         })
     }
 
-    private fun addActivity(
+    private fun updateActivity(
         speakers: HashMap<String, String>,
         body: AddActivityRequestModel, speciality: HashMap<String, String>,
         no_attendees: HashMap<String, String>
@@ -190,22 +174,19 @@ class AddActivityFragment : Fragment() {
         val accessToken = loginPreferences.getString("accessToken", "")
         if (accessToken != null) {
             activtyProgressBar.visibility = View.VISIBLE
-            addActivityViewModel.addActivity(speakers, body, speciality, no_attendees, accessToken)
+            addActivityViewModel.updateActivity(
+                activityId,
+                speakers,
+                body,
+                speciality,
+                no_attendees,
+                accessToken
+            )
         }
-        addActivityViewModel.getAddActivityData().observe(this, Observer {
+        addActivityViewModel.getupdateActivityData().observe(this, Observer {
             activtyProgressBar.visibility = View.GONE
             if (it != null) {
                 Toast.makeText(activity, "Submitted Successfully", Toast.LENGTH_SHORT).show()
-
-                /*if (it.type == "error")
-                    Toast.makeText(
-                        activity,
-                        it.title,
-                        Toast.LENGTH_SHORT
-                    ).show()
-                else {
-                    Toast.makeText(activity, "Submitted Successfully", Toast.LENGTH_SHORT).show()
-                }*/
             } else {
                 Toast.makeText(activity, "Network Error", Toast.LENGTH_SHORT).show()
 
@@ -218,7 +199,7 @@ class AddActivityFragment : Fragment() {
         for (city in cityList) {
             citiesNameList.add(city.name)
         }
-        initializeCitySpinner(activityCitySpinner, citiesNameList)
+        initializeCitySpinner(citiesNameList)
     }
 
     private fun prepareDoctorList(doctorList: ArrayList<DoctorDate>) {
@@ -226,7 +207,7 @@ class AddActivityFragment : Fragment() {
         for (doctor in doctorList) {
             doctorNameList.add(doctor.name)
         }
-       // initializeDoctorSpinner(speakersSpinner, doctorNameList)
+        initializeDoctorSpinner(doctorNameList)
     }
 
 
@@ -234,7 +215,6 @@ class AddActivityFragment : Fragment() {
         speakerList.clear()
         speakerList.add("Inter")
         speakerList.add("Local")
-        initializeSpeakerSpinner(speakerSpinner, speakerList)
     }
 
     private fun intializeMedicalSpinner() {
@@ -242,7 +222,6 @@ class AddActivityFragment : Fragment() {
         medicalList.add("MedicalEducation")
         medicalList.add("MarketAccess")
         medicalList.add("Commercial")
-        initializeTypeSpinner(spinnerType, medicalList)
     }
 
     private fun intializeProductSpinner() {
@@ -250,7 +229,6 @@ class AddActivityFragment : Fragment() {
         productList.add("opsumit")
         productList.add("uptravi")
         productList.add("tracleer")
-        initialiProductSpinner(ActivityProductTypespinner, productList)
     }
 
     private fun intializeSpecialitySpinner() {
@@ -259,64 +237,33 @@ class AddActivityFragment : Fragment() {
         specialityList.add("RH")
         specialityList.add("Cardio")
         specialityList.add("Pharmacist")
-        initializeSpecialitySpinner(Specialityspinner, specialityList)
+        initializeSpecialitySpinner(specialityList)
     }
 
     private fun initializeCitySpinner(
-        citySpinner: SearchableSpinner,
         citiesNameList: ArrayList<String>
     ) {
-        val arrayAdapter =
-            context?.let {
-                ArrayAdapter(
-                    it,
-                    R.layout.support_simple_spinner_dropdown_item,
-                    citiesNameList
-                )
-            }
-
-        citySpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(
-                parentView: AdapterView<*>,
-                selectedItemView: View,
-                position: Int,
-                id: Long
-            ) {
+        citySpinner = SpinnerDialog(activity!!, citiesNameList, "") // With No Animation
+        citySpinner.setCancellable(true) // for cancellable
+        citySpinner.setShowKeyboard(false) // for open keyboard by default
+        citySpinner.bindOnSpinerListener(object : OnSpinerItemClick {
+            override fun onClick(item: String?, position: Int) {
                 city_id = cityList[position].id
+                activity_City_Spinner.text = citiesNameList[position]
             }
-
-            override fun onNothingSelected(parentView: AdapterView<*>) {
-                // your code here
-            }
-
-
-        }
-        arrayAdapter?.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        if (arrayAdapter != null) {
-            citySpinner.adapter = arrayAdapter
-        }
+        })
 
     }
 
     private fun initializeDoctorSpinner(
-        spinner: SearchableSpinner,
-        citiesNameList: ArrayList<String>
+        doctorsNameList: ArrayList<String>
     ) {
-        val arrayAdapter =
-            context?.let {
-                ArrayAdapter(
-                    it,
-                    R.layout.support_simple_spinner_dropdown_item,
-                    citiesNameList
-                )
-            }
-        spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(
-                parentView: AdapterView<*>,
-                selectedItemView: View,
-                position: Int,
-                id: Long
-            ) {
+        localSpeakersSpinner = SpinnerDialog(activity!!, doctorsNameList, "") // With No Animation
+        localSpeakersSpinner.setCancellable(true) // for cancellable
+        localSpeakersSpinner.setShowKeyboard(false) // for open keyboard by default
+        localSpeakersSpinner.bindOnSpinerListener(object : OnSpinerItemClick {
+            override fun onClick(item: String?, position: Int) {
+                speakersLocalSpinner.text = doctorsNameList[position]
                 val speakerRequestModel = SpeakerRequestModel(
                     "Local",
                     DoctorList[position].type,
@@ -326,16 +273,7 @@ class AddActivityFragment : Fragment() {
                 speakerRequestList.add(speakerRequestModel)
 
             }
-
-            override fun onNothingSelected(parentView: AdapterView<*>) {
-                // your code here
-            }
-        }
-        arrayAdapter?.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        if (arrayAdapter != null) {
-            spinner.adapter = arrayAdapter
-        }
-
+        })
     }
 
 
@@ -349,48 +287,42 @@ class AddActivityFragment : Fragment() {
         medicalSubList.add("Standalone")
         medicalSubList.add("Webinar")
         medicalSubList.add("Others")
-        initializeSubTypeSpinner(subTypespinner, medicalSubList)
+        initializeSubTypeSpinner(medicalSubList)
 
 
     }
 
     private fun intializeMarketSubSpinner() {
-        marketList.clear()
-        marketList.add("AV Action Awareness")
-        marketList.add("AV Action Networking")
-        marketList.add("Speaker Event (Inside Hospital)")
-        marketList.add("Speaker Event (Outside Hospital)")
-        marketList.add("Others")
-        initializeSubTypeSpinner(subTypespinner, medicalList)
+        medicalSubList.clear()
+        medicalSubList.add("AV Action Awareness")
+        medicalSubList.add("AV Action Networking")
+        medicalSubList.add("Speaker Event (Inside Hospital)")
+        medicalSubList.add("Speaker Event (Outside Hospital)")
+        medicalSubList.add("Others")
+        initializeSubTypeSpinner(medicalSubList)
 
 
     }
 
     private fun intializCommercialSubSpinner() {
-        commercialList.clear()
-        commercialList.add("AV Action Awareness")
-        initializeTypeSpinner(subTypespinner, commercialList)
+        medicalSubList.clear()
+        medicalSubList.add("AV Action Awareness")
+        medicalSubList.add("AV Action Networking")
+        medicalSubList.add("Speaker Event (Inside Hospital)")
+        medicalSubList.add("Speaker Event (Outside Hospital)")
+        medicalSubList.add("Others")
+        initializeSubTypeSpinner(medicalSubList)
     }
 
-    private fun initializeTypeSpinner(spinnerType: SearchableSpinner, typeList: ArrayList<String>) {
-        val arrayAdapter =
-            context?.let {
-                ArrayAdapter(
-                    it,
-                    R.layout.support_simple_spinner_dropdown_item,
-                    typeList
-                )
-            }
 
-        spinnerType.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(
-                parentView: AdapterView<*>,
-                selectedItemView: View,
-                position: Int,
-                id: Long
-            ) {
-
-                val typeHospital = typeList[position]
+    private fun initMedicalSpinner(medicalList: ArrayList<String>) {
+        spinnerType = SpinnerDialog(activity!!, medicalList, "") // With No Animation
+        spinnerType.setCancellable(true) // for cancellable
+        spinnerType.setShowKeyboard(false) // for open keyboard by default
+        spinnerType.bindOnSpinerListener(object : OnSpinerItemClick {
+            override fun onClick(item: String?, position: Int) {
+                val typeHospital = medicalList[position]
+                medicalUpdateSpinner.text = typeHospital
                 type = when (typeHospital) {
                     "MedicalEducation" -> {
                         selectedType = 1
@@ -413,92 +345,37 @@ class AddActivityFragment : Fragment() {
                     }
                 }
             }
-
-            override fun onNothingSelected(parentView: AdapterView<*>) {
-                // your code here
-            }
-
-        }
-        arrayAdapter?.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        if (arrayAdapter != null) {
-            medicalspinner.adapter = arrayAdapter
-        }
-
+        })
     }
 
     private fun initialiProductSpinner(
-        spinnerType: SearchableSpinner,
-        typeList: ArrayList<String>
+        productTypeList: ArrayList<String>
     ) {
-        val arrayAdapter =
-            context?.let {
-                ArrayAdapter(
-                    it,
-                    R.layout.support_simple_spinner_dropdown_item,
-                    typeList
-                )
+        typeSpinner = SpinnerDialog(activity!!, productTypeList, "") // With No Animation
+        typeSpinner.setCancellable(true) // for cancellable
+        typeSpinner.setShowKeyboard(false) // for open keyboard by default
+        typeSpinner.bindOnSpinerListener(object : OnSpinerItemClick {
+            override fun onClick(item: String?, position: Int) {
+                ActivityProductType.text = productTypeList[position]
+                productType = productTypeList[position]
             }
-
-        spinnerType.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(
-                parentView: AdapterView<*>,
-                selectedItemView: View,
-                position: Int,
-                id: Long
-            ) {
-
-                productType = productList[position]
-
-            }
-
-            override fun onNothingSelected(parentView: AdapterView<*>) {
-                // your code here
-            }
-
-        }
-        arrayAdapter?.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        if (arrayAdapter != null) {
-            spinnerType.adapter = arrayAdapter
-        }
-
+        })
     }
 
     private fun initializeSpecialitySpinner(
-        spinnerType: SearchableSpinner,
         typeList: ArrayList<String>
     ) {
-        val arrayAdapter =
-            context?.let {
-                ArrayAdapter(
-                    it,
-                    R.layout.support_simple_spinner_dropdown_item,
-                    typeList
-                )
-            }
-
-        spinnerType.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(
-                parentView: AdapterView<*>,
-                selectedItemView: View,
-                position: Int,
-                id: Long
-            ) {
+        specialitySpinner = SpinnerDialog(activity!!, typeList, "") // With No Animation
+        specialitySpinner.setCancellable(true) // for cancellable
+        specialitySpinner.setShowKeyboard(false) // for open keyboard by default
+        specialitySpinner.bindOnSpinerListener(object : OnSpinerItemClick {
+            override fun onClick(item: String?, position: Int) {
                 val specialityText = typeList[position]
                 specialityRequestedList.add(specialityText)
+                SpecialitySpinner.text = specialityText
                 showNumOfAttend()
-
             }
-
-            override fun onNothingSelected(parentView: AdapterView<*>) {
-                // your code here
-            }
-
-        }
-        arrayAdapter?.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        if (arrayAdapter != null) {
-            spinnerType.adapter = arrayAdapter
-        }
-
+        })
     }
 
     private fun showNumOfAttend() {
@@ -521,61 +398,31 @@ class AddActivityFragment : Fragment() {
         }
     }
 
-    private fun initializeSubTypeSpinner(spinner: SearchableSpinner, typeList: ArrayList<String>) {
-        val arrayAdapter =
-            context?.let {
-                ArrayAdapter(
-                    it,
-                    R.layout.support_simple_spinner_dropdown_item,
-                    typeList
-                )
-            }
-
-        spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(
-                parentView: AdapterView<*>,
-                selectedItemView: View,
-                position: Int,
-                id: Long
-            ) {
+    private fun initializeSubTypeSpinner(typeList: ArrayList<String>) {
+        subTypespinner = SpinnerDialog(activity!!, typeList, "") // With No Animation
+        subTypespinner.setCancellable(true) // for cancellable
+        subTypespinner.setShowKeyboard(false) // for open keyboard by default
+        subTypespinner.bindOnSpinerListener(object : OnSpinerItemClick {
+            override fun onClick(item: String?, position: Int) {
+                subTypeSpinner.text = typeList[position]
                 Subtype = typeList[position]
             }
+        })
 
-            override fun onNothingSelected(parentView: AdapterView<*>) {
-                // your code here
-            }
-
-        }
-        arrayAdapter?.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        if (arrayAdapter != null) {
-            spinner.adapter = arrayAdapter
-        }
 
     }
 
+
     private fun initializeSpeakerSpinner(
-        spinnerType: SearchableSpinner,
         typeList: ArrayList<String>
     ) {
-        val arrayAdapter =
-            context?.let {
-                ArrayAdapter(
-                    it,
-                    R.layout.support_simple_spinner_dropdown_item,
-                    typeList
-                )
-            }
-
-        spinnerType.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(
-                parentView: AdapterView<*>,
-                selectedItemView: View,
-                position: Int,
-                id: Long
-            ) {
-
-                val typeHospital = typeList[position]
-                speakerType = when (typeHospital) {
+        seakerspinner = SpinnerDialog(activity!!, typeList, "") // With No Animation
+        seakerspinner.setCancellable(true) // for cancellable
+        seakerspinner.setShowKeyboard(false) // for open keyboard by default
+        seakerspinner.bindOnSpinerListener(object : OnSpinerItemClick {
+            override fun onClick(item: String?, position: Int) {
+                val typeSpeaker = typeList[position]
+                speakerType = when (typeSpeaker) {
                     "Inter" -> {
                         flagSelected = 1
                         showInterLayout()
@@ -589,17 +436,7 @@ class AddActivityFragment : Fragment() {
 
                 }
             }
-
-            override fun onNothingSelected(parentView: AdapterView<*>) {
-                // your code here
-            }
-
-        }
-        arrayAdapter?.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        if (arrayAdapter != null) {
-            speakerSpinner.adapter = arrayAdapter
-        }
-
+        })
     }
 
     private fun showInterLayout() {
@@ -610,8 +447,6 @@ class AddActivityFragment : Fragment() {
             override fun onSpeakerAdded(speakerRequestModel: SpeakerRequestModel) {
                 speakerRequestList.add(speakerRequestModel)
             }
-
-
         })
         fragmentManager?.let {
             customBottomSheet.show(
@@ -634,11 +469,68 @@ class AddActivityFragment : Fragment() {
         backButton.setOnClickListener {
             findNavController().navigateUp()
         }
-        addActivityButtton.setOnClickListener {
+        medicalUpdateSpinner.setOnClickListener {
+            if (medicalList.size != 0) {
+                initMedicalSpinner(medicalList)
+                spinnerType.showSpinerDialog()
+            }
+        }
+        ActivityProductType.setOnClickListener {
+            if (productList.size != 0) {
+                initialiProductSpinner(productList)
+                typeSpinner.showSpinerDialog()
+            }
+        }
+        SpecialitySpinner.setOnClickListener {
+            if (specialityList.size != 0) {
+                specialitySpinner.showSpinerDialog()
+            }
+        }
+        speaker_Spinner.setOnClickListener {
+            if (speakerList.size != 0) {
+                initializeSpeakerSpinner(speakerList)
+                seakerspinner.showSpinerDialog()
+            }
+        }
+        subTypeSpinner.setOnClickListener {
+            if (medicalSubList.size != 0) {
+                subTypespinner.showSpinerDialog()
+            } else {
+                Toast.makeText(activity, "Please Choose Medical First", Toast.LENGTH_SHORT).show()
+
+            }
+        }
+        activity_City_Spinner.setOnClickListener {
+            if (citiesNameList.size != 0) {
+                citySpinner.showSpinerDialog()
+            } else {
+                Toast.makeText(activity, "Please Choose Country First", Toast.LENGTH_SHORT).show()
+
+            }
+        }
+        activity_Country_Spinner.setOnClickListener {
+            if (countriesNameList.size != 0) {
+                countrySpinner.showSpinerDialog()
+            } else {
+                Toast.makeText(activity, "Please Wait", Toast.LENGTH_SHORT).show()
+
+            }
+        }
+        speakersLocalSpinner.setOnClickListener {
+            if (doctorNameList.size != 0) {
+                localSpeakersSpinner.showSpinerDialog()
+            } else {
+                Toast.makeText(activity, "Please Wait", Toast.LENGTH_SHORT).show()
+            }
+        }
+
+
+        updateActivityButtton.setOnClickListener {
             if (selectedType == -1 || city_id == -1 || specialityRequestedList.size == 0 || attandanceList.size == 0 || Subtype == "" ||
                 speakerRequestList.size == 0 || date == "" || productType == ""
             ) {
-                Toast.makeText(activity, "Please Add All fields Thanks", Toast.LENGTH_SHORT).show()
+                Toast.makeText(activity, "Please Add All fields Thanks", Toast.LENGTH_SHORT)
+                    .show()
             } else {
                 val body = AddActivityRequestModel(
                     selectedType,
@@ -652,13 +544,8 @@ class AddActivityFragment : Fragment() {
                 val speakers = HashMap<String, String>()
                 for (i in 0 until speakerRequestList.size) {
                     val orderitems = speakerRequestList[i]
-                    /*  val name = RequestBody.create(MediaType.parse("text/plain"), orderitems.name)
-                      val speaker_type =
-                          RequestBody.create(MediaType.parse("text/plain"), orderitems.speaker_type)
-                      val speciality =
-                          RequestBody.create(MediaType.parse("text/plain"), orderitems.speciality)*/
-                    val type = RequestBody.create(MediaType.parse("text/plain"), orderitems.type)
-
+                    val type =
+                        RequestBody.create(MediaType.parse("text/plain"), orderitems.type)
                     speakers["speakers[${i}][name]"] = (orderitems.name)
                     speakers["speakers[${i}][speaker_type]"] = (orderitems.speaker_type)
                     speakers["speakers[${i}][speciality]"] = (orderitems.speciality)
@@ -682,7 +569,7 @@ class AddActivityFragment : Fragment() {
                     no_attendees["no_attendees[${i}]"] = attandanceList[i]
 
                 }
-                addActivity(speakers, body, specialitList, no_attendees)
+                updateActivity(speakers, body, specialitList, no_attendees)
             }
         }
 
@@ -699,8 +586,6 @@ class AddActivityFragment : Fragment() {
 
         }
         val logOutButton = root.findViewById(R.id.backButton) as ImageView
-        spinnerType = root.findViewById(R.id.medicalspinner)
-        seakerType = root.findViewById(R.id.speakerSpinner)
         logOutButton.setOnClickListener {
             activity!!.finish()
         }
@@ -731,6 +616,4 @@ class AddActivityFragment : Fragment() {
 
         }
     }
-
-
 }
