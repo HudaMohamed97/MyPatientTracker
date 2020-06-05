@@ -74,6 +74,20 @@
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/header">
 
+            <ProgressBar
+                android:id="@+id/updateActivtyProgressBar"
+                style="?android:attr/progressBarStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_margin="5dp"
+                android:layout_marginBottom="@dimen/space_20"
+                android:indeterminate="true"
+                android:indeterminateTint="@color/not_blue"
+                android:indeterminateTintMode="src_atop"
+                android:visibility="gone" />
+
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/space_50"
@@ -88,9 +102,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
+                    android:text="Medical"
                     android:textColor="@color/black"
-                    android:theme="@style/SpinnerThemeLight"
-                    android:text="Medical ay hary" />
+                    android:theme="@style/SpinnerThemeLight" />
 
             </LinearLayout>
 
@@ -107,9 +121,9 @@
                     android:id="@+id/subTypeSpinner"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/black"
                     android:layout_gravity="center"
-                    android:text="SubType" />
+                    android:text="SubType"
+                    android:textColor="@color/black" />
             </LinearLayout>
 
             <LinearLayout
@@ -126,9 +140,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
+                    android:text="ProductType"
                     android:textColor="@color/black"
-                    android:theme="@style/SpinnerThemeLight"
-                    android:text="ProductType" />
+                    android:theme="@style/SpinnerThemeLight" />
             </LinearLayout>
 
             <LinearLayout
@@ -147,10 +161,10 @@
                     <TextView
                         android:id="@+id/speaker_Spinner"
                         android:layout_width="match_parent"
-                        android:layout_gravity="center"
-                        android:textColor="@color/black"
                         android:layout_height="wrap_content"
-                        android:text="speaker" />
+                        android:layout_gravity="center"
+                        android:text="speaker"
+                        android:textColor="@color/black" />
                 </LinearLayout>
             </LinearLayout>
 
@@ -162,13 +176,13 @@
                 android:layout_gravity="center"
                 android:layout_marginLeft="20dp"
                 android:layout_marginTop="10dp"
-                android:visibility="gone"
                 android:layout_marginRight="20dp"
                 android:background="@color/not_blue"
                 android:backgroundTint="@color/not_blue"
                 android:text="add Speaker"
                 android:textColor="@color/white"
                 android:textSize="@dimen/space_20"
+                android:visibility="gone"
                 app:cornerRadius="@dimen/space_10"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
@@ -191,7 +205,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:visibility="gone">
+                android:visibility="visible">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -207,8 +221,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:textColor="@color/black"
-                        android:text="speakers" />
+                        android:text="speakers"
+                        android:textColor="@color/black" />
                 </LinearLayout>
 
 
@@ -247,8 +261,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:textColor="@color/black"
-                        android:text="Country" />
+                        android:text="Country"
+                        android:textColor="@color/black" />
                 </LinearLayout>
             </LinearLayout>
 
@@ -281,8 +295,8 @@
                         android:id="@+id/activity_City_Spinner"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textColor="@color/black"
-                        android:text="City" />
+                        android:text="City"
+                        android:textColor="@color/black" />
                 </LinearLayout>
             </LinearLayout>
 
@@ -314,8 +328,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:textColor="@color/black"
-                   android:text="Speciality" />
+                    android:text="Speciality"
+                    android:textColor="@color/black" />
 
             </LinearLayout>
 

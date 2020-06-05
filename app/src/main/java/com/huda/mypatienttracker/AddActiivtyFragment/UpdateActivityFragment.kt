@@ -19,11 +19,14 @@ import com.huda.mypatienttracker.ActivityFragment.AddActivityViewModel
 import com.huda.mypatienttracker.Models.*
 import com.huda.mypatienttracker.R
 import com.toptoche.searchablespinnerlibrary.SearchableSpinner
+import kotlinx.android.synthetic.main.activity_fragment_list.*
 import kotlinx.android.synthetic.main.update_activity_fragment.*
 import okhttp3.MediaType
 import okhttp3.RequestBody
 import java.text.SimpleDateFormat
 import java.util.*
+import java.util.Arrays.copyOf
+import java.util.EnumSet.copyOf
 
 
 class UpdateActivityFragment : Fragment() {
@@ -81,6 +84,7 @@ class UpdateActivityFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         activityId = arguments?.getInt("ActivityId")!!
         loginPreferences = activity!!.getSharedPreferences("loginPrefs", Context.MODE_PRIVATE)
+        callSingelActivity()
         intializeMedicalSpinner()
         intializeSpeakerSpinner()
         intializeSpecialitySpinner()
@@ -164,6 +168,53 @@ class UpdateActivityFragment : Fragment() {
             }
         })
     }
+
+    private fun callSingelActivity() {
+        updateActivtyProgressBar.visibility = View.VISIBLE
+        val accessToken = loginPreferences.getString("accessToken", "")
+        if (accessToken != null) {
+            addActivityViewModel.getSingelActivity(activityId, accessToken)
+        }
+        addActivityViewModel.getSingelData().observe(this, Observer {
+            updateActivtyProgressBar.visibility = View.GONE
+            if (it != null) {
+                val type = it.data.type
+                when (type) {
+                    1 -> {
+                        selectedType = 1
+                        medicalUpdateSpinner.text = "MedicalEducation"
+                    }
+                    2 -> {
+                        selectedType = 2
+                        medicalUpdateSpinner.text = "MarketAccess"
+                    }
+                    else -> {
+                        selectedType = 3
+                        medicalUpdateSpinner.text = "Commercial"
+                    }
+                }
+                subTypeSpinner.text = it.data.subtype
+                Subtype = it.data.subtype
+                date = it.data.date
+                city_id = it.data.city.id
+                productType = it.data.product
+                datePicker.setText(it.data.date)
+                ActivityProductType.text = it.data.product
+                activity_City_Spinner.text = it.data.city.name
+                speakersLocalSpinner.text = ""
+                for (speaker in it.data.speakers) {
+                    speakersLocalSpinner.append(speaker.name + " ")
+                }
+                speakerRequestList.addAll(it.data.speakers)
+                specialityRequestedList.addAll(it.data.speciality)
+                attandanceList.addAll(it.data.no_attendees)
+
+            } else {
+                Toast.makeText(activity, "Network Error", Toast.LENGTH_SHORT).show()
+            }
+        })
+    }
+
 
     private fun updateActivity(
         speakers: HashMap<String, String>,
@@ -263,7 +314,7 @@ class UpdateActivityFragment : Fragment() {
         localSpeakersSpinner.setShowKeyboard(false) // for open keyboard by default
         localSpeakersSpinner.bindOnSpinerListener(object : OnSpinerItemClick {
             override fun onClick(item: String?, position: Int) {
-                speakersLocalSpinner.text = doctorsNameList[position]
+                speakersLocalSpinner.append(doctorsNameList[position])
                 val speakerRequestModel = SpeakerRequestModel(
                     "Local",
                     DoctorList[position].type,
@@ -440,11 +491,12 @@ class UpdateActivityFragment : Fragment() {
     }
 
     private fun showInterLayout() {
-        localSpeaker.visibility = View.GONE
+        localSpeaker.visibility = View.VISIBLE
         customBottomSheet = CustomBottomSheet()
         customBottomSheet.setOnSpeakerAddedListener(object :
             CustomBottomSheet.OnSpeakerAddedListener {
             override fun onSpeakerAdded(speakerRequestModel: SpeakerRequestModel) {
+                speakersLocalSpinner.append(" " + speakerRequestModel.name)
                 speakerRequestList.add(speakerRequestModel)
             }
         })
@@ -520,7 +572,11 @@ class UpdateActivityFragment : Fragment() {
             if (doctorNameList.size != 0) {
                 localSpeakersSpinner.showSpinerDialog()
             } else {
-                Toast.makeText(activity, "Please Wait", Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    activity,
+                    "Please Select Type Of speaker First..",
+                    Toast.LENGTH_SHORT
+                ).show()
             }
         }
 
@@ -587,7 +643,7 @@ class UpdateActivityFragment : Fragment() {
         }
         val logOutButton = root.findViewById(R.id.backButton) as ImageView
         logOutButton.setOnClickListener {
-            activity!!.finish()
+            findNavController().navigateUp()
         }
         datePicker.setOnClickListener {
             val c = Calendar.getInstance()

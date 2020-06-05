@@ -11,9 +11,9 @@ data class ActivityData(
     @SerializedName("product") val product: String,
     @SerializedName("date") val date: String,
     @SerializedName("speciality") val speciality: List<String>,
-    @SerializedName("no_attendees") val no_attendees: List<Int>,
+    @SerializedName("no_attendees") val no_attendees: List<String>,
     @SerializedName("created_at") val created_at: String,
     @SerializedName("city") val city: City,
     @SerializedName("user") val user: User,
-    @SerializedName("speakers") val speakers: List<ActivitySpeakerModel>
+    @SerializedName("speakers") val speakers: List<SpeakerRequestModel>
 )
