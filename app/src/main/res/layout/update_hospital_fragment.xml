@@ -92,7 +92,6 @@
             android:layout_marginRight="@dimen/space_10"
             android:background="@drawable/background_edittext"
             android:ems="10"
-            android:hint="      text"
             android:inputType="textPersonName"
             android:padding="@dimen/space_10"
             android:paddingStart="@dimen/space_5"
@@ -109,30 +108,18 @@
             android:background="@drawable/background_edittext"
             android:orientation="horizontal">
 
-            <com.toptoche.searchablespinnerlibrary.SearchableSpinner
-                android:id="@+id/countrySpinner"
+            <TextView
+                android:id="@+id/country_Spinner"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:spinnerMode="dropdown"
-                android:textColor="@color/not_black"
+                android:layout_gravity="center"
+                android:paddingStart="@dimen/space_5"
+                android:textColor="@color/black"
                 android:theme="@style/SpinnerThemeLight"
-                app:hintText="Country" />
+                android:text="Country"
+                android:paddingLeft="@dimen/space_5" />
 
         </LinearLayout>
-
-        <TextView
-            android:id="@+id/cityText"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/space_50"
-            android:layout_marginLeft="@dimen/space_10"
-            android:layout_marginTop="@dimen/space_20"
-            android:layout_marginRight="@dimen/space_10"
-            android:background="@drawable/background_edittext"
-            android:paddingLeft="@dimen/space_20"
-            android:text="City"
-            android:textColor="@color/not_black"
-            android:textSize="16dp"
-            android:theme="@style/SpinnerThemeLight" />
 
         <LinearLayout
             android:id="@+id/cityLayout"
@@ -143,16 +130,18 @@
             android:layout_marginRight="@dimen/space_10"
             android:background="@drawable/background_edittext"
             android:orientation="horizontal"
-            android:visibility="gone">
+            android:visibility="visible">
 
-            <com.toptoche.searchablespinnerlibrary.SearchableSpinner
-                android:id="@+id/citySpinner"
+            <TextView
+                android:id="@+id/city_Spinner"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:spinnerMode="dropdown"
-                android:textColor="@color/not_black"
+                android:layout_gravity="center"
+                android:textColor="@color/black"
+                android:paddingStart="@dimen/space_5"
                 android:theme="@style/SpinnerThemeLight"
-                app:hintText="City" />
+                android:text="City"
+                android:paddingLeft="@dimen/space_5" />
 
         </LinearLayout>
 
@@ -165,14 +154,16 @@
             android:background="@drawable/background_edittext"
             android:orientation="horizontal">
 
-            <com.toptoche.searchablespinnerlibrary.SearchableSpinner
+            <TextView
                 android:id="@+id/typeSpinner"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:spinnerMode="dropdown"
-                android:textColor="@color/not_black"
+                android:layout_gravity="center"
+                android:paddingStart="@dimen/space_5"
+                android:textColor="@color/black"
                 android:theme="@style/SpinnerThemeLight"
-                app:hintText="Type" />
+                android:text="Type"
+                android:paddingLeft="@dimen/space_5" />
 
         </LinearLayout>
 

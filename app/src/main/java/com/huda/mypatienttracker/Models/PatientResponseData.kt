@@ -10,5 +10,6 @@ data class PatientResponseData(
     @SerializedName("is_referral") val is_referral: Boolean,
     @SerializedName("doctor") val doctor: DoctorDate,
     @SerializedName("hospital") val hospital: HospitalData?,
+    @SerializedName("last_treatment") val last_treatment : Last_treatment,
     @SerializedName("created_at") val created_at: String
 )

@@ -1,3 +1,5 @@
+import android.os.Parcel
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
 
 /*
@@ -16,4 +18,29 @@ data class Country (
 
 	@SerializedName("id") val id : Int,
 	@SerializedName("name") val name : String
-)
+):Parcelable {
+	constructor(parcel: Parcel) : this(
+		parcel.readInt(),
+		parcel.readString().toString()
+	) {
+	}
+
+	override fun writeToParcel(parcel: Parcel, flags: Int) {
+		parcel.writeInt(id)
+		parcel.writeString(name)
+	}
+
+	override fun describeContents(): Int {
+		return 0
+	}
+
+	companion object CREATOR : Parcelable.Creator<Country> {
+		override fun createFromParcel(parcel: Parcel): Country {
+			return Country(parcel)
+		}
+
+		override fun newArray(size: Int): Array<Country?> {
+			return arrayOfNulls(size)
+		}
+	}
+}

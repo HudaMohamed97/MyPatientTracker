@@ -63,7 +63,7 @@ class AddReferalFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setClickListeners()
-        callHospitals("referal", false, false)
+        callHospitals("coe", false, false)
         getCountryList()
     }
 

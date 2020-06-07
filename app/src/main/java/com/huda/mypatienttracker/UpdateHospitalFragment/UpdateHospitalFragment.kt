@@ -1,5 +1,7 @@
 package com.huda.mypatienttracker.UpdateHospitalFragment
 
+import `in`.galaxyofandroid.spinerdialog.OnSpinerItemClick
+import `in`.galaxyofandroid.spinerdialog.SpinnerDialog
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
@@ -15,10 +17,13 @@ import androidx.navigation.fragment.findNavController
 import com.huda.mypatienttracker.AddHospitalFragment.AddHospitalViewModel
 import com.huda.mypatienttracker.Models.Cities
 import com.huda.mypatienttracker.Models.CountryData
+import com.huda.mypatienttracker.Models.HospitalModels.HospitalData
 import com.huda.mypatienttracker.Models.HospitalModels.updateHospitalRequestModel
+import com.huda.mypatienttracker.Models.SpeakerRequestModel
 import com.huda.mypatienttracker.R
 import com.toptoche.searchablespinnerlibrary.SearchableSpinner
 import kotlinx.android.synthetic.main.add_doctor.mainView
+import kotlinx.android.synthetic.main.update_activity_fragment.*
 import kotlinx.android.synthetic.main.update_hospital_fragment.*
 
 class UpdateHospitalFragment : Fragment() {
@@ -26,9 +31,9 @@ class UpdateHospitalFragment : Fragment() {
     private lateinit var addHospitalViewModel: AddHospitalViewModel
     private lateinit var loginPreferences: SharedPreferences
     private lateinit var add_hospitalRequestModel: updateHospitalRequestModel
-    private lateinit var spinnerType: SearchableSpinner
-    private lateinit var countrySpinner: SearchableSpinner
-    private lateinit var citySpinner: SearchableSpinner
+    private lateinit var spinnerType: SpinnerDialog
+    private lateinit var countrySpinner: SpinnerDialog
+    private lateinit var citySpinner: SpinnerDialog
     private lateinit var name: String
     private var city_id: Int = -1
     private var country_id: Int = -1
@@ -39,7 +44,7 @@ class UpdateHospitalFragment : Fragment() {
     private val cityList = arrayListOf<Cities>()
     private val citiesNameList = arrayListOf<String>()
     private val typeList = arrayListOf<String>()
-    private var hospitalId = 0
+    private lateinit var hospitalData: HospitalData
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -53,8 +58,16 @@ class UpdateHospitalFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        hospitalId = arguments?.getInt("hospitalId")!!
+        hospitalData = arguments?.getParcelable("hospitalData")!!
         setClickListeners()
+        nameEditText.setText(" " + hospitalData.name)
+        typeSpinner.text = hospitalData.type
+        country_Spinner.text = hospitalData.country.name
+        city_Spinner.text = hospitalData.city.name
+        country_id = hospitalData.country.id
+        type = hospitalData.type
+        city_id = hospitalData.city.id
+        flagSelected = 1
         prepareTypeList()
         getCountryList()
     }
@@ -63,7 +76,7 @@ class UpdateHospitalFragment : Fragment() {
         typeList.clear()
         typeList.add("COE")
         typeList.add("REFERAL")
-        initializeTypeSpinner(spinnerType, typeList)
+        initializeTypeSpinner(typeList)
 
     }
 
@@ -93,47 +106,23 @@ class UpdateHospitalFragment : Fragment() {
         for (country in countryList) {
             countriesNameList.add(country.name)
         }
-        initializeCountrySpinner(countrySpinner, countriesNameList)
+        initializeCountrySpinner(countriesNameList)
 
     }
 
     private fun initializeCountrySpinner(
-        countrySpinner: SearchableSpinner,
         countriesNameList: ArrayList<String>
     ) {
-        val arrayAdapter =
-            context?.let {
-                ArrayAdapter(
-                    it,
-                    R.layout.support_simple_spinner_dropdown_item,
-                    countriesNameList
-                )
-            }
-
-        countrySpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(
-                parentView: AdapterView<*>,
-                selectedItemView: View,
-                position: Int,
-                id: Long
-            ) {
-
-                val cml = parentView.getItemAtPosition(position).toString()
+        countrySpinner = SpinnerDialog(activity!!, countriesNameList, "") // With No Animation
+        countrySpinner.setCancellable(true) // for cancellable
+        countrySpinner.setShowKeyboard(false) // for open keyboard by default
+        countrySpinner.bindOnSpinerListener(object : OnSpinerItemClick {
+            override fun onClick(item: String?, position: Int) {
                 country_id = countryList[position].id
+                country_Spinner.text = countryList[position].name
                 callCitiesPerCountry(country_id)
             }
-
-            override fun onNothingSelected(parentView: AdapterView<*>) {
-                // your code here
-            }
-
-
-        }
-        arrayAdapter?.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        if (arrayAdapter != null) {
-            countrySpinner.adapter = arrayAdapter
-        }
-
+        })
     }
 
     private fun callCitiesPerCountry(countryId: Int) {
@@ -159,67 +148,33 @@ class UpdateHospitalFragment : Fragment() {
         for (city in cityList) {
             citiesNameList.add(city.name)
         }
-        initializeCitySpinner(citySpinner, citiesNameList)
+        initializeCitySpinner(citiesNameList)
     }
 
     private fun initializeCitySpinner(
-        citySpinner: SearchableSpinner,
         citiesNameList: ArrayList<String>
     ) {
-        cityText.visibility = View.GONE
-        cityLayout.visibility = View.VISIBLE
-        val arrayAdapter =
-            context?.let {
-                ArrayAdapter(
-                    it,
-                    R.layout.support_simple_spinner_dropdown_item,
-                    citiesNameList
-                )
-            }
-
-        citySpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(
-                parentView: AdapterView<*>,
-                selectedItemView: View,
-                position: Int,
-                id: Long
-            ) {
+        citySpinner = SpinnerDialog(activity!!, citiesNameList, "") // With No Animation
+        citySpinner.setCancellable(true) // for cancellable
+        citySpinner.setShowKeyboard(false) // for open keyboard by default
+        citySpinner.bindOnSpinerListener(object : OnSpinerItemClick {
+            override fun onClick(item: String?, position: Int) {
                 city_id = cityList[position].id
+                city_Spinner.text = cityList[position].name
+
             }
-
-            override fun onNothingSelected(parentView: AdapterView<*>) {
-                // your code here
-            }
-
-
-        }
-        arrayAdapter?.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        if (arrayAdapter != null) {
-            citySpinner.adapter = arrayAdapter
-        }
-
+        })
     }
 
 
-    private fun initializeTypeSpinner(spinnerType: SearchableSpinner, typeList: ArrayList<String>) {
-        val arrayAdapter =
-            context?.let {
-                ArrayAdapter(
-                    it,
-                    R.layout.support_simple_spinner_dropdown_item,
-                    typeList
-                )
-            }
-
-        spinnerType.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(
-                parentView: AdapterView<*>,
-                selectedItemView: View,
-                position: Int,
-                id: Long
-            ) {
-
+    private fun initializeTypeSpinner(typeList: ArrayList<String>) {
+        spinnerType = SpinnerDialog(activity!!, typeList, "") // With No Animation
+        spinnerType.setCancellable(true) // for cancellable
+        spinnerType.setShowKeyboard(false) // for open keyboard by default
+        spinnerType.bindOnSpinerListener(object : OnSpinerItemClick {
+            override fun onClick(item: String?, position: Int) {
                 val typeHospital = typeList[position]
+                typeSpinner.text = typeHospital
                 type = if (typeHospital == "COE") {
                     flagSelected = 1
                     "COE"
@@ -228,17 +183,10 @@ class UpdateHospitalFragment : Fragment() {
                     flagSelected = 1
                     "referal"
                 }
-            }
 
-            override fun onNothingSelected(parentView: AdapterView<*>) {
-                // your code here
             }
+        })
 
-        }
-        arrayAdapter?.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        if (arrayAdapter != null) {
-            typeSpinner.adapter = arrayAdapter
-        }
 
     }
 
@@ -247,15 +195,9 @@ class UpdateHospitalFragment : Fragment() {
         backButton.setOnClickListener {
             findNavController().navigateUp()
         }
-        cityText.setOnClickListener {
-            Toast.makeText(activity, "please Choose Country first Thanks.", Toast.LENGTH_SHORT)
-                .show()
-        }
+
 
         flagSelected = 0
-        spinnerType = root.findViewById(R.id.typeSpinner)
-        countrySpinner = root.findViewById(R.id.countrySpinner)
-        citySpinner = root.findViewById(R.id.citySpinner)
         mainView.setOnClickListener {
             hideKeyboard()
         }
@@ -270,22 +212,44 @@ class UpdateHospitalFragment : Fragment() {
                 } else {
                     if (type == "COE") {
                         add_hospitalRequestModel = updateHospitalRequestModel(
-                            name, type, city_id.toInt(), country_id.toInt(), 0, 0, 0, 0, 0,
-                            0, 0, 0, "put"
+                            name,
+                            type,
+                            city_id.toInt(),
+                            country_id.toInt(),
+                            hospitalData.rheuma,
+                            hospitalData.crdio,
+                            hospitalData.pulmo,
+                            hospitalData.pah_expert,
+                            hospitalData.rhc,
+                            hospitalData.rwe,
+                            hospitalData.echo,
+                            hospitalData.pah_attentive,
+                            "put"
                         )
                         val bundle = Bundle()
                         bundle.putParcelable("Hospital", add_hospitalRequestModel)
-                        bundle.putInt("hospitalId", hospitalId)
+                        bundle.putInt("hospitalId", hospitalData.id)
 
                         findNavController().navigate(R.id.action_updateHospital_coeFragment, bundle)
                     } else {
                         add_hospitalRequestModel = updateHospitalRequestModel(
-                            name, type, city_id.toInt(), country_id.toInt(), 0, 0, 0, 0, 0,
-                            0, 0, 0, "put"
+                            name,
+                            type,
+                            city_id.toInt(),
+                            country_id.toInt(),
+                            hospitalData.rheuma,
+                            hospitalData.crdio,
+                            hospitalData.pulmo,
+                            hospitalData.pah_expert,
+                            hospitalData.rhc,
+                            hospitalData.rwe,
+                            hospitalData.echo,
+                            hospitalData.pah_attentive,
+                            "put"
                         )
                         val bundle = Bundle()
                         bundle.putParcelable("Hospital", add_hospitalRequestModel)
-                        bundle.putInt("hospitalId", hospitalId)
+                        bundle.putInt("hospitalId", hospitalData.id)
                         findNavController().navigate(
                             R.id.action_updateHospital_ReferalFragment,
                             bundle

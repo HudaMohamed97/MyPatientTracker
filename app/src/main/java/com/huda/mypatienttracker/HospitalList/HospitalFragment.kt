@@ -151,7 +151,7 @@ class HospitalFragment : Fragment() {
                 } else if (fromTab == "Update") {
                     val hospitalId = modelFeedArrayList[position].id
                     val bundle = Bundle()
-                    bundle.putInt("hospitalId", hospitalId)
+                    bundle.putParcelable("hospitalData", modelFeedArrayList[position])
                     findNavController().navigate(
                         R.id.action_HospitalListFragment_to_UpdateHospital,
                         bundle

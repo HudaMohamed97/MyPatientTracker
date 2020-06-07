@@ -41,6 +41,9 @@ class UpdateReferalFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         add_hospitalRequestModel = arguments?.getParcelable("Hospital")!!
         hospitalId = arguments?.getInt("hospitalId")!!
+        rheuma.setText(add_hospitalRequestModel.rheuma.toString())
+        cardio.setText(add_hospitalRequestModel.crdio.toString())
+        pulmo.setText(add_hospitalRequestModel.pulmo.toString())
         setClickListeners()
     }
 

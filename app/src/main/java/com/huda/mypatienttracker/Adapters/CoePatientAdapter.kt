@@ -48,6 +48,14 @@ class CoePatientAdapter(modelFeedArrayList: ArrayList<PatientResponseData>) :
         holder.hospitalNameCoe.text = modelFeed.hospital?.name
         holder.doctorName.text = modelFeed.doctor.name
         holder.time.text = modelFeed.created_at
+        if( modelFeed.last_treatment==null){
+            holder.patient_type.text = "No etiology"
+            holder.product.text ="No Treatment"
+        }
+        else
+        {
+        holder.product.text = modelFeed.last_treatment.type_medication
+        holder.patient_type.text =modelFeed.last_treatment.etiology}
 
         holder.dotsImage.setOnClickListener {
             if (onItemClickListener != null && position != RecyclerView.NO_POSITION) {
@@ -101,7 +109,8 @@ class CoePatientAdapter(modelFeedArrayList: ArrayList<PatientResponseData>) :
         var hospitalNameCoe: TextView =
             itemView.findViewById<View>(R.id.hospitalNameCoe) as TextView
         var doctorName: TextView = itemView.findViewById<View>(R.id.doctor) as TextView
-        var etiologyText: TextView = itemView.findViewById<View>(R.id.etiologyText) as TextView
+        var patient_type: TextView = itemView.findViewById<View>(R.id.patient_type) as TextView
+        var product: TextView = itemView.findViewById<View>(R.id.product) as TextView
         var time: TextView = itemView.findViewById<View>(R.id.timeCoe) as TextView
         var type: TextView = itemView.findViewById<View>(R.id.type) as TextView
 
