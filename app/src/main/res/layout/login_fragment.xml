@@ -5,27 +5,26 @@
     android:id="@+id/mainLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@mipmap/background"
+    android:background="@mipmap/login_background"
     android:clickable="true"
     android:focusable="true">
 
     <ProgressBar
         android:id="@+id/progressBar"
         style="?android:attr/progressBarStyle"
-        tools:visibility="visible"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/space_5"
         android:layout_marginLeft="@dimen/space_5"
-        android:layout_marginTop="@dimen/space_20"
         android:layout_marginBottom="20dp"
         android:indeterminate="true"
-        android:indeterminateTint="@color/not_blue"
+        android:indeterminateTint="@color/white"
         android:indeterminateTintMode="src_atop"
         android:visibility="gone"
         app:layout_constraintBottom_toTopOf="@+id/btn_login"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        tools:visibility="visible" />
 
 
     <ImageView
@@ -34,6 +33,7 @@
         android:layout_height="50dp"
         android:layout_marginTop="100dp"
         android:src="@mipmap/logo"
+        android:visibility="invisible"
         app:layout_constraintBottom_toTopOf="@+id/email_login_form"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -46,9 +46,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="30dp"
-        android:layout_marginTop="@dimen/space_32"
+        android:layout_marginTop="30dp"
         android:layout_marginRight="30dp"
-        android:layout_marginBottom="30dp"
         android:gravity="center"
         android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
@@ -69,7 +68,7 @@
                 android:layout_width="20dp"
                 android:layout_height="@dimen/space_20"
                 android:layout_margin="5dp"
-                android:src="@mipmap/username"
+                android:src="@mipmap/login_username"
 
                 ></ImageView>
 
@@ -92,7 +91,7 @@
             android:id="@+id/password"
             android:layout_width="match_parent"
             android:layout_height="60dp"
-            android:layout_marginTop="@dimen/space_20"
+            android:layout_marginTop="@dimen/space_15"
             android:background="@drawable/rounded_background_edittext"
             android:orientation="horizontal"
             app:layout_constraintTop_toTopOf="@id/email">
@@ -104,7 +103,7 @@
                 android:layout_marginTop="7dp"
                 android:layout_marginRight="5dp"
                 android:layout_marginBottom="5dp"
-                android:src="@mipmap/password" />
+                android:src="@mipmap/login_password" />
 
             <EditText
                 android:id="@+id/input_password"
@@ -157,12 +156,12 @@
             android:layout_marginStart="30dp"
             android:layout_marginLeft="30dp"
             android:layout_marginTop="20dp"
-            android:layout_marginBottom="20dp"
-            android:buttonTint="@color/not_blue"
+            android:layout_marginBottom="10dp"
+            android:buttonTint="@color/white"
             android:checked="true"
             android:gravity="center"
-            android:text="remember me"
-            android:textColor="@android:color/black"
+            android:text="Remember me"
+            android:textColor="@android:color/white"
             android:textSize="16dp" />
 
         <TextView
@@ -172,7 +171,6 @@
             android:layout_marginTop="20dp"
             android:layout_marginEnd="45dp"
             android:layout_marginRight="45dp"
-            android:layout_marginBottom="20dp"
             android:clickable="true"
             android:gravity="right"
             android:text="Forget Password ?"
@@ -187,13 +185,10 @@
         android:id="@+id/btn_login"
         style="@style/Widget.MaterialComponents.Button.OutlinedButton"
         android:layout_width="match_parent"
-        android:layout_height="70dp"
+        android:layout_height="60dp"
         android:layout_marginLeft="30dp"
-        android:layout_marginTop="@dimen/space_20"
         android:layout_marginRight="30dp"
-        android:layout_marginBottom="15dp"
-        android:background="@color/not_blue"
-        android:backgroundTint="@color/not_blue"
+        android:backgroundTint="@color/login_button"
         android:text="Login"
         android:textColor="@color/white"
         android:textSize="@dimen/space_20"

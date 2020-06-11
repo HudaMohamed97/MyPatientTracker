@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="70dp"
         android:layout_marginBottom="30dp"
-        android:background="@color/not_blue"
+        android:background="@color/basic_color"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -74,7 +74,7 @@
             android:layout_height="match_parent"
             android:layout_gravity="center"
             android:indeterminate="true"
-            android:indeterminateTint="@color/not_blue"
+            android:indeterminateTint="@color/basic_color"
             android:indeterminateTintMode="src_atop"
             android:visibility="gone" />
 
@@ -109,7 +109,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginRight="@dimen/space_20"
                     android:layout_weight="1"
-                    android:buttonTint="@color/not_blue"
+                    android:buttonTint="@color/basic_color"
                     android:checked="true"
                     android:text="   COE"
                     android:textColor="@color/black" />
@@ -146,7 +146,7 @@
         app:layout_constraintRight_toRightOf="parent"
         android:layout_gravity="center"
         android:indeterminate="true"
-        android:indeterminateTint="@color/not_blue"
+        android:indeterminateTint="@color/basic_color"
         android:indeterminateTintMode="src_atop"
         android:visibility="gone" />
 

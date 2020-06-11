@@ -43,7 +43,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:indeterminate="true"
-            android:indeterminateTint="@color/not_blue"
+            android:indeterminateTint="@color/basic_color"
             android:indeterminateTintMode="src_atop"
             android:visibility="gone" />
 
@@ -57,7 +57,7 @@
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
             android:layout_marginBottom="@dimen/space_10"
-            android:backgroundTint="@color/not_blue"
+            android:backgroundTint="@color/basic_color"
             android:text="Update"
             android:textColor="@color/white"
             android:textSize="@dimen/space_20"

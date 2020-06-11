@@ -15,7 +15,7 @@ import com.huda.mypatienttracker.Models.HospitalModels.HospitalData
 import com.huda.mypatienttracker.Models.TargetData
 
 
-class TargetAdapter(modelFeedArrayList: ArrayList<TargetData>) :
+class TargetAdapter(private val hospitalName: String, modelFeedArrayList: ArrayList<TargetData>) :
     RecyclerView.Adapter<TargetAdapter.MyViewHolder>() {
 
     lateinit var onItemClickListener: OnDotsClickListener
@@ -43,7 +43,7 @@ class TargetAdapter(modelFeedArrayList: ArrayList<TargetData>) :
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val modelFeed = modelFeedArrayList[position]
-        holder.hospitalName.text = modelFeed.hospital.name
+        holder.hospitalName.text = hospitalName
         holder.targetText.text = modelFeed.number.toString()
         holder.dotsImage.setOnClickListener {
             if (onItemClickListener != null && position != RecyclerView.NO_POSITION) {

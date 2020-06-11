@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
+import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -33,6 +34,7 @@ class TargetListFragment : Fragment() {
     private lateinit var loginPreferences: SharedPreferences
     private lateinit var model: TargetRequestModel
     private lateinit var hospitalName: String
+    private var hospitalSubmitTarget: Boolean = false
     private val modelFeedArrayList = arrayListOf<TargetData>()
     private lateinit var targetAdapter: TargetAdapter
     private lateinit var recyclerView: RecyclerView
@@ -67,9 +69,11 @@ class TargetListFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         hospitalId = arguments?.getInt("hospitalId")!!
         hospitalName = arguments?.getString("hospitalName")!!
+        hospitalSubmitTarget = arguments?.getBoolean("hospitalSubmitTarget")!!
         setClickListeners()
         initRecyclerView()
         callTargetList("All", currentPageNum, false, false)
+        callTotalTarget()
         intializeMedicalSpinner()
         intializeMonthSpinner()
         intializeYearSpinner()
@@ -78,9 +82,9 @@ class TargetListFragment : Fragment() {
     private fun intializeMedicalSpinner() {
         medicalList.clear()
         medicalList.add("All")
-        medicalList.add("Opsumit")
-        medicalList.add("Uptravi")
-        medicalList.add("Tracleer")
+        medicalList.add("com.huda.mypatienttracker.Models.HospitalModels.Opsumit")
+        medicalList.add("com.huda.mypatienttracker.Models.HospitalModels.Uptravi")
+        medicalList.add("com.huda.mypatienttracker.Models.HospitalModels.Tracleer")
         initializeTypeSpinner(Type, medicalList)
     }
 
@@ -127,12 +131,12 @@ class TargetListFragment : Fragment() {
                         callTargetList("All", 1, false, false)
                         "All"
                     }
-                    "Opsumit" -> {
+                    "com.huda.mypatienttracker.Models.HospitalModels.Opsumit" -> {
                         flagSelected = 1
                         callTargetList("opsumit", 1, false, false)
                         "opsumit"
                     }
-                    "Uptravi" -> {
+                    "com.huda.mypatienttracker.Models.HospitalModels.Uptravi" -> {
                         flagSelected = 1
                         callTargetList("uptravi", 1, false, false)
                         "uptravi"
@@ -225,6 +229,10 @@ class TargetListFragment : Fragment() {
     }
 
     private fun setClickListeners() {
+        submitTarget.setOnClickListener {
+            submitTarget()
+        }
+
         currentPageNum = 1
         val backButton = root.findViewById(R.id.backButton) as ImageView
         backButton.setOnClickListener {
@@ -261,7 +269,7 @@ class TargetListFragment : Fragment() {
             } else if (!isInteger) {
                 Toast.makeText(
                     activity,
-                    "Please Enter Target As Numbers",
+                    "Please Enter com.huda.mypatienttracker.Models.HospitalModels.Target As Numbers",
                     Toast.LENGTH_SHORT
                 ).show()
             } else {
@@ -335,34 +343,62 @@ class TargetListFragment : Fragment() {
         })
     }
 
+    private fun submitTarget() {
+        totalTargetProgressBar.visibility = View.VISIBLE
+        val accessToken = loginPreferences.getString("accessToken", "")
+        if (accessToken != null) {
+            addTargetFragmentViewModel.submitTarget(hospitalId, accessToken)
+        }
+        addTargetFragmentViewModel.getsubmitData().observe(this, Observer {
+            totalTargetProgressBar.visibility = View.GONE
+            if (it != null) {
+                Toast.makeText(activity, "Target Submitted Successfully", Toast.LENGTH_SHORT)
+                    .show()
+            } else {
+                Toast.makeText(activity, "Network Error", Toast.LENGTH_SHORT).show()
+            }
+        })
+    }
+
     private fun initRecyclerView() {
         val layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
-        targetAdapter = TargetAdapter(modelFeedArrayList)
+        targetAdapter = TargetAdapter(hospitalName, modelFeedArrayList)
         recyclerView.layoutManager = layoutManager
         recyclerView.adapter = targetAdapter
         targetAdapter.setOnCommentListener(object : TargetAdapter.OnDotsClickListener {
             override fun onDotsImageClicked(position: Int, fromTab: String) {
                 if (position != null) {
                     if (fromTab == "UpdateTarget") {
-                        updateTargetBottomSheet = updateBottomSheet()
-                        fragmentManager?.let { it ->
-                            updateTargetBottomSheet.show(
-                                it,
-                                "DeleteBottomSheet"
-                            )
-                        }
-                        updateTargetBottomSheet.setOnAttendAddedListener(object :
-                            updateBottomSheet.AttendanceListener {
-                            override fun onTargetUpdated(number: Int) {
-                                callupdateTarget(position, modelFeedArrayList[position].id, number)
+                        if (hospitalSubmitTarget) {
+                            showAlertDialog("You Can't Update Target, Because You Confirmed Targets Before!")
+                        } else {
+                            updateTargetBottomSheet = updateBottomSheet()
+                            fragmentManager?.let { it ->
+                                updateTargetBottomSheet.show(
+                                    it,
+                                    "DeleteBottomSheet"
+                                )
                             }
+                            updateTargetBottomSheet.setOnAttendAddedListener(object :
+                                updateBottomSheet.AttendanceListener {
+                                override fun onTargetUpdated(number: Int) {
+                                    callupdateTarget(
+                                        position,
+                                        modelFeedArrayList[position].id,
+                                        number
+                                    )
+                                }
 
 
-                        })
-
+                            })
+                        }
                     } else if (fromTab == "Delete") {
-                        val targetId = modelFeedArrayList[position].id
-                        deleteTarget(targetId, position)
+                        if (hospitalSubmitTarget) {
+                            showAlertDialog("You Can't Delete Target, Because You Confirmed Targets Before!")
+                        } else {
+                            val targetId = modelFeedArrayList[position].id
+                            deleteTarget(targetId, position)
+                        }
                     }
                 }
             }
@@ -434,6 +470,22 @@ class TargetListFragment : Fragment() {
         })
     }
 
+    private fun callTotalTarget() {
+        totalTargetProgressBar.visibility = View.VISIBLE
+        val accessToken = loginPreferences.getString("accessToken", "")
+        if (accessToken != null) {
+            addTargetFragmentViewModel.getTotalTarget(hospitalId, accessToken)
+        }
+        addTargetFragmentViewModel.getTargetTotalData().observe(this, Observer {
+            totalTargetProgressBar.visibility = View.GONE
+            if (it != null) {
+                totalTarget.text = it.target.total.toString()
+            } else {
+                Toast.makeText(activity, "Network Error", Toast.LENGTH_SHORT).show()
+            }
+        })
+    }
+
     private fun callupdateTarget(position: Int, target: Int, number: Int) {
         TargetProgressBar.visibility = View.VISIBLE
         val accessToken = loginPreferences.getString("accessToken", "")
@@ -474,5 +526,12 @@ class TargetListFragment : Fragment() {
                 context!!.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager?
             imm!!.hideSoftInputFromWindow(view.windowToken, 0)
         }
+    }
+
+    private fun showAlertDialog(text: String) {
+        val alertDialog = AlertDialog.Builder(activity!!, R.style.DialogTheme).create()
+        alertDialog.setMessage(text)
+        alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "OK") { dialog, _ -> dialog.dismiss() }
+        alertDialog.show()
     }
 }

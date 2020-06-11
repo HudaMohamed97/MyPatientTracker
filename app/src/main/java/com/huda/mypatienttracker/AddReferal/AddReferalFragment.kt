@@ -23,10 +23,12 @@ import com.toptoche.searchablespinnerlibrary.SearchableSpinner
 import kotlinx.android.synthetic.main.add_patient_fragment.*
 import kotlinx.android.synthetic.main.add_patient_fragment.doctorSpinner
 import kotlinx.android.synthetic.main.add_referal.*
+import kotlinx.android.synthetic.main.add_target_fragment.*
 
 
 class AddReferalFragment : Fragment() {
     private lateinit var root: View
+    private var submitTarget: Boolean = false
     private lateinit var addReferalFragmentViewModel: AddReferalFragmentViewModel
     private lateinit var loginPreferences: SharedPreferences
     private val hospitalList = arrayListOf<HospitalData>()
@@ -317,6 +319,7 @@ class AddReferalFragment : Fragment() {
         }
         addReferalFragmentViewModel.getSingelData().observe(this, Observer {
             if (it != null) {
+                submitTarget = it.data.submit_target
                 if (toHospital) {
                     toDoctorsProgressBar.visibility = View.GONE
                 } else {

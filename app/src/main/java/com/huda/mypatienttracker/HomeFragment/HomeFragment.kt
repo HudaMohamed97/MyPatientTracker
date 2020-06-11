@@ -59,7 +59,7 @@ class HomeFragment : Fragment() {
 
         loginPreferences = activity!!.getSharedPreferences("loginPrefs", Context.MODE_PRIVATE)
         Name = loginPreferences.getString("Name", "").toString()
-        targetText.text = "All Target  " + loginPreferences.getInt(
+        targetText.text = "AllTarget  " + loginPreferences.getInt(
             "TargetAll",
             0
         ).toString() + "  Not PH  " + loginPreferences.getInt(
@@ -71,6 +71,21 @@ class HomeFragment : Fragment() {
                     0
                 ).toString() + "  No Update  " + loginPreferences.getInt(
             "TargetNoUpdate",
+            0
+        ).toString()
+
+        productText.text = "All Product  " + loginPreferences.getInt(
+            "AllProduct",
+            0
+        ).toString() + "  uptravi  " + loginPreferences.getInt(
+            "uptravi",
+            0
+        ).toString() + "  opsumit   " +
+                loginPreferences.getInt(
+                    "opsumit",
+                    0
+                ).toString() + "  tracleer  " + loginPreferences.getInt(
+            "tracleer",
             0
         ).toString()
 

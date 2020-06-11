@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@id/mainLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -13,7 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="70dp"
         android:layout_marginBottom="30dp"
-        android:background="@color/not_blue"
+        android:background="@color/basic_color"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -106,8 +107,8 @@
                 android:layout_width="0dp"
                 android:layout_height="@dimen/space_50"
                 android:layout_weight="1"
-                android:focusableInTouchMode="true"
                 android:background="@drawable/background_edittext"
+                android:focusableInTouchMode="true"
                 android:hint="   Target"
                 android:textColor="@color/black"
                 android:textColorHint="@color/not_black"
@@ -168,18 +169,72 @@
         <com.google.android.material.button.MaterialButton
             android:id="@+id/AddTargetFragment"
             style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-            android:layout_width="match_parent"
-            android:layout_height="70dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginLeft="20dp"
             android:layout_marginTop="@dimen/space_5"
             android:layout_marginRight="20dp"
-            android:background="@color/not_blue"
-            android:backgroundTint="@color/not_blue"
-            android:text="Add"
+            android:background="@color/basic_color"
+            android:backgroundTint="@color/basic_color"
+            android:text="Add Target"
             android:textColor="@color/white"
             android:textSize="@dimen/space_20"
             app:cornerRadius="@dimen/space_10" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/totalTarget"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/space_10"
+                android:layout_marginRight="@dimen/space_10"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="Your Total Target Is 599">
+
+            </TextView>
+
+            <ProgressBar
+                android:id="@+id/totalTargetProgressBar"
+                style="?android:attr/progressBarStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_margin="@dimen/space_10"
+                android:indeterminate="true"
+                android:indeterminateTint="@color/basic_color"
+                android:indeterminateTintMode="src_atop"
+                android:visibility="gone"
+                app:layout_constraintStart_toEndOf="@+id/totalTarget" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/submitTarget"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:layout_marginTop="@dimen/space_5"
+                android:layout_marginEnd="@dimen/space_10"
+                android:layout_marginRight="@dimen/space_10"
+                android:background="@color/basic_color"
+                android:backgroundTint="@color/basic_color"
+                android:text="Submit Target"
+                android:textColor="@color/white"
+                app:cornerRadius="@dimen/space_10"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
 
         <ProgressBar
             android:id="@+id/TargetProgressBar"
@@ -188,7 +243,7 @@
             android:layout_height="match_parent"
             android:layout_gravity="center"
             android:indeterminate="true"
-            android:indeterminateTint="@color/not_blue"
+            android:indeterminateTint="@color/basic_color"
             android:indeterminateTintMode="src_atop"
             android:visibility="gone" />
 
@@ -213,7 +268,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:indeterminate="true"
-        android:indeterminateTint="@color/not_blue"
+        android:indeterminateTint="@color/basic_color"
         android:indeterminateTintMode="src_atop"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"

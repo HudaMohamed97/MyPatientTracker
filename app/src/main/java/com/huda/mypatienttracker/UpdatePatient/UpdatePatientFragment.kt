@@ -81,62 +81,61 @@ class UpdatePatientFragment : Fragment() {
         }
         val rg = root.findViewById(R.id.updateRadioPatientGroup) as RadioGroup
         fromType = UPTRAVI
-        otherMedication = "PDE5i"
         etiology = ""
 
         updatePDE5i.setOnClickListener {
             otherMedication = "PDE5i"
-            updateOral_PC.isChecked = false
-            updateRio.isChecked = false
-            updateother.isChecked = false
+            /*  updateOral_PC.isChecked = false
+              updateRio.isChecked = false
+              updateother.isChecked = false*/
         }
         updatePDE5iOpsumit.setOnClickListener {
             otherMedication = "PDE5i"
-            updateMacitentan.isChecked = false
-            updateRioopsumit.isChecked = false
-            updateOther_ERA.isChecked = false
+            /* updateMacitentan.isChecked = false
+             updateRioopsumit.isChecked = false
+             updateOther_ERA.isChecked = false*/
         }
 
         updateOral_PC.setOnClickListener {
             otherMedication = "Oral_PC"
-            updatePDE5i.isChecked = false
-            updateRio.isChecked = false
-            updateother.isChecked = false
+            /*  updatePDE5i.isChecked = false
+              updateRio.isChecked = false
+              updateother.isChecked = false*/
         }
 
         updateMacitentan.setOnClickListener {
             otherMedication = "Macitentan"
-            updatePDE5iOpsumit.isChecked = false
-            updateRioopsumit.isChecked = false
-            updateOther_ERA.isChecked = false
+            /* updatePDE5iOpsumit.isChecked = false
+             updateRioopsumit.isChecked = false
+             updateOther_ERA.isChecked = false*/
         }
 
         updateOther_ERA.setOnClickListener {
             otherMedication = "Other_ERA"
-            updatePDE5iOpsumit.isChecked = false
-            updateRioopsumit.isChecked = false
-            updateMacitentan.isChecked = false
+            /* updatePDE5iOpsumit.isChecked = false
+             updateRioopsumit.isChecked = false
+             updateMacitentan.isChecked = false*/
         }
 
         updateRioopsumit.setOnClickListener {
             otherMedication = "Rioopsumit"
-            updatePDE5iOpsumit.isChecked = false
-            updateMacitentan.isChecked = false
-            updateOther_ERA.isChecked = false
+            /* updatePDE5iOpsumit.isChecked = false
+             updateMacitentan.isChecked = false
+             updateOther_ERA.isChecked = false*/
         }
 
         updateRio.setOnClickListener {
             otherMedication = "Rio"
-            updateOral_PC.isChecked = false
-            updatePDE5i.isChecked = false
-            updateother.isChecked = false
+            /*  updateOral_PC.isChecked = false
+              updatePDE5i.isChecked = false
+              updateother.isChecked = false*/
         }
 
         updateother.setOnClickListener {
             otherMedication = "PDE5i"
-            updateOral_PC.isChecked = false
-            updateRio.isChecked = false
-            updatePDE5i.isChecked = false
+            /* updateOral_PC.isChecked = false
+             updateRio.isChecked = false
+             updatePDE5i.isChecked = false*/
         }
 
         updateDoctorText.setOnClickListener {
@@ -145,6 +144,31 @@ class UpdatePatientFragment : Fragment() {
         }
 
         updateButton.setOnClickListener {
+            if (updatePDE5i.isChecked) {
+                otherMedication = "PDE5i,"
+            }
+            if (updatePDE5iOpsumit.isChecked) {
+                otherMedication += "PDE5i,"
+            }
+            if (updateOral_PC.isChecked) {
+                otherMedication += "Oral_PC,"
+            }
+            if (updateMacitentan.isChecked) {
+                otherMedication += "Macitentan,"
+            }
+            if (updateOther_ERA.isChecked) {
+                otherMedication += "Other_ERA,"
+            }
+            if (updateRioopsumit.isChecked) {
+                otherMedication += "Rioopsumit,"
+            }
+            if (updateRio.isChecked) {
+                otherMedication += "Rio,"
+            }
+            if (updateother.isChecked) {
+                otherMedication += "other,"
+            }
+            otherMedication = otherMedication.substring(0, otherMedication.length - 1);
             if (fromType == "" || hospitalId == -1 || doctorId == -1 || otherMedication == "" || etiology == "") {
                 Toast.makeText(activity, "Please fill All Fields Thanks", Toast.LENGTH_SHORT)
                     .show()

@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="70dp"
         android:layout_marginBottom="30dp"
-        android:background="@color/not_blue"
+        android:background="@color/basic_color"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -101,6 +101,29 @@
                 android:minWidth="@dimen/space_60"
                 android:textColor="@color/black" />
         </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/space_20"
+            android:layout_marginTop="@dimen/space_10"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/space_10"
+                android:text="Product Target "
+                android:textColor="@color/black" />
+
+            <TextView
+                android:id="@+id/productText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/space_10"
+                android:background="@drawable/rounded_background_orange"
+                android:minWidth="@dimen/space_60"
+                android:textColor="@color/black" />
+        </LinearLayout>
 
     </LinearLayout>
 
@@ -136,7 +159,7 @@
 
                 <LinearLayout
                     android:layout_width="130dp"
-                    android:layout_height="100dp"
+                    android:layout_height="80dp"
                     android:background="@drawable/rounded_background_home">
 
                     <ImageView
@@ -173,7 +196,7 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="100dp"
+                android:layout_height="wrap_content"
                 android:background="@drawable/card_rounded"
                 android:orientation="horizontal"
 
@@ -181,7 +204,7 @@
 
                 <LinearLayout
                     android:layout_width="130dp"
-                    android:layout_height="100dp"
+                    android:layout_height="80dp"
                     android:background="@drawable/rounded_background_home">
 
                     <ImageView
@@ -219,13 +242,13 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="100dp"
+                android:layout_height="wrap_content"
                 android:background="@drawable/card_rounded"
                 android:orientation="horizontal">
 
                 <LinearLayout
                     android:layout_width="130dp"
-                    android:layout_height="100dp"
+                    android:layout_height="80dp"
                     android:background="@drawable/rounded_background_home">
 
                     <ImageView

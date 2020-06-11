@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="70dp"
         android:layout_marginBottom="30dp"
-        android:background="@color/not_blue"
+        android:background="@color/basic_color"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -75,7 +75,7 @@
             android:layout_height="match_parent"
             android:layout_gravity="center"
             android:indeterminate="true"
-            android:indeterminateTint="@color/not_blue"
+            android:indeterminateTint="@color/basic_color"
             android:indeterminateTintMode="src_atop"
             android:visibility="gone" />
 
@@ -199,7 +199,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginRight="@dimen/space_20"
                     android:layout_weight="1"
-                    android:buttonTint="@color/not_blue"
+                    android:buttonTint="@color/basic_color"
                     android:checked="true"
                     android:text="   Uptravi"
                     android:textColor="@color/black" />
@@ -210,7 +210,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginRight="@dimen/space_20"
                     android:layout_weight="1"
-                    android:buttonTint="@color/not_blue"
+                    android:buttonTint="@color/basic_color"
                     android:text="   Tracleer"
                     android:textColor="@color/black" />
 
@@ -219,7 +219,7 @@
                     android:layout_weight="1"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:buttonTint="@color/not_blue"
+                    android:buttonTint="@color/basic_color"
                     android:text="Opsumit"
                     android:textColor="@color/black" />
 
@@ -260,9 +260,8 @@
                         android:id="@+id/PDE5i"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:backgroundTint="@color/not_blue"
+                        android:backgroundTint="@color/basic_color"
                         android:clickable="true"
-                        android:checked="true"
                         android:focusable="true"
                         android:theme="@style/DialogTheme" />
 
@@ -289,7 +288,7 @@
                         android:id="@+id/Oral_PC"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:backgroundTint="@color/not_blue"
+                        android:backgroundTint="@color/basic_color"
                         android:clickable="true"
                         android:focusable="true"
                         android:theme="@style/DialogTheme" />
@@ -324,7 +323,7 @@
                         android:id="@+id/Rio"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:backgroundTint="@color/not_blue"
+                        android:backgroundTint="@color/basic_color"
                         android:clickable="true"
                         android:focusable="true"
                         android:theme="@style/DialogTheme" />
@@ -351,7 +350,7 @@
                         android:id="@+id/other"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:backgroundTint="@color/not_blue"
+                        android:backgroundTint="@color/basic_color"
                         android:clickable="true"
                         android:focusable="true"
                         android:theme="@style/DialogTheme" />
@@ -395,8 +394,7 @@
                         android:id="@+id/PDE5iOpsumit"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:backgroundTint="@color/not_blue"
-                        android:checked="true"
+                        android:backgroundTint="@color/basic_color"
                         android:clickable="true"
                         android:focusable="true"
                         android:theme="@style/DialogTheme" />
@@ -424,7 +422,7 @@
                         android:id="@+id/Macitentan"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:backgroundTint="@color/not_blue"
+                        android:backgroundTint="@color/basic_color"
                         android:clickable="true"
                         android:focusable="true"
                         android:theme="@style/DialogTheme" />
@@ -459,7 +457,7 @@
                         android:id="@+id/Rioopsumit"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:backgroundTint="@color/not_blue"
+                        android:backgroundTint="@color/basic_color"
                         android:clickable="true"
                         android:focusable="true"
                         android:theme="@style/DialogTheme" />
@@ -486,7 +484,7 @@
                         android:id="@+id/Other_ERA"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:backgroundTint="@color/not_blue"
+                        android:backgroundTint="@color/basic_color"
                         android:clickable="true"
                         android:focusable="true"
                         android:theme="@style/DialogTheme" />
@@ -517,8 +515,8 @@
         android:layout_marginTop="15dp"
         android:layout_marginRight="20dp"
         android:layout_marginBottom="30dp"
-        android:background="@color/not_blue"
-        android:backgroundTint="@color/not_blue"
+        android:background="@color/basic_color"
+        android:backgroundTint="@color/basic_color"
         android:text="Submit"
         android:textColor="@color/white"
         android:textSize="@dimen/space_20"

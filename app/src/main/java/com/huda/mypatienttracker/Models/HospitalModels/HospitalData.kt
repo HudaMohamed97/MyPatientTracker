@@ -2,8 +2,10 @@ package com.huda.mypatienttracker.Models.HospitalModels
 
 import City
 import Country
+import android.os.Build
 import android.os.Parcel
 import android.os.Parcelable
+import androidx.annotation.RequiresApi
 import com.google.gson.annotations.SerializedName
 
 data class HospitalData(
@@ -17,11 +19,13 @@ data class HospitalData(
     @SerializedName("rhc") val rhc : Int,
     @SerializedName("rwe") val rwe : Int,
     @SerializedName("echo") val echo : Int,
+    @SerializedName("submit_target") val submit_target : Boolean,
     @SerializedName("pah_attentive") val pah_attentive : Int,
     @SerializedName("city") val city : City,
     @SerializedName("country") val country : Country,
     @SerializedName("user") val user : User
 ):Parcelable {
+    @RequiresApi(Build.VERSION_CODES.Q)
     constructor(parcel: Parcel) : this(
         parcel.readInt(),
         parcel.readString().toString(),
@@ -33,6 +37,7 @@ data class HospitalData(
         parcel.readInt(),
         parcel.readInt(),
         parcel.readInt(),
+        parcel.readBoolean(),
         parcel.readInt(),
         parcel.readParcelable(City::class.java.classLoader)!!,
         parcel.readParcelable(Country::class.java.classLoader)!!,

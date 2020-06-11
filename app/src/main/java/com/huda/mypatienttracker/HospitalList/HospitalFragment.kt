@@ -25,6 +25,7 @@ import kotlinx.android.synthetic.main.hospital_fragment_list.*
 
 class HospitalFragment : Fragment() {
     private lateinit var root: View
+    private var submitTarget: Boolean = false
     private lateinit var hospitalViewModel: HospitalViewModel
     private val modelFeedArrayList = arrayListOf<HospitalData>()
     private lateinit var hospitalAdapter: HospitalAdapter
@@ -137,12 +138,14 @@ class HospitalFragment : Fragment() {
                 } else if (fromTab == "Delete") {
                     val hospitalId = modelFeedArrayList[position].id
                     deleteHospital(hospitalId, position, fromType)
-                } else if (fromTab == "Target") {
+                } else if (fromTab == "com.huda.mypatienttracker.Models.HospitalModels.Target") {
                     val hospitalId = modelFeedArrayList[position].id
                     val hospitalName = modelFeedArrayList[position].name
+                    val submitTarget = modelFeedArrayList[position].submit_target
                     val bundle = Bundle()
                     bundle.putInt("hospitalId", hospitalId)
                     bundle.putString("hospitalName", hospitalName)
+                    bundle.putBoolean("hospitalSubmitTarget", submitTarget)
                     findNavController().navigate(
                         R.id.action_HospitalListFragment_to_targetFragment,
                         bundle

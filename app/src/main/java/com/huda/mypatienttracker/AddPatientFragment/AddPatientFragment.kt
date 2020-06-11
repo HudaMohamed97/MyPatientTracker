@@ -38,6 +38,7 @@ class AddPatientFragment : Fragment() {
     private lateinit var loginPreferences: SharedPreferences
     private val hospitalList = arrayListOf<HospitalData>()
     private val hospitalNameList = arrayListOf<String>()
+    private val MedicationsArray = arrayListOf<String>()
     private val etiologyList = arrayListOf<String>()
     private val doctorist = arrayListOf<Doctors>()
     private val doctorNameList = arrayListOf<String>()
@@ -82,63 +83,71 @@ class AddPatientFragment : Fragment() {
 
         val rg = root.findViewById(R.id.radioPatientGroup) as RadioGroup
         fromType = UPTRAVI
-        otherMedication = "PDE5i"
         etiology = ""
 
 
         PDE5i.setOnClickListener {
             otherMedication = "PDE5i"
-            Oral_PC.isChecked = false
+            MedicationsArray.add(otherMedication)
+            /*Oral_PC.isChecked = false
             Rio.isChecked = false
-            other.isChecked = false
+            other.isChecked = false*/
         }
         PDE5iOpsumit.setOnClickListener {
             otherMedication = "PDE5i"
-            Macitentan.isChecked = false
-            Rioopsumit.isChecked = false
-            Other_ERA.isChecked = false
+            MedicationsArray.add(otherMedication)
+            /* Macitentan.isChecked = false
+             Rioopsumit.isChecked = false
+             Other_ERA.isChecked = false*/
         }
 
         Oral_PC.setOnClickListener {
             otherMedication = "Oral_PC"
-            PDE5i.isChecked = false
+            MedicationsArray.add(otherMedication)
+            /*PDE5i.isChecked = false
             Rio.isChecked = false
-            other.isChecked = false
+            other.isChecked = false*/
         }
 
         Macitentan.setOnClickListener {
             otherMedication = "Macitentan"
-            PDE5iOpsumit.isChecked = false
+            MedicationsArray.add(otherMedication)
+            /*PDE5iOpsumit.isChecked = false
             Rioopsumit.isChecked = false
-            Other_ERA.isChecked = false
+            Other_ERA.isChecked = false*/
         }
 
         Other_ERA.setOnClickListener {
             otherMedication = "Other_ERA"
-            PDE5iOpsumit.isChecked = false
-            Rioopsumit.isChecked = false
-            Macitentan.isChecked = false
+            MedicationsArray.add(otherMedication)
+            /*  PDE5iOpsumit.isChecked = false
+              Rioopsumit.isChecked = false
+              Macitentan.isChecked = false*/
         }
 
         Rioopsumit.setOnClickListener {
             otherMedication = "Rioopsumit"
-            PDE5iOpsumit.isChecked = false
+            MedicationsArray.add(otherMedication)
+            /*PDE5iOpsumit.isChecked = false
             Macitentan.isChecked = false
-            Other_ERA.isChecked = false
+            Other_ERA.isChecked = false*/
         }
 
         Rio.setOnClickListener {
             otherMedication = "Rio"
-            Oral_PC.isChecked = false
+            MedicationsArray.add(otherMedication)
+            /*Oral_PC.isChecked = false
             PDE5i.isChecked = false
-            other.isChecked = false
+            other.isChecked = false*/
         }
 
         other.setOnClickListener {
             otherMedication = "PDE5i"
-            Oral_PC.isChecked = false
-            Rio.isChecked = false
-            PDE5i.isChecked = false
+            MedicationsArray.add(otherMedication)
+
+            /* Oral_PC.isChecked = false
+             Rio.isChecked = false
+             PDE5i.isChecked = false*/
         }
 
         doctorText.setOnClickListener {
@@ -147,6 +156,33 @@ class AddPatientFragment : Fragment() {
         }
 
         continueButton.setOnClickListener {
+            if (PDE5i.isChecked) {
+                otherMedication = "PDE5i,"
+            }
+            if (PDE5iOpsumit.isChecked) {
+                otherMedication += "PDE5i,"
+            }
+            if (Oral_PC.isChecked) {
+                otherMedication += "Oral_PC,"
+            }
+            if (Macitentan.isChecked) {
+                otherMedication += "Macitentan,"
+            }
+            if (Other_ERA.isChecked) {
+                otherMedication += "Other_ERA,"
+            }
+            if (Rioopsumit.isChecked) {
+                otherMedication += "Rioopsumit,"
+            }
+            if (Rio.isChecked) {
+                otherMedication += "Rio,"
+            }
+            if (other.isChecked) {
+                otherMedication += "other,"
+            }
+            otherMedication = otherMedication.substring(0, otherMedication.length - 1);
+
+
             if (fromType == "" || hospitalId == -1 || doctorId == -1 || otherMedication == "" || etiology == "") {
                 Toast.makeText(activity, "Please fill All Fields Thanks", Toast.LENGTH_SHORT)
                     .show()

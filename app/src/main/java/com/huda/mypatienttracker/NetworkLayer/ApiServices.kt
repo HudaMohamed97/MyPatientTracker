@@ -2,10 +2,7 @@ package com.huda.mypatienttracker.NetworkLayer
 
 import com.example.myapplication.Models.*
 import com.huda.mypatienttracker.Models.*
-import com.huda.mypatienttracker.Models.HospitalModels.CitiesResponse
-import com.huda.mypatienttracker.Models.HospitalModels.HospitalResponseModel
-import com.huda.mypatienttracker.Models.HospitalModels.PatientReferalRequestModel
-import com.huda.mypatienttracker.Models.HospitalModels.updateHospitalRequestModel
+import com.huda.mypatienttracker.Models.HospitalModels.*
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import okhttp3.ResponseBody
@@ -52,6 +49,18 @@ interface ApiServices {
         @Query("product") product: String,
         @Header("Authorization") authHeader: String
     ): Call<TargetResponse>
+
+    @GET("hospitals/{hospital}/total-target")
+    fun getTotalTarget(
+        @Path("hospital") hospitalId: Int,
+        @Header("Authorization") authHeader: String
+    ): Call<TotalTargetResponse>
+
+    @POST("hospitals/{hospital}/submit-target")
+    fun sumbmitTarget(
+        @Path("hospital") hospitalId: Int,
+        @Header("Authorization") authHeader: String
+    ): Call<SubmitModel>
 
     @GET("hospitals/{hospital}/targets")
     fun getAllTarget(

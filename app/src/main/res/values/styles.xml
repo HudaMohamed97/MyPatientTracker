@@ -87,10 +87,10 @@
     </style>
 
     <style name="DialogTheme" parent="Theme.AppCompat.Light.Dialog">
-        <item name="colorAccent">@color/not_blue</item>
-        <item name="android:textColor">@color/not_blue</item>
-        <item name="colorPrimary">@color/not_blue</item>
-        <item name="colorPrimaryDark">@color/not_blue</item>
+        <item name="colorAccent">@color/basic_color</item>
+        <item name="android:textColor">@color/basic_color</item>
+        <item name="colorPrimary">@color/basic_color</item>
+        <item name="colorPrimaryDark">@color/basic_color</item>
 
     </style>
 

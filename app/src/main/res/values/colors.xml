@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">@color/not_blue</color>
+    <color name="colorPrimary">@color/basic_color</color>
     <color name="colorPrimaryDark">#242424</color>
     <color name="colorAccent">#dcffffff</color>
 
@@ -14,7 +14,8 @@
     <color name="red">#FF0000</color>
     <color name="green">#008000</color>
     <color name="green_bold">#028A0f</color>
-    <color name="not_blue">#5161AC</color>
+    <color name="basic_color">#8B3360</color>
+    <color name="login_button">#2E3058</color>
     <color name="black">#000000</color>
     <color name="black2">#000010</color>
     <color name="black_background">#212121</color>

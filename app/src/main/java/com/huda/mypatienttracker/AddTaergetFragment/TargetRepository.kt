@@ -2,6 +2,7 @@ package com.huda.mypatienttracker.AddTaergetFragment
 
 import androidx.lifecycle.MutableLiveData
 import com.example.myapplication.Models.SubmitModel
+import com.huda.mypatienttracker.Models.HospitalModels.TotalTargetResponse
 import com.huda.mypatienttracker.Models.TargetRequestModel
 import com.huda.mypatienttracker.Models.TargetResponse
 import com.huda.mypatienttracker.Models.updateTargetRequestModel
@@ -29,7 +30,7 @@ class TargetRepository {
                         if (response.code() == 400) {
                             val dummyResponse =
                                 SubmitModel(
-                                    "Error, You insert Target of this Month Before!",
+                                    "Error, You insert com.huda.mypatienttracker.Models.HospitalModels.Target of this Month Before!",
                                     "error"
                                 )
                             hospitalData.value = dummyResponse
@@ -54,6 +55,35 @@ class TargetRepository {
     ): MutableLiveData<SubmitModel> {
         val hospitalData = MutableLiveData<SubmitModel>()
         Webservice.getInstance().api.deleteTarget(hospitalId, tagetId, accessToken)
+            .enqueue(object : Callback<SubmitModel> {
+                override fun onResponse(
+                    call: Call<SubmitModel>,
+                    response: Response<SubmitModel>
+                ) {
+                    if (response.isSuccessful) {
+                        hospitalData.value = response.body()
+                    } else {
+                        if (response.code() == 422) {
+
+                        }
+                        hospitalData.value = response.body()
+                    }
+                }
+
+                override fun onFailure(call: Call<SubmitModel>, t: Throwable) {
+                    hospitalData.value = null
+                }
+            })
+        return hospitalData
+
+    }
+
+    fun submitTarget(
+        hospitalId: Int,
+        accessToken: String
+    ): MutableLiveData<SubmitModel> {
+        val hospitalData = MutableLiveData<SubmitModel>()
+        Webservice.getInstance().api.sumbmitTarget(hospitalId, accessToken)
             .enqueue(object : Callback<SubmitModel> {
                 override fun onResponse(
                     call: Call<SubmitModel>,
@@ -154,6 +184,31 @@ class TargetRepository {
                 }
 
                 override fun onFailure(call: Call<TargetResponse>, t: Throwable) {
+                    hospitalData.value = null
+                }
+            })
+        return hospitalData
+    }
+
+    fun getTotalTarget(
+        hospitalId: Int,
+        accessToken: String
+    ): MutableLiveData<TotalTargetResponse> {
+        val hospitalData = MutableLiveData<TotalTargetResponse>()
+        Webservice.getInstance().api.getTotalTarget(hospitalId, accessToken)
+            .enqueue(object : Callback<TotalTargetResponse> {
+                override fun onResponse(
+                    call: Call<TotalTargetResponse>,
+                    response: Response<TotalTargetResponse>
+                ) {
+                    if (response.isSuccessful) {
+                        hospitalData.value = response.body()
+                    } else {
+                        hospitalData.value = response.body()
+                    }
+                }
+
+                override fun onFailure(call: Call<TotalTargetResponse>, t: Throwable) {
                     hospitalData.value = null
                 }
             })

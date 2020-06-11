@@ -175,9 +175,9 @@ class UpdateHospitalFragment : Fragment() {
             override fun onClick(item: String?, position: Int) {
                 val typeHospital = typeList[position]
                 typeSpinner.text = typeHospital
-                type = if (typeHospital == "COE") {
+                type = if (typeHospital == "coe") {
                     flagSelected = 1
-                    "COE"
+                    "coe"
 
                 } else {
                     flagSelected = 1
@@ -210,7 +210,7 @@ class UpdateHospitalFragment : Fragment() {
                     Toast.makeText(activity, "please Choose Type", Toast.LENGTH_SHORT).show()
 
                 } else {
-                    if (type == "COE") {
+                    if (type == "coe") {
                         add_hospitalRequestModel = updateHospitalRequestModel(
                             name,
                             type,
@@ -229,7 +229,6 @@ class UpdateHospitalFragment : Fragment() {
                         val bundle = Bundle()
                         bundle.putParcelable("Hospital", add_hospitalRequestModel)
                         bundle.putInt("hospitalId", hospitalData.id)
-
                         findNavController().navigate(R.id.action_updateHospital_coeFragment, bundle)
                     } else {
                         add_hospitalRequestModel = updateHospitalRequestModel(
