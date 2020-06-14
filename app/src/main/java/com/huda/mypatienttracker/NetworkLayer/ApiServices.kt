@@ -75,6 +75,12 @@ interface ApiServices {
         @Header("Authorization") authHeader: String
     ): Call<ActivityModelResponse>
 
+    @GET("previous-activities")
+    fun getPreviousActivity(
+        @Query("page") page: Int,
+        @Header("Authorization") authHeader: String
+    ): Call<ActivityModelResponse>
+
     @GET("activities/{activity}")
     fun getSingelActivity(
         @Path("activity") activity: Int,
@@ -118,6 +124,18 @@ interface ApiServices {
     @GET("patients")
     fun getReferalPatient(
         @Query("page") page: Int, @Header("Authorization") authHeader: String
+    ): Call<PatientResponse>
+
+    @GET("patients")
+    fun getPatientByHospital(
+        @Query("hospital_id") hospitalId: Int,
+        @Header("Authorization") authHeader: String
+    ): Call<PatientResponse>
+
+    @GET("patients")
+    fun getPatientByDoctor(
+        @Query("doctor_id") doctorId: Int,
+        @Header("Authorization") authHeader: String
     ): Call<PatientResponse>
 
     @POST("patients/{patient}/treatments")
@@ -191,6 +209,11 @@ interface ApiServices {
     fun getHospital(
         @Query("type") type: String,
         @Query("page") page: Int,
+        @Header("Authorization") authHeader: String
+    ): Call<HospitalResponseModel>
+
+    @GET("hospitals")
+    fun getAllHospital(
         @Header("Authorization") authHeader: String
     ): Call<HospitalResponseModel>
 

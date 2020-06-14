@@ -103,7 +103,7 @@ class CeoPatientListFragment : Fragment() {
             override fun onDotsImageClicked(position: Int, fromTab: String) {
                 if (fromTab == "update") {
                     val bundle = Bundle()
-                    bundle.putInt("PatientId", modelFeedArrayList[position].id)
+                    bundle.putParcelable("PatientModel", modelFeedArrayList[position])
                     findNavController().navigate(R.id.action_navigate_to_update, bundle)
                 } else if (fromTab == "") {
                     Toast.makeText(activity, "Please Select Action.", Toast.LENGTH_SHORT).show()

@@ -6,7 +6,6 @@ import com.google.gson.annotations.SerializedName
 import com.huda.mypatienttracker.Models.HospitalModels.User
 
 data class SingelDataHospital(
-
     @SerializedName("id") val id: Int,
     @SerializedName("name") val name: String,
     @SerializedName("type") val type: String,
@@ -22,5 +21,8 @@ data class SingelDataHospital(
     @SerializedName("city") val city: City,
     @SerializedName("country") val country: Country,
     @SerializedName("user") val user: User,
-    @SerializedName("doctors") val doctors: List<Doctors>
+    @SerializedName("doctors") val doctors: List<Doctors>,
+    @SerializedName("doctors_count") val doctors_count: Int,
+    @SerializedName("patients_counts") val patients_counts: PatientsCounts
+
 )

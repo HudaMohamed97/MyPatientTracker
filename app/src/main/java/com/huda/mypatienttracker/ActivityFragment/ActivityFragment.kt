@@ -50,6 +50,16 @@ class ActivityFragment : Fragment() {
         setClickListeners()
         initRecyclerView()
         callActivity(1, false, false)
+        radioActivity.setOnCheckedChangeListener { _, checkedId ->
+            when (checkedId) {
+                R.id.currentActivity -> {
+                    callActivity(1, false, false)
+                }
+                R.id.PreviousActivity -> {
+                    callPreviousActivity(1, false, false)
+                }
+            }
+        }
 
     }
 
@@ -64,6 +74,42 @@ class ActivityFragment : Fragment() {
             activityViewModel.getActivity(page, accessToken)
         }
         activityViewModel.getData().observe(this, Observer {
+            if (fromLoadMore) {
+                LoadMoreActivityListProgressBar.visibility = View.GONE
+            } else {
+                modelFeedArrayList.clear()
+                ActivityProgressBar.visibility = View.GONE
+            }
+            if (it != null) {
+                currentPageNum = it.meta.current_page
+                lastPageNum = it.meta.last_page
+                for (data in it.data) {
+                    modelFeedArrayList.add(data)
+                }
+                if (modelFeedArrayList.size == 0) {
+                    Toast.makeText(activity, "No Activity Added Yet.", Toast.LENGTH_SHORT).show()
+                }
+                activityAdapter.notifyDataSetChanged()
+                mHasReachedBottomOnce = false
+                currentPageNum++
+
+            } else {
+                Toast.makeText(activity, "Network Error", Toast.LENGTH_SHORT).show()
+            }
+        })
+    }
+
+    private fun callPreviousActivity(page: Int, fromLoadMore: Boolean, fromRefresh: Boolean) {
+        if (fromLoadMore) {
+            LoadMoreActivityListProgressBar.visibility = View.VISIBLE
+        } else {
+            ActivityProgressBar.visibility = View.VISIBLE
+        }
+        val accessToken = loginPreferences.getString("accessToken", "")
+        if (accessToken != null) {
+            activityViewModel.getPreviousActivity(page, accessToken)
+        }
+        activityViewModel.getPrviousActivityData().observe(this, Observer {
             if (fromLoadMore) {
                 LoadMoreActivityListProgressBar.visibility = View.GONE
             } else {

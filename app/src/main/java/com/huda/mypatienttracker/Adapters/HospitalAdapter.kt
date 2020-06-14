@@ -91,8 +91,13 @@ class HospitalAdapter(modelFeedArrayList: ArrayList<HospitalData>) :
                             fromTab = "Delete"
                             onItemClickListener.onDotsImageClicked(position, fromTab)
                             true
+                        }
+                        item.itemId == R.id.menu5 -> {
+                            fromTab = "Details"
+                            onItemClickListener.onDotsImageClicked(position, fromTab)
+                            true
                         } item.itemId == R.id.menu4 -> {
-                            fromTab = "com.huda.mypatienttracker.Models.HospitalModels.Target"
+                            fromTab = "Target"
                             onItemClickListener.onDotsImageClicked(position, fromTab)
                             true
                         }

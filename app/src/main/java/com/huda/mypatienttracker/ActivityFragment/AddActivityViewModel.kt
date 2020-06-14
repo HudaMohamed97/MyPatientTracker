@@ -25,6 +25,7 @@ class AddActivityViewModel : ViewModel() {
     private lateinit var updateActivityMutableLiveData: MutableLiveData<SubmitModel>
     private var repositoryHelper: AddActivityRepository = AddActivityRepository()
     private lateinit var mutableLiveData: MutableLiveData<ActivityModelResponse>
+    private lateinit var previousActivityLiveData: MutableLiveData<ActivityModelResponse>
     private lateinit var singelMutableLiveData: MutableLiveData<SingelActivity>
     private lateinit var doctorsMutableLiveData: MutableLiveData<DoctorsResponse>
     private lateinit var deletedMutableLiveData: MutableLiveData<SubmitModel>
@@ -36,6 +37,14 @@ class AddActivityViewModel : ViewModel() {
 
     fun getData(): MutableLiveData<ActivityModelResponse> {
         return mutableLiveData
+    }
+    fun getPreviousActivity(page: Int, accessToken: String) {
+        previousActivityLiveData = repositoryHelper.getPreviousActivity(page, accessToken)
+
+    }
+
+    fun getPrviousActivityData(): MutableLiveData<ActivityModelResponse> {
+        return previousActivityLiveData
     }
 
     fun getSingelActivity(ActivityId: Int, accessToken: String) {

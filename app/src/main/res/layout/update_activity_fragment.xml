@@ -101,6 +101,8 @@
                     android:id="@+id/medicalUpdateSpinner"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:focusable="true"
+                    android:clickable="true"
                     android:layout_gravity="center"
                     android:text="Medical"
                     android:textColor="@color/black"
@@ -122,6 +124,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
+                    android:focusable="true"
+                    android:clickable="true"
                     android:text="SubType"
                     android:textColor="@color/black" />
             </LinearLayout>
@@ -141,6 +145,8 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:text="ProductType"
+                    android:focusable="true"
+                    android:clickable="true"
                     android:textColor="@color/black"
                     android:theme="@style/SpinnerThemeLight" />
             </LinearLayout>
@@ -164,6 +170,8 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:text="speaker"
+                        android:focusable="true"
+                        android:clickable="true"
                         android:textColor="@color/black" />
                 </LinearLayout>
             </LinearLayout>
@@ -221,6 +229,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
+                        android:focusable="true"
+                        android:clickable="true"
                         android:text="speakers"
                         android:textColor="@color/black" />
                 </LinearLayout>
@@ -260,6 +270,8 @@
                         android:id="@+id/activity_Country_Spinner"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:focusable="true"
+                        android:clickable="true"
                         android:layout_gravity="center"
                         android:text="Country"
                         android:textColor="@color/black" />
@@ -295,6 +307,8 @@
                         android:id="@+id/activity_City_Spinner"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:focusable="true"
+                        android:clickable="true"
                         android:text="City"
                         android:textColor="@color/black" />
                 </LinearLayout>
@@ -328,6 +342,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
+                    android:focusable="true"
+                    android:clickable="true"
                     android:text="Speciality"
                     android:textColor="@color/black" />
 

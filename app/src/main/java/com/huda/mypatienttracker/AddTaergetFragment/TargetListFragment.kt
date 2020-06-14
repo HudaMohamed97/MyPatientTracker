@@ -352,6 +352,7 @@ class TargetListFragment : Fragment() {
         addTargetFragmentViewModel.getsubmitData().observe(this, Observer {
             totalTargetProgressBar.visibility = View.GONE
             if (it != null) {
+                hospitalSubmitTarget = true
                 Toast.makeText(activity, "Target Submitted Successfully", Toast.LENGTH_SHORT)
                     .show()
             } else {

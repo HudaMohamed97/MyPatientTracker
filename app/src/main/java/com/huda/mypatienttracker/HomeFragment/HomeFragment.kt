@@ -88,9 +88,6 @@ class HomeFragment : Fragment() {
             "tracleer",
             0
         ).toString()
-
-        textView.text = "welcom  " + Name + " ..."
-
     }
 
 

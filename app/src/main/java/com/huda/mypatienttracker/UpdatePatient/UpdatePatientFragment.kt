@@ -1,5 +1,7 @@
 package com.huda.mypatienttracker.UpdatePatient
 
+import `in`.galaxyofandroid.spinerdialog.OnSpinerItemClick
+import `in`.galaxyofandroid.spinerdialog.SpinnerDialog
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
@@ -14,11 +16,12 @@ import androidx.navigation.fragment.findNavController
 import com.huda.mypatienttracker.AddPatientFragment.AddPatientFragmentViewModel
 import com.huda.mypatienttracker.Models.Doctors
 import com.huda.mypatienttracker.Models.HospitalModels.HospitalData
+import com.huda.mypatienttracker.Models.PatientResponseData
 import com.huda.mypatienttracker.Models.updatePatientRequestModel
 import com.huda.mypatienttracker.R
 import com.toptoche.searchablespinnerlibrary.SearchableSpinner
 import kotlinx.android.synthetic.main.add_patient_fragment.*
-import kotlinx.android.synthetic.main.add_patient_fragment.uptraviLayout
+import kotlinx.android.synthetic.main.patient_fragment_list.*
 import kotlinx.android.synthetic.main.update_patient_fragment.*
 
 class UpdatePatientFragment : Fragment() {
@@ -30,6 +33,9 @@ class UpdatePatientFragment : Fragment() {
 
     private lateinit var root: View
     private var fromType: String = ""
+    private lateinit var doctorSpinner: SpinnerDialog
+    private lateinit var hospitalSpinner: SpinnerDialog
+    private lateinit var etiologySpinner: SpinnerDialog
     private var etiology: String = ""
     private var otherMedication: String = ""
     private lateinit var addPatientFragmentViewModel: AddPatientFragmentViewModel
@@ -37,10 +43,10 @@ class UpdatePatientFragment : Fragment() {
     private val hospitalList = arrayListOf<HospitalData>()
     private val hospitalNameList = arrayListOf<String>()
     private val etiologyList = arrayListOf<String>()
-    private val doctorist = arrayListOf<Doctors>()
+    private val doctorlist = arrayListOf<Doctors>()
     private val doctorNameList = arrayListOf<String>()
     private var hospitalId: Int = -1
-    private var PatientId: Int = 0
+    private lateinit var PatientModel: PatientResponseData
     private var doctorId: Int = -1
 
 
@@ -57,7 +63,14 @@ class UpdatePatientFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        PatientId = arguments?.getInt("PatientId")!!
+        PatientModel = arguments?.getParcelable("PatientModel")!!
+        hospitalId = PatientModel.hospital!!.id
+        updateHospitalspinner.text = PatientModel.hospital!!.name
+        etiology = PatientModel.last_treatment.etiology
+        updateEtiloigySpinner.text = PatientModel.last_treatment.etiology
+        doctorId = PatientModel.doctor.id
+        updateDrNameSpinner.text = PatientModel.doctor.name
+
         setClickListeners()
         callHospitals("coe", false, false)
         intializeEtiologySpinner()
@@ -70,7 +83,7 @@ class UpdatePatientFragment : Fragment() {
         etiologyList.add("CTP")
         etiologyList.add("PoPH")
         etiologyList.add("Others")
-        initializeEtiologySpinner(updateEtiloigySpinner, etiologyList)
+        initializeEtiologySpinner(etiologyList)
     }
 
 
@@ -79,10 +92,34 @@ class UpdatePatientFragment : Fragment() {
         backButton.setOnClickListener {
             findNavController().navigateUp()
         }
+        updateDrNameSpinner.setOnClickListener {
+            if (doctorNameList.size != 0) {
+                doctorSpinner.showSpinerDialog()
+            } else {
+                Toast.makeText(activity, "Please choose Hospital First", Toast.LENGTH_SHORT).show()
+
+            }
+        }
+        updateHospitalspinner.setOnClickListener {
+            if (hospitalNameList.size != 0) {
+                hospitalSpinner.showSpinerDialog()
+            } else {
+                Toast.makeText(activity, "Please Wait", Toast.LENGTH_SHORT).show()
+
+            }
+        }
+        updateEtiloigySpinner.setOnClickListener {
+            if (etiologyList.size != 0) {
+                etiologySpinner.showSpinerDialog()
+            } else {
+                Toast.makeText(activity, "Please Wait", Toast.LENGTH_SHORT).show()
+
+            }
+        }
+
+
         val rg = root.findViewById(R.id.updateRadioPatientGroup) as RadioGroup
         fromType = UPTRAVI
-        etiology = ""
-
         updatePDE5i.setOnClickListener {
             otherMedication = "PDE5i"
             /*  updateOral_PC.isChecked = false
@@ -138,11 +175,6 @@ class UpdatePatientFragment : Fragment() {
              updatePDE5i.isChecked = false*/
         }
 
-        updateDoctorText.setOnClickListener {
-            Toast.makeText(activity, "Please Select Hospital First Thanks.", Toast.LENGTH_SHORT)
-                .show()
-        }
-
         updateButton.setOnClickListener {
             if (updatePDE5i.isChecked) {
                 otherMedication = "PDE5i,"
@@ -168,14 +200,17 @@ class UpdatePatientFragment : Fragment() {
             if (updateother.isChecked) {
                 otherMedication += "other,"
             }
-            otherMedication = otherMedication.substring(0, otherMedication.length - 1);
+            if (otherMedication.length != 0) {
+                otherMedication = otherMedication.substring(0, otherMedication.length - 1);
+
+            }
             if (fromType == "" || hospitalId == -1 || doctorId == -1 || otherMedication == "" || etiology == "") {
                 Toast.makeText(activity, "Please fill All Fields Thanks", Toast.LENGTH_SHORT)
                     .show()
             } else {
                 val model =
                     updatePatientRequestModel(fromType, etiology, otherMedication)
-                callUpdatePatient(PatientId, model)
+                callUpdatePatient(PatientModel.id, model)
             }
         }
 
@@ -271,13 +306,12 @@ class UpdatePatientFragment : Fragment() {
         }
         addPatientFragmentViewModel.getSingelData().observe(this, Observer {
             if (it != null) {
-                updateDoctorText.visibility = View.GONE
                 updateDoctorSpinner.visibility = view?.visibility!!
-                doctorist.clear()
+                doctorlist.clear()
                 for (data in it.data.doctors) {
-                    doctorist.add(data)
+                    doctorlist.add(data)
                 }
-                preparDoctorsList(doctorist)
+                preparDoctorsList(doctorlist)
             } else {
                 Toast.makeText(activity, "Network Error", Toast.LENGTH_SHORT).show()
             }
@@ -289,7 +323,7 @@ class UpdatePatientFragment : Fragment() {
         for (hospital in doctorist) {
             doctorNameList.add(hospital.name)
         }
-        initializeDoctorSpinner(updateDrNameSpinner, doctorNameList)
+        initializeDoctorSpinner(doctorNameList)
     }
 
 
@@ -298,110 +332,52 @@ class UpdatePatientFragment : Fragment() {
         for (hospital in hopital_List) {
             hospitalNameList.add(hospital.name)
         }
-        initializeHospitalSpinner(updateHospitalspinner, hospitalNameList)
+        initializeHospitalSpinner(hospitalNameList)
     }
+
 
     private fun initializeHospitalSpinner(
-        countrySpinner: SearchableSpinner,
-        countriesNameList: ArrayList<String>
+        hospitalNameList: ArrayList<String>
     ) {
-        val arrayAdapter =
-            context?.let {
-                ArrayAdapter(
-                    it,
-                    R.layout.support_simple_spinner_dropdown_item,
-                    countriesNameList
-                )
-            }
-
-        countrySpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(
-                parentView: AdapterView<*>,
-                selectedItemView: View,
-                position: Int,
-                id: Long
-            ) {
+        hospitalSpinner = SpinnerDialog(activity!!, hospitalNameList, "") // With No Animation
+        hospitalSpinner.setCancellable(true) // for cancellable
+        hospitalSpinner.setShowKeyboard(false) // for open keyboard by default
+        hospitalSpinner.bindOnSpinerListener(object : OnSpinerItemClick {
+            override fun onClick(item: String?, position: Int) {
                 hospitalId = hospitalList[position].id
                 callSingelHospital(hospitalId, false)
+                updateHospitalspinner.text = hospitalList[position].name
+
             }
-
-            override fun onNothingSelected(parentView: AdapterView<*>) {
-                // your code here
-            }
-        }
-        arrayAdapter?.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        if (arrayAdapter != null) {
-            updateHospitalspinner.adapter = arrayAdapter
-        }
-
-    }
-
-    private fun initializeEtiologySpinner(
-        spinner: SearchableSpinner,
-        EtiologyList: ArrayList<String>
-    ) {
-        val arrayAdapter =
-            context?.let {
-                ArrayAdapter(
-                    it,
-                    R.layout.support_simple_spinner_dropdown_item,
-                    EtiologyList
-                )
-            }
-
-        spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(
-                parentView: AdapterView<*>,
-                selectedItemView: View,
-                position: Int,
-                id: Long
-            ) {
-                etiology = etiologyList[position]
-            }
-
-            override fun onNothingSelected(parentView: AdapterView<*>) {
-                // your code here
-            }
-        }
-        arrayAdapter?.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        if (arrayAdapter != null) {
-            spinner.adapter = arrayAdapter
-        }
-
+        })
     }
 
     private fun initializeDoctorSpinner(
-        spinner: SearchableSpinner,
-        doctorsNameList: ArrayList<String>
+        doctorNameList: ArrayList<String>
     ) {
-        val arrayAdapter =
-            context?.let {
-                ArrayAdapter(
-                    it,
-                    R.layout.support_simple_spinner_dropdown_item,
-                    doctorsNameList
-                )
+        doctorSpinner = SpinnerDialog(activity!!, doctorNameList, "") // With No Animation
+        doctorSpinner.setCancellable(true) // for cancellable
+        doctorSpinner.setShowKeyboard(false) // for open keyboard by default
+        doctorSpinner.bindOnSpinerListener(object : OnSpinerItemClick {
+            override fun onClick(item: String?, position: Int) {
+                doctorId = doctorlist[position].id
+                updateDrNameSpinner.text = doctorlist[position].name
             }
-
-        spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(
-                parentView: AdapterView<*>,
-                selectedItemView: View,
-                position: Int,
-                id: Long
-            ) {
-
-                doctorId = doctorist[position].id
-            }
-
-            override fun onNothingSelected(parentView: AdapterView<*>) {
-                // your code here
-            }
-        }
-        arrayAdapter?.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        if (arrayAdapter != null) {
-            spinner.adapter = arrayAdapter
-        }
-
+        })
     }
+
+    private fun initializeEtiologySpinner(
+        EtiologyList: ArrayList<String>
+    ) {
+        etiologySpinner = SpinnerDialog(activity!!, EtiologyList, "") // With No Animation
+        etiologySpinner.setCancellable(true) // for cancellable
+        etiologySpinner.setShowKeyboard(false) // for open keyboard by default
+        etiologySpinner.bindOnSpinerListener(object : OnSpinerItemClick {
+            override fun onClick(item: String?, position: Int) {
+                etiology = etiologyList[position]
+                updateEtiloigySpinner.text = etiologyList[position]
+            }
+        })
+    }
+
 }

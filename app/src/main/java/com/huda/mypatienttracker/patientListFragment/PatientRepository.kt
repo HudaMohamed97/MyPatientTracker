@@ -2,11 +2,9 @@ package com.huda.mypatienttracker.patientListFragment
 
 import androidx.lifecycle.MutableLiveData
 import com.example.myapplication.Models.SubmitModel
+import com.huda.mypatienttracker.Models.*
+import com.huda.mypatienttracker.Models.HospitalModels.HospitalResponseModel
 import com.huda.mypatienttracker.Models.HospitalModels.PatientReferalRequestModel
-import com.huda.mypatienttracker.Models.PatientRequestModel
-import com.huda.mypatienttracker.Models.PatientResponse
-import com.huda.mypatienttracker.Models.updatePatientRequestModel
-import com.huda.mypatienttracker.Models.updateReferalPatientRequestModel
 import com.huda.mypatienttracker.NetworkLayer.Webservice
 import okhttp3.ResponseBody
 import retrofit2.Call
@@ -14,10 +12,37 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class PatientRepository {
+
+    fun getDoctors(
+        accessToken: String
+    ): MutableLiveData<DoctorsResponse> {
+        val hospitalData = MutableLiveData<DoctorsResponse>()
+        Webservice.getInstance().api.getDoctors(accessToken)
+            .enqueue(object : Callback<DoctorsResponse> {
+                override fun onResponse(
+                    call: Call<DoctorsResponse>,
+                    response: Response<DoctorsResponse>
+                ) {
+                    if (response.isSuccessful) {
+                        hospitalData.value = response.body()
+                    } else {
+                        hospitalData.value = response.body()
+                    }
+                }
+
+                override fun onFailure(call: Call<DoctorsResponse>, t: Throwable) {
+                    hospitalData.value = null
+                }
+            })
+        return hospitalData
+
+    }
+
+
     fun getPatients(
         page: Int,
-      /*  status: String,
-        hospitalType: String,*/
+        /*  status: String,
+          hospitalType: String,*/
         accessToken: String
     ): MutableLiveData<PatientResponse> {
         val hospitalData = MutableLiveData<PatientResponse>()
@@ -35,6 +60,82 @@ class PatientRepository {
                 }
 
                 override fun onFailure(call: Call<PatientResponse>, t: Throwable) {
+                    hospitalData.value = null
+                }
+            })
+        return hospitalData
+
+    }
+
+    fun getPatientsByHospital(
+        hospitalId: Int,
+        accessToken: String
+    ): MutableLiveData<PatientResponse> {
+        val hospitalData = MutableLiveData<PatientResponse>()
+        Webservice.getInstance().api.getPatientByHospital(hospitalId, accessToken)
+            .enqueue(object : Callback<PatientResponse> {
+                override fun onResponse(
+                    call: Call<PatientResponse>,
+                    response: Response<PatientResponse>
+                ) {
+                    if (response.isSuccessful) {
+                        hospitalData.value = response.body()
+                    } else {
+                        hospitalData.value = response.body()
+                    }
+                }
+
+                override fun onFailure(call: Call<PatientResponse>, t: Throwable) {
+                    hospitalData.value = null
+                }
+            })
+        return hospitalData
+    }
+
+    fun getPatientsByDoctor(
+        doctorId: Int,
+        accessToken: String
+    ): MutableLiveData<PatientResponse> {
+        val hospitalData = MutableLiveData<PatientResponse>()
+        Webservice.getInstance().api.getPatientByDoctor(doctorId, accessToken)
+            .enqueue(object : Callback<PatientResponse> {
+                override fun onResponse(
+                    call: Call<PatientResponse>,
+                    response: Response<PatientResponse>
+                ) {
+                    if (response.isSuccessful) {
+                        hospitalData.value = response.body()
+                    } else {
+                        hospitalData.value = response.body()
+                    }
+                }
+
+                override fun onFailure(call: Call<PatientResponse>, t: Throwable) {
+                    hospitalData.value = null
+                }
+            })
+        return hospitalData
+
+    }
+
+    fun getAllHospitals(
+        accessToken: String
+    ): MutableLiveData<HospitalResponseModel> {
+        val hospitalData = MutableLiveData<HospitalResponseModel>()
+        Webservice.getInstance().api.getAllHospital(accessToken)
+            .enqueue(object : Callback<HospitalResponseModel> {
+                override fun onResponse(
+                    call: Call<HospitalResponseModel>,
+                    response: Response<HospitalResponseModel>
+                ) {
+                    if (response.isSuccessful) {
+                        hospitalData.value = response.body()
+                    } else {
+                        hospitalData.value = response.body()
+                    }
+                }
+
+                override fun onFailure(call: Call<HospitalResponseModel>, t: Throwable) {
                     hospitalData.value = null
                 }
             })

@@ -54,6 +54,15 @@
         <action
             android:id="@+id/action_HospitalListFragment_to_targetFragment"
             app:destination="@id/AddTargetFragment" />
+        <action
+            android:id="@+id/action_HospitalListFragment_to_HospitalDetailsFragment"
+            app:destination="@id/HospitalDetailsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/HospitalDetailsFragment"
+        android:name="com.huda.mypatienttracker.HospitalList.HospitalDetailsFragment"
+        tools:layout="@layout/hospital_details">
+
     </fragment>
     <fragment
         android:id="@+id/AddDoctorFragment"

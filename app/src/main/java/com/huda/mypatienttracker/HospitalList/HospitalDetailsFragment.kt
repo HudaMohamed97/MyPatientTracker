@@ -1,13 +1,12 @@
 package com.huda.mypatienttracker.HospitalList
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.SharedPreferences
-import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.ImageView
 import android.widget.RadioGroup
 import android.widget.Toast
@@ -17,34 +16,30 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.huda.mypatienttracker.Adapters.HospitalDetailsAdapter
+import com.huda.mypatienttracker.Models.Doctors
 import com.huda.mypatienttracker.R
-import com.huda.mypatienttracker.Adapters.HospitalAdapter
-import com.huda.mypatienttracker.Models.HospitalModels.HospitalData
-import kotlinx.android.synthetic.main.hospital_fragment_list.*
+import kotlinx.android.synthetic.main.hospital_details.*
 
 
-class HospitalFragment : Fragment() {
+class HospitalDetailsFragment : Fragment() {
     private lateinit var root: View
     private var submitTarget: Boolean = false
     private lateinit var hospitalViewModel: HospitalViewModel
-    private val modelFeedArrayList = arrayListOf<HospitalData>()
-    private lateinit var hospitalAdapter: HospitalAdapter
+    private val modelFeedArrayList = arrayListOf<Doctors>()
+    private lateinit var hospitalAdapter: HospitalDetailsAdapter
     private lateinit var recyclerView: RecyclerView
     private lateinit var loginPreferences: SharedPreferences
-    private var type: Int = -1
+    private var hospitalId: Int = -1
     var mHasReachedBottomOnce = false
     private var fromType: String = ""
-    private lateinit var selectedImage: Uri
-    var currentPageNum = 1
-    var lastPageNum: Int = 0
-
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        root = inflater.inflate(R.layout.hospital_fragment_list, container, false)
+        root = inflater.inflate(R.layout.hospital_details, container, false)
         hospitalViewModel = ViewModelProviders.of(this).get(HospitalViewModel::class.java)
         return root
     }
@@ -52,65 +47,45 @@ class HospitalFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         loginPreferences = activity!!.getSharedPreferences("loginPrefs", Context.MODE_PRIVATE)
+        hospitalId = arguments?.getInt("hospitalId")!!
         setClickListeners()
         initRecyclerView()
-        val rg = root.findViewById(R.id.radioHospital) as RadioGroup
-        callHospitals("coe", 1, false, false)
-        rg.setOnCheckedChangeListener { _, checkedId ->
-            when (checkedId) {
-                R.id.coe -> {
-                    fromType = "coe"
-                    callHospitals("coe", 1, false, false)
-                }
-                R.id.referal -> {
-                    fromType = "referal"
-                    callHospitals("referal", 1, false, false)
-                }
+        if (hospitalId != -1) {
+            callHospitals(hospitalId)
 
-            }
         }
-
     }
 
-    private fun callHospitals(
-        type: String,
-        page: Int,
-        fromLoadMore: Boolean,
-        fromRefresh: Boolean
-    ) {
-        if (fromLoadMore) {
-            loadMoreHospitalProgressBar.visibility = View.VISIBLE
-        } else {
-            hospitalProgressBar.visibility = View.VISIBLE
-        }
+    @SuppressLint("SetTextI18n")
+    private fun callHospitals(hospitalId: Int) {
+        hospitalDetailsProgressBar.visibility = View.VISIBLE
+
         val accessToken = loginPreferences.getString("accessToken", "")
         if (accessToken != null) {
-            hospitalViewModel.getHospitals(page, type, accessToken)
+            hospitalViewModel.getSingelHospitals(hospitalId, accessToken)
         }
-        hospitalViewModel.getData().observe(this, Observer {
-            if (fromLoadMore) {
-                loadMoreHospitalProgressBar.visibility = View.GONE
-            } else {
-                modelFeedArrayList.clear()
-                hospitalProgressBar.visibility = View.GONE
-            }
-            if (fromRefresh) {
-                currentPageNum = 1
-                modelFeedArrayList.clear()
-            }
+        hospitalViewModel.getSingelHospitalData().observe(this, Observer {
+            hospitalDetailsProgressBar.visibility = View.GONE
             if (it != null) {
-                currentPageNum = it.meta.current_page
-                lastPageNum = it.meta.last_page
-                for (data in it.data) {
-                    modelFeedArrayList.add(data)
+                for (doctor in it.data.doctors) {
+                    modelFeedArrayList.add(doctor)
                 }
+                PatientText.text =
+                    "TotalPatients  " + it.data.patients_counts.total.toString() +
+                            "  Uptravi " + it.data.patients_counts.uptravi.toString() + "  Opsumit   " +
+                            it.data.patients_counts.opsumit.toString() + "  tracleer   " +
+                            it.data.patients_counts.tracleer.toString()
+
+
+                DoctorsText.text = "Doctors  " + it.data.doctors_count
+
                 if (modelFeedArrayList.size == 0) {
-                    Toast.makeText(activity, "No Hospitals Added Yet.", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(activity, "No Doctors Added Yet.", Toast.LENGTH_SHORT).show()
 
                 }
                 hospitalAdapter.notifyDataSetChanged()
                 mHasReachedBottomOnce = false
-                currentPageNum++
+                //currentPageNum++
 
             } else {
                 Toast.makeText(activity, "Network Error", Toast.LENGTH_SHORT).show()
@@ -121,10 +96,11 @@ class HospitalFragment : Fragment() {
 
     private fun initRecyclerView() {
         val layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
-        hospitalAdapter = HospitalAdapter(modelFeedArrayList)
+        hospitalAdapter = HospitalDetailsAdapter(modelFeedArrayList)
         recyclerView.layoutManager = layoutManager
         recyclerView.adapter = hospitalAdapter
-        hospitalAdapter.setOnCommentListener(object : HospitalAdapter.OnDotsClickListener {
+/*
+        hospitalAdapter.setOnCommentListener(object : HospitalDetailsAdapter.OnDotsClickListener {
             override fun onDotsImageClicked(position: Int, fromTab: String) {
                 if (fromTab == "AddDoctor") {
                     val hospitalId = modelFeedArrayList[position].id
@@ -161,10 +137,11 @@ class HospitalFragment : Fragment() {
                     )
                 }
                 else if (fromTab == "Details") {
+                    val hospitalId = modelFeedArrayList[position].id
                     val bundle = Bundle()
-                    bundle.putInt("hospitalId", modelFeedArrayList[position].id)
+                    bundle.putParcelable("hospitalData", modelFeedArrayList[position])
                     findNavController().navigate(
-                        R.id.action_HospitalListFragment_to_HospitalDetailsFragment,
+                        R.id.action_HospitalListFragment_to_UpdateHospital,
                         bundle
                     )
                 }
@@ -173,48 +150,23 @@ class HospitalFragment : Fragment() {
 
 
         })
+*/
 
+/*
         recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 super.onScrollStateChanged(recyclerView, newState)
                 if (!recyclerView.canScrollVertically(1) && !mHasReachedBottomOnce) {
                     mHasReachedBottomOnce = true
                     if (currentPageNum <= lastPageNum) {
-                        callHospitals(fromType, currentPageNum, true, false)
+                        callHospitals(currentPageNum, true, false)
 
                     }
                 }
             }
         })
+*/
 
-    }
-
-
-    private fun deleteHospital(hospitalId: Int, position: Int, type: String) {
-        hospitalProgressBar.visibility = View.VISIBLE
-        val accessToken = loginPreferences.getString("accessToken", "")
-        if (accessToken != null) {
-            hospitalViewModel.deleteHospitals(hospitalId, accessToken)
-        }
-        hospitalViewModel.getDeleteData().observe(this, Observer {
-            hospitalProgressBar.visibility = View.GONE
-            if (it != null) {
-                if (it.type == "error")
-                    Toast.makeText(
-                        activity,
-                        it.title,
-                        Toast.LENGTH_SHORT
-                    ).show()
-                else {
-                    Toast.makeText(activity, "Deleted Successfully", Toast.LENGTH_SHORT).show()
-                    modelFeedArrayList.removeAt(position)
-                    hospitalAdapter.notifyDataSetChanged()
-                    //callHospitals(type, 1, false, false)
-                }
-            } else {
-                Toast.makeText(activity, "Network Error", Toast.LENGTH_SHORT).show()
-            }
-        })
     }
 
 
@@ -222,10 +174,6 @@ class HospitalFragment : Fragment() {
         val backButton = root.findViewById(R.id.backButton) as ImageView
         backButton.setOnClickListener {
             findNavController().navigateUp()
-        }
-        addHospital.setOnClickListener {
-            findNavController().navigate(R.id.action_HospitalListFragment_to_addHospital)
-
         }
         recyclerView = root.findViewById(R.id.hospitalRecycler)
 

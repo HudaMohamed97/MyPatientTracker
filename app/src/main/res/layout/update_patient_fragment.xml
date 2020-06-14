@@ -98,30 +98,18 @@
             android:background="@drawable/background_edittext"
             android:orientation="horizontal">
 
-            <com.toptoche.searchablespinnerlibrary.SearchableSpinner
+            <TextView
                 android:id="@+id/updateHospitalspinner"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:clickable="true"
+                android:focusable="true"
                 android:spinnerMode="dropdown"
-                android:textColor="@color/not_black"
-                android:theme="@style/SpinnerThemeLight"
-                app:hintText="Hospital Name" />
+                android:textColor="@color/black"
+                android:text="Hospital Name" />
 
         </LinearLayout>
 
-        <TextView
-            android:id="@+id/updateDoctorText"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/space_50"
-            android:layout_marginLeft="@dimen/space_10"
-            android:layout_marginTop="@dimen/space_10"
-            android:layout_marginRight="@dimen/space_10"
-            android:background="@drawable/background_edittext"
-            android:paddingLeft="@dimen/space_20"
-            android:text="DoctorName"
-            android:textColor="@color/not_black"
-            android:textSize="16dp"
-            android:theme="@style/SpinnerThemeLight" />
 
         <LinearLayout
             android:id="@+id/updateDoctorSpinner"
@@ -132,16 +120,17 @@
             android:layout_marginRight="@dimen/space_10"
             android:background="@drawable/background_edittext"
             android:orientation="horizontal"
-            android:visibility="gone">
+            android:visibility="visible">
 
-            <com.toptoche.searchablespinnerlibrary.SearchableSpinner
+            <TextView
                 android:id="@+id/updateDrNameSpinner"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:spinnerMode="dropdown"
                 android:textColor="@color/black"
+                android:clickable="true"
+                android:focusable="true"
                 android:theme="@style/SpinnerThemeLight"
-                app:hintText="DR Name" />
+                android:text="choose Doctor" />
 
         </LinearLayout>
 
@@ -156,14 +145,15 @@
             android:orientation="horizontal"
             android:visibility="visible">
 
-            <com.toptoche.searchablespinnerlibrary.SearchableSpinner
+            <TextView
                 android:id="@+id/updateEtiloigySpinner"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:spinnerMode="dropdown"
+                android:clickable="true"
+                android:focusable="true"
                 android:textColor="@color/black"
                 android:theme="@style/SpinnerThemeLight"
-                app:hintText="Etiology" />
+                android:text="Etiology" />
 
         </LinearLayout>
 

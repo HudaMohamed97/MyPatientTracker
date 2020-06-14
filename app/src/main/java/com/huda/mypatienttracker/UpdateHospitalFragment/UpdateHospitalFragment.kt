@@ -70,6 +70,30 @@ class UpdateHospitalFragment : Fragment() {
         flagSelected = 1
         prepareTypeList()
         getCountryList()
+        typeSpinner.setOnClickListener {
+            if (typeList.size != 0) {
+                spinnerType.showSpinerDialog()
+            } else {
+                Toast.makeText(activity, "Please Wait", Toast.LENGTH_SHORT).show()
+
+            }
+        }
+        country_Spinner.setOnClickListener {
+            if (countriesNameList.size != 0) {
+                countrySpinner.showSpinerDialog()
+            } else {
+                Toast.makeText(activity, "Please Wait", Toast.LENGTH_SHORT).show()
+
+            }
+        }
+        city_Spinner.setOnClickListener {
+            if (citiesNameList.size != 0) {
+                citySpinner.showSpinerDialog()
+            } else {
+                Toast.makeText(activity, "Please Chose Country First", Toast.LENGTH_SHORT).show()
+
+            }
+        }
     }
 
     private fun prepareTypeList() {

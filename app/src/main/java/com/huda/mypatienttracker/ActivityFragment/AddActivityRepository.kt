@@ -34,6 +34,31 @@ class AddActivityRepository {
         return activityData
     }
 
+    fun getPreviousActivity(
+        page: Int,
+        accessToken: String
+    ): MutableLiveData<ActivityModelResponse> {
+        val activityData = MutableLiveData<ActivityModelResponse>()
+        Webservice.getInstance().api.getPreviousActivity(page, accessToken)
+            .enqueue(object : Callback<ActivityModelResponse> {
+                override fun onResponse(
+                    call: Call<ActivityModelResponse>,
+                    response: Response<ActivityModelResponse>
+                ) {
+                    if (response.isSuccessful) {
+                        activityData.value = response.body()
+                    } else {
+                        activityData.value = response.body()
+                    }
+                }
+
+                override fun onFailure(call: Call<ActivityModelResponse>, t: Throwable) {
+                    activityData.value = null
+                }
+            })
+        return activityData
+    }
+
     fun getSingelActivity(ActivityId: Int, accessToken: String): MutableLiveData<SingelActivity> {
         val activityData = MutableLiveData<SingelActivity>()
         Webservice.getInstance().api.getSingelActivity(ActivityId, accessToken)
