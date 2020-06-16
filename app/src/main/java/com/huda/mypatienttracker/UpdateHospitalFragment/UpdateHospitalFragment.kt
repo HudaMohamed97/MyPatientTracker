@@ -90,7 +90,7 @@ class UpdateHospitalFragment : Fragment() {
             if (citiesNameList.size != 0) {
                 citySpinner.showSpinerDialog()
             } else {
-                Toast.makeText(activity, "Please Chose Country First", Toast.LENGTH_SHORT).show()
+                Toast.makeText(activity, "Please choose Country First", Toast.LENGTH_SHORT).show()
 
             }
         }

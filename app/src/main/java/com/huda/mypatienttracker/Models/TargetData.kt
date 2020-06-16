@@ -1,7 +1,6 @@
 package com.huda.mypatienttracker.Models
 
 import com.google.gson.annotations.SerializedName
-import com.huda.mypatienttracker.Models.HospitalModels.HospitalData
 
 class TargetData(
     @SerializedName("id") val id : Int,

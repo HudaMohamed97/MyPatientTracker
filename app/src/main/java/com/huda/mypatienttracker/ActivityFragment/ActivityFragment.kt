@@ -91,7 +91,6 @@ class ActivityFragment : Fragment() {
                 }
                 activityAdapter.notifyDataSetChanged()
                 mHasReachedBottomOnce = false
-                currentPageNum++
 
             } else {
                 Toast.makeText(activity, "Network Error", Toast.LENGTH_SHORT).show()

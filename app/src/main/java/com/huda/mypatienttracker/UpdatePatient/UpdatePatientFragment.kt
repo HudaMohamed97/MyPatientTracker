@@ -19,9 +19,6 @@ import com.huda.mypatienttracker.Models.HospitalModels.HospitalData
 import com.huda.mypatienttracker.Models.PatientResponseData
 import com.huda.mypatienttracker.Models.updatePatientRequestModel
 import com.huda.mypatienttracker.R
-import com.toptoche.searchablespinnerlibrary.SearchableSpinner
-import kotlinx.android.synthetic.main.add_patient_fragment.*
-import kotlinx.android.synthetic.main.patient_fragment_list.*
 import kotlinx.android.synthetic.main.update_patient_fragment.*
 
 class UpdatePatientFragment : Fragment() {

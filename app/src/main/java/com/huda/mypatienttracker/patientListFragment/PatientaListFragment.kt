@@ -45,6 +45,7 @@ class PatientaListFragment : Fragment() {
     var mHasReachedBottomOnce = false
     var currentPageNum = 1
     var hospitalId = -1
+    private var fromSearchFlag: Boolean = false
     var doctorId = -1
     var lastPageNum: Int = 0
     private val hospitalList = arrayListOf<HospitalData>()
@@ -100,6 +101,7 @@ class PatientaListFragment : Fragment() {
 
 
     private fun callPatients(page: Int, fromLoadMore: Boolean, fromRefresh: Boolean) {
+        fromSearchFlag = false
         if (fromLoadMore) {
             LoadMorepatientProgressBar.visibility = View.VISIBLE
         } else {
@@ -143,7 +145,6 @@ class PatientaListFragment : Fragment() {
                 }
                 patientAdapter.notifyDataSetChanged()
                 mHasReachedBottomOnce = false
-                currentPageNum++
 
             } else {
                 Toast.makeText(activity, "Network Error", Toast.LENGTH_SHORT).show()
@@ -152,6 +153,7 @@ class PatientaListFragment : Fragment() {
     }
 
     private fun callPatientsByHospital(/*page: Int, fromLoadMore: Boolean, fromRefresh: Boolean*/) {
+        fromSearchFlag = true
         /* if (fromLoadMore) {
              LoadMorepatientProgressBar.visibility = View.VISIBLE
          } else {*/
@@ -195,7 +197,7 @@ class PatientaListFragment : Fragment() {
                 }
                 patientAdapter.notifyDataSetChanged()
                 mHasReachedBottomOnce = false
-                // currentPageNum++
+                currentPageNum++
 
             } else {
                 Toast.makeText(activity, "Network Error", Toast.LENGTH_SHORT).show()
@@ -204,6 +206,7 @@ class PatientaListFragment : Fragment() {
     }
 
     private fun callPatientsByDoctor() {
+        fromSearchFlag = true
         /* if (fromLoadMore) {
              LoadMorepatientProgressBar.visibility = View.VISIBLE
          } else {*/
@@ -354,7 +357,7 @@ class PatientaListFragment : Fragment() {
         recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 super.onScrollStateChanged(recyclerView, newState)
-                if (!recyclerView.canScrollVertically(1) && !mHasReachedBottomOnce) {
+                if (!recyclerView.canScrollVertically(1) && !mHasReachedBottomOnce && !fromSearchFlag) {
                     mHasReachedBottomOnce = true
                     if (currentPageNum <= lastPageNum) {
                         callPatients(currentPageNum, true, false)

@@ -7,13 +7,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
-import android.widget.Button
 import android.widget.ImageView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import com.huda.mypatienttracker.R
-import kotlinx.android.synthetic.main.add_doctor.*
 import kotlinx.android.synthetic.main.login_fragment.*
 
 class OpsumitFragment : Fragment() {

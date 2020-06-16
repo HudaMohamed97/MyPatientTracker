@@ -48,14 +48,13 @@ class CoePatientAdapter(modelFeedArrayList: ArrayList<PatientResponseData>) :
         holder.hospitalNameCoe.text = modelFeed.hospital?.name
         holder.doctorName.text = modelFeed.doctor.name
         holder.time.text = modelFeed.created_at
-        if( modelFeed.last_treatment==null){
+        if (modelFeed.last_treatment == null) {
             holder.patient_type.text = "No etiology"
-            holder.product.text ="No Treatment"
+            holder.product.text = "No Treatment"
+        } else {
+            holder.product.text = modelFeed.last_treatment.type_medication
+            holder.patient_type.text = modelFeed.last_treatment.etiology
         }
-        else
-        {
-        holder.product.text = modelFeed.last_treatment.type_medication
-        holder.patient_type.text =modelFeed.last_treatment.etiology}
 
         holder.dotsImage.setOnClickListener {
             if (onItemClickListener != null && position != RecyclerView.NO_POSITION) {

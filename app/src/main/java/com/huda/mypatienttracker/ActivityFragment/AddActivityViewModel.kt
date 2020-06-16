@@ -8,11 +8,6 @@ import com.huda.mypatienttracker.AddHospitalFragment.AddHospitalRepository
 import com.huda.mypatienttracker.HospitalList.HospitalRepository
 import com.huda.mypatienttracker.Models.*
 import com.huda.mypatienttracker.Models.HospitalModels.CitiesResponse
-import com.huda.mypatienttracker.Models.HospitalModels.HospitalResponseModel
-import com.huda.mypatienttracker.Models.HospitalModels.PatientReferalRequestModel
-import com.huda.mypatienttracker.patientListFragment.PatientRepository
-import okhttp3.RequestBody
-import okhttp3.ResponseBody
 import java.util.HashMap
 
 class AddActivityViewModel : ViewModel() {

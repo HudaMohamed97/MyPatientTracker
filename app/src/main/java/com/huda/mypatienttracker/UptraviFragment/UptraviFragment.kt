@@ -10,7 +10,6 @@ import android.view.inputmethod.InputMethodManager
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import com.huda.mypatienttracker.R
-import kotlinx.android.synthetic.main.add_doctor.*
 import kotlinx.android.synthetic.main.login_fragment.*
 
 class UptraviFragment : Fragment() {

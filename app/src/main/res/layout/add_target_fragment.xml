@@ -169,17 +169,18 @@
         <com.google.android.material.button.MaterialButton
             android:id="@+id/AddTargetFragment"
             style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
+            android:layout_width="155dp"
+            android:layout_height="50dp"
+            android:layout_gravity="end"
             android:layout_marginLeft="20dp"
             android:layout_marginTop="@dimen/space_5"
-            android:layout_marginRight="20dp"
+            android:layout_marginEnd="@dimen/space_10"
+            android:layout_marginRight="@dimen/space_10"
             android:background="@color/basic_color"
             android:backgroundTint="@color/basic_color"
             android:text="Add Target"
             android:textColor="@color/white"
-            android:textSize="@dimen/space_20"
+            android:textSize="16sp"
             app:cornerRadius="@dimen/space_10" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -204,7 +205,7 @@
             <ProgressBar
                 android:id="@+id/totalTargetProgressBar"
                 style="?android:attr/progressBarStyle"
-                android:layout_width="wrap_content"
+                android:layout_width="30dp"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
                 android:layout_margin="@dimen/space_10"
@@ -217,12 +218,13 @@
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/submitTarget"
                 style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="155dp"
+                android:layout_height="@dimen/space_50"
                 android:layout_gravity="right"
                 android:layout_marginTop="@dimen/space_5"
                 android:layout_marginEnd="@dimen/space_10"
                 android:layout_marginRight="@dimen/space_10"
+                android:textSize="@dimen/space_16"
                 android:background="@color/basic_color"
                 android:backgroundTint="@color/basic_color"
                 android:text="Submit Target"

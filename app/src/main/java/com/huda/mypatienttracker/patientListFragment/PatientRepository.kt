@@ -92,12 +92,67 @@ class PatientRepository {
         return hospitalData
     }
 
+    fun getConfirmedPatientsByHospital(
+        hospitalId: Int,
+        accessToken: String
+    ): MutableLiveData<PatientResponse> {
+        val hospitalData = MutableLiveData<PatientResponse>()
+        Webservice.getInstance().api.getConfirmedPatientByHospital(
+            hospitalId,
+            "confirmed",
+            accessToken
+        )
+            .enqueue(object : Callback<PatientResponse> {
+                override fun onResponse(
+                    call: Call<PatientResponse>,
+                    response: Response<PatientResponse>
+                ) {
+                    if (response.isSuccessful) {
+                        hospitalData.value = response.body()
+                    } else {
+                        hospitalData.value = response.body()
+                    }
+                }
+
+                override fun onFailure(call: Call<PatientResponse>, t: Throwable) {
+                    hospitalData.value = null
+                }
+            })
+        return hospitalData
+    }
+
     fun getPatientsByDoctor(
         doctorId: Int,
         accessToken: String
     ): MutableLiveData<PatientResponse> {
         val hospitalData = MutableLiveData<PatientResponse>()
         Webservice.getInstance().api.getPatientByDoctor(doctorId, accessToken)
+            .enqueue(object : Callback<PatientResponse> {
+                override fun onResponse(
+                    call: Call<PatientResponse>,
+                    response: Response<PatientResponse>
+                ) {
+                    if (response.isSuccessful) {
+                        hospitalData.value = response.body()
+                    } else {
+                        hospitalData.value = response.body()
+                    }
+                }
+
+                override fun onFailure(call: Call<PatientResponse>, t: Throwable) {
+                    hospitalData.value = null
+                }
+            })
+        return hospitalData
+
+    }
+
+    fun getConfirmedPatientsByDoctor(
+        doctorId: Int,
+        accessToken: String
+    ): MutableLiveData<PatientResponse> {
+        val hospitalData = MutableLiveData<PatientResponse>()
+        Webservice.getInstance().api.getConfirmedPatientByDoctor(doctorId, "confirmed", accessToken)
             .enqueue(object : Callback<PatientResponse> {
                 override fun onResponse(
                     call: Call<PatientResponse>,

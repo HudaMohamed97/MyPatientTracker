@@ -133,8 +133,22 @@ interface ApiServices {
     ): Call<PatientResponse>
 
     @GET("patients")
+    fun getConfirmedPatientByHospital(
+        @Query("hospital_id") hospitalId: Int,
+        @Query("status") status: String,
+        @Header("Authorization") authHeader: String
+    ): Call<PatientResponse>
+
+    @GET("patients")
     fun getPatientByDoctor(
         @Query("doctor_id") doctorId: Int,
+        @Header("Authorization") authHeader: String
+    ): Call<PatientResponse>
+
+    @GET("patients")
+    fun getConfirmedPatientByDoctor(
+        @Query("doctor_id") doctorId: Int,
+        @Query("status") status: String,
         @Header("Authorization") authHeader: String
     ): Call<PatientResponse>
 

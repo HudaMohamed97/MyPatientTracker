@@ -1,5 +1,6 @@
 package com.huda.mypatienttracker.AddTaergetFragment
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.SharedPreferences
 import android.net.Uri
@@ -82,9 +83,9 @@ class TargetListFragment : Fragment() {
     private fun intializeMedicalSpinner() {
         medicalList.clear()
         medicalList.add("All")
-        medicalList.add("com.huda.mypatienttracker.Models.HospitalModels.Opsumit")
-        medicalList.add("com.huda.mypatienttracker.Models.HospitalModels.Uptravi")
-        medicalList.add("com.huda.mypatienttracker.Models.HospitalModels.Tracleer")
+        medicalList.add("Opsumit")
+        medicalList.add("Uptravi")
+        medicalList.add("Tracleer")
         initializeTypeSpinner(Type, medicalList)
     }
 
@@ -131,12 +132,12 @@ class TargetListFragment : Fragment() {
                         callTargetList("All", 1, false, false)
                         "All"
                     }
-                    "com.huda.mypatienttracker.Models.HospitalModels.Opsumit" -> {
+                    "Opsumit" -> {
                         flagSelected = 1
                         callTargetList("opsumit", 1, false, false)
                         "opsumit"
                     }
-                    "com.huda.mypatienttracker.Models.HospitalModels.Uptravi" -> {
+                    "Uptravi" -> {
                         flagSelected = 1
                         callTargetList("uptravi", 1, false, false)
                         "uptravi"
@@ -269,7 +270,7 @@ class TargetListFragment : Fragment() {
             } else if (!isInteger) {
                 Toast.makeText(
                     activity,
-                    "Please Enter com.huda.mypatienttracker.Models.HospitalModels.Target As Numbers",
+                    "Please Enter Target As Numbers",
                     Toast.LENGTH_SHORT
                 ).show()
             } else {
@@ -345,11 +346,13 @@ class TargetListFragment : Fragment() {
 
     private fun submitTarget() {
         totalTargetProgressBar.visibility = View.VISIBLE
+        totalTarget.visibility = View.GONE
         val accessToken = loginPreferences.getString("accessToken", "")
         if (accessToken != null) {
             addTargetFragmentViewModel.submitTarget(hospitalId, accessToken)
         }
         addTargetFragmentViewModel.getsubmitData().observe(this, Observer {
+            totalTarget.visibility = View.VISIBLE
             totalTargetProgressBar.visibility = View.GONE
             if (it != null) {
                 hospitalSubmitTarget = true
@@ -471,6 +474,7 @@ class TargetListFragment : Fragment() {
         })
     }
 
+    @SuppressLint("SetTextI18n")
     private fun callTotalTarget() {
         totalTargetProgressBar.visibility = View.VISIBLE
         val accessToken = loginPreferences.getString("accessToken", "")
@@ -480,7 +484,9 @@ class TargetListFragment : Fragment() {
         addTargetFragmentViewModel.getTargetTotalData().observe(this, Observer {
             totalTargetProgressBar.visibility = View.GONE
             if (it != null) {
-                totalTarget.text = it.target.total.toString()
+                val text = "Your Total Target Is"
+                val total = it.target.total.toString()
+                totalTarget.text = "$text $total"
             } else {
                 Toast.makeText(activity, "Network Error", Toast.LENGTH_SHORT).show()
             }

@@ -12,6 +12,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.fragment.findNavController
 import com.huda.mypatienttracker.AddHospitalFragment.AddHospitalViewModel
 import com.huda.mypatienttracker.Models.HospitalModels.updateHospitalRequestModel
 import com.huda.mypatienttracker.R
@@ -99,6 +100,9 @@ class UpdateCeoFragment : Fragment() {
                 updateHospital(hospitalId, add_hospitalRequestModel)
 
             }
+        }
+        backButton.setOnClickListener{
+            findNavController().navigateUp()
         }
 
     }
