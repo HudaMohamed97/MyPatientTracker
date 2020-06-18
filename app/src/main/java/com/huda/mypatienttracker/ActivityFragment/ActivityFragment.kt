@@ -31,6 +31,7 @@ class ActivityFragment : Fragment() {
     private var type: Int = -1
     var mHasReachedBottomOnce = false
     var currentPageNum = 1
+    private var fromType: String = ""
     var lastPageNum: Int = 0
 
 
@@ -53,9 +54,11 @@ class ActivityFragment : Fragment() {
         radioActivity.setOnCheckedChangeListener { _, checkedId ->
             when (checkedId) {
                 R.id.currentActivity -> {
+                    fromType = "currentActivity"
                     callActivity(1, false, false)
                 }
                 R.id.PreviousActivity -> {
+                    fromType = "PreviousActivity"
                     callPreviousActivity(1, false, false)
                 }
             }
@@ -91,6 +94,7 @@ class ActivityFragment : Fragment() {
                 }
                 activityAdapter.notifyDataSetChanged()
                 mHasReachedBottomOnce = false
+                currentPageNum++
 
             } else {
                 Toast.makeText(activity, "Network Error", Toast.LENGTH_SHORT).show()
@@ -163,7 +167,11 @@ class ActivityFragment : Fragment() {
                 if (!recyclerView.canScrollVertically(1) && !mHasReachedBottomOnce) {
                     mHasReachedBottomOnce = true
                     if (currentPageNum <= lastPageNum) {
-                        callActivity(currentPageNum, true, false)
+                        if (fromType == "PreviousActivity") {
+                            callPreviousActivity(currentPageNum, true, false)
+                        } else {
+                            callActivity(currentPageNum, true, false)
+                        }
 
                     }
                 }

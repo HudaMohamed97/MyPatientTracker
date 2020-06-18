@@ -63,8 +63,10 @@ class UpdatePatientFragment : Fragment() {
         PatientModel = arguments?.getParcelable("PatientModel")!!
         hospitalId = PatientModel.hospital!!.id
         updateHospitalspinner.text = PatientModel.hospital!!.name
-        etiology = PatientModel.last_treatment.etiology
-        updateEtiloigySpinner.text = PatientModel.last_treatment.etiology
+        if (PatientModel.last_treatment != null) {
+            etiology = PatientModel.last_treatment.etiology
+            updateEtiloigySpinner.text = PatientModel.last_treatment.etiology
+        }
         doctorId = PatientModel.doctor.id
         updateDrNameSpinner.text = PatientModel.doctor.name
 

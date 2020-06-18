@@ -5,6 +5,7 @@ import `in`.galaxyofandroid.spinerdialog.SpinnerDialog
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -23,9 +24,6 @@ import com.huda.mypatienttracker.Models.HospitalModels.HospitalData
 import com.huda.mypatienttracker.Models.PatientResponseData
 import com.huda.mypatienttracker.R
 import kotlinx.android.synthetic.main.coe_patient_list_fragment.*
-import kotlinx.android.synthetic.main.coe_patient_list_fragment.doctor_Spinner
-import kotlinx.android.synthetic.main.coe_patient_list_fragment.hospital_spinner
-import kotlinx.android.synthetic.main.patient_fragment_list.*
 
 class CeoPatientListFragment : Fragment() {
     private lateinit var root: View
@@ -95,9 +93,10 @@ class CeoPatientListFragment : Fragment() {
                 }
                 if (modelFeedArrayList.size == 0) {
                     Toast.makeText(activity, "No Patient Added Yet.", Toast.LENGTH_SHORT).show()
-
                 }
-                recyclerView.recycledViewPool.clear()
+                Log.i("hhhhhh", "before hena" + modelFeedArrayList.size)
+               // recyclerView.post(Runnable { patientAdapter.notifyDataSetChanged() })
+
                 patientAdapter.notifyDataSetChanged()
                 mHasReachedBottomOnce = false
                 currentPageNum++
@@ -110,6 +109,7 @@ class CeoPatientListFragment : Fragment() {
 
 
     private fun initRecyclerView() {
+        recyclerView = root.findViewById(R.id.patientCoeRecycler)
         val layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
         patientAdapter = CoePatientAdapter(modelFeedArrayList)
         recyclerView.layoutManager = layoutManager
@@ -118,8 +118,14 @@ class CeoPatientListFragment : Fragment() {
             override fun onDotsImageClicked(position: Int, fromTab: String) {
                 if (fromTab == "update") {
                     val bundle = Bundle()
-                    bundle.putParcelable("PatientModel", modelFeedArrayList[position])
-                    findNavController().navigate(R.id.action_navigate_to_update, bundle)
+                    Log.i("hhhhhh", "hena" + modelFeedArrayList.size)
+                    if (modelFeedArrayList.size != 0) {
+                        bundle.putParcelable("PatientModel", modelFeedArrayList[position])
+                        if (findNavController().currentDestination?.id == R.id.CeoPatientListFragment) {
+                            findNavController().navigate(R.id.action_navigate_to_update, bundle)
+                        }
+                    }
+
                 } else if (fromTab == "") {
                     Toast.makeText(activity, "Please Select Action.", Toast.LENGTH_SHORT).show()
 
@@ -132,7 +138,7 @@ class CeoPatientListFragment : Fragment() {
         recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 super.onScrollStateChanged(recyclerView, newState)
-                if (!recyclerView.canScrollVertically(1) && !mHasReachedBottomOnce&&!fromSearchFlag) {
+                if (!recyclerView.canScrollVertically(1) && !mHasReachedBottomOnce && !fromSearchFlag) {
                     mHasReachedBottomOnce = true
                     if (currentPageNum <= lastPageNum) {
                         callPatients(currentPageNum, true)
@@ -145,6 +151,7 @@ class CeoPatientListFragment : Fragment() {
     }
 
     private fun setClickListeners() {
+        modelFeedArrayList.clear()
         val backButton = root.findViewById(R.id.backButton) as ImageView
         hospital_spinner.setOnClickListener {
             if (hospitalNameList.size != 0) {
@@ -165,7 +172,6 @@ class CeoPatientListFragment : Fragment() {
         backButton.setOnClickListener {
             findNavController().navigateUp()
         }
-        recyclerView = root.findViewById(R.id.patientRecycler)
 
 
     }
@@ -329,7 +335,6 @@ class CeoPatientListFragment : Fragment() {
             ceoPatientaListViewModel.getHospitals(accessToken)
         }
         ceoPatientaListViewModel.getHospitalsData().observe(this, Observer {
-            modelFeedArrayList.clear()
             if (it != null) {
                 hospitalList.clear()
                 for (data in it.data) {

@@ -1,8 +1,8 @@
 package com.huda.mypatienttracker.Adapters
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
-import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
@@ -25,6 +25,7 @@ class CoePatientAdapter(modelFeedArrayList: ArrayList<PatientResponseData>) :
 
 
     override fun getItemCount(): Int {
+        Log.i("hhhhhh", "in adaptern hena" + modelFeedArrayList.size)
         return modelFeedArrayList.size
     }
 
@@ -46,7 +47,9 @@ class CoePatientAdapter(modelFeedArrayList: ArrayList<PatientResponseData>) :
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val modelFeed = modelFeedArrayList[position]
         holder.hospitalNameCoe.text = modelFeed.hospital?.name
-        holder.doctorName.text = modelFeed.doctor.name
+        if (modelFeed.doctor.name == null) {
+            holder.doctorName.text = modelFeed.doctor.name
+        }
         holder.time.text = modelFeed.created_at
         if (modelFeed.last_treatment == null) {
             holder.patient_type.text = "No etiology"

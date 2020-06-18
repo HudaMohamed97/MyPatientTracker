@@ -145,6 +145,7 @@ class PatientaListFragment : Fragment() {
                 }
                 patientAdapter.notifyDataSetChanged()
                 mHasReachedBottomOnce = false
+                currentPageNum++
 
             } else {
                 Toast.makeText(activity, "Network Error", Toast.LENGTH_SHORT).show()
@@ -287,7 +288,6 @@ class PatientaListFragment : Fragment() {
             patientaListViewModel.getHospitals(accessToken)
         }
         patientaListViewModel.getHospitalsData().observe(this, Observer {
-            modelFeedArrayList.clear()
             if (it != null) {
                 hospitalList.clear()
                 for (data in it.data) {
