@@ -117,11 +117,10 @@
                     android:id="@+id/currentActivity"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="30dp"
                     android:layout_weight="1"
                     android:buttonTint="@color/basic_color"
                     android:checked="true"
-                    android:text="Current Activities"
+                    android:text="Current"
                     android:textColor="@color/black" />
 
                 <RadioButton
@@ -129,9 +128,11 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:layout_marginStart="40dp"
                     android:buttonTint="@color/basic_color"
-                    android:text="Previous Activities"
-                    android:textColor="@color/black" />
+                    android:text="Previous"
+                    android:textColor="@color/black"
+                    android:layout_marginLeft="30dp" />
 
             </RadioGroup>
 

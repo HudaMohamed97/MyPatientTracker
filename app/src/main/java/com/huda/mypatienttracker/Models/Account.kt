@@ -2,6 +2,7 @@ package com.example.myapplication.Models
 
 import LoginTarget
 import com.google.gson.annotations.SerializedName
+import com.huda.mypatienttracker.Models.ActualTarget
 import com.huda.mypatienttracker.Models.ProductTarget
 
 
@@ -12,6 +13,7 @@ data class Account(
     @SerializedName("name") val name: String = "",
     @SerializedName("email") val email: String = "",
     @SerializedName("photo") val photo: String = "",
+    @SerializedName("actual_target") val actual_target : ActualTarget? = null,
     @SerializedName("device_token") val device_token: String = "",
     @SerializedName("active") val active: Boolean = false
 )

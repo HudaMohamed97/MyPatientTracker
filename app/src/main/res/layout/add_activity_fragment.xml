@@ -145,13 +145,15 @@
                     android:background="@drawable/background_edittext"
                     android:orientation="horizontal">
 
-                    <com.toptoche.searchablespinnerlibrary.SearchableSpinner
+                    <TextView
                         android:id="@+id/speakerSpinner"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:prompt="@string/app_name"
-                        android:theme="@style/SpinnerThemeLight"
-                        app:hintText="speaker" />
+                        android:clickable="true"
+                        android:layout_gravity="center"
+                        android:focusable="true"
+                        android:text=" speaker"
+                        android:theme="@style/SpinnerThemeLight" />
                 </LinearLayout>
             </LinearLayout>
 
@@ -208,8 +210,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:textColor="@color/black"
-                        android:text="speakers" />
+                        android:text="speakers"
+                        android:textColor="@color/black" />
                 </LinearLayout>
 
 
@@ -311,14 +313,16 @@
                 android:background="@drawable/background_edittext"
                 android:orientation="horizontal">
 
-                <com.toptoche.searchablespinnerlibrary.SearchableSpinner
-                    android:id="@+id/Specialityspinner"
+                <TextView
+                    android:id="@+id/Speciality_spinner"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:spinnerMode="dropdown"
-                    android:textColor="@color/not_black"
-                    android:theme="@style/SpinnerThemeLight"
-                    app:hintText="Speciality" />
+                    android:clickable="true"
+                    android:layout_gravity="center"
+                    android:focusable="true"
+                    android:text="Speciality"
+                    android:textColor="@color/black"
+                    android:theme="@style/SpinnerThemeLight" />
 
             </LinearLayout>
 

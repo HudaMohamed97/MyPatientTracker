@@ -182,10 +182,10 @@ class LoginFragment : Fragment(), LoginInterface {
         loginPrefsEditor.putInt("TargetNoUpdate", responseModelData.account.target.no_update)
         loginPrefsEditor.putInt("TargetNotPh", responseModelData.account.target.not_ph)
         loginPrefsEditor.putInt("TargetConfirmed", responseModelData.account.target.confirmed)
-        loginPrefsEditor.putInt("AllProduct", responseModelData.account.product_target?.all!!)
-        loginPrefsEditor.putInt("uptravi", responseModelData.account.product_target.uptravi)
-        loginPrefsEditor.putInt("opsumit", responseModelData.account.product_target.opsumit)
-        loginPrefsEditor.putInt("tracleer", responseModelData.account.product_target.tracleer)
+        loginPrefsEditor.putInt("AllProduct", responseModelData.account.actual_target?.total!!)
+        loginPrefsEditor.putInt("uptravi", responseModelData.account.actual_target.uptravi)
+        loginPrefsEditor.putInt("opsumit", responseModelData.account.actual_target.opsumit)
+        loginPrefsEditor.putInt("tracleer", responseModelData.account.actual_target.tracleer)
         loginPrefsEditor.commit()
     }
 }

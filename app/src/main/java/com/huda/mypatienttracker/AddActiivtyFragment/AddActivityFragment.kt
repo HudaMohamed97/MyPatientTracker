@@ -17,6 +17,11 @@ import com.huda.mypatienttracker.Models.*
 import com.huda.mypatienttracker.R
 import com.toptoche.searchablespinnerlibrary.SearchableSpinner
 import kotlinx.android.synthetic.main.add_activity_fragment.*
+import kotlinx.android.synthetic.main.add_activity_fragment.activtyCityProgressBar
+import kotlinx.android.synthetic.main.add_activity_fragment.activtyProgressBar
+import kotlinx.android.synthetic.main.add_activity_fragment.addSpeaker
+import kotlinx.android.synthetic.main.add_activity_fragment.datePicker
+import kotlinx.android.synthetic.main.update_activity_fragment.*
 import okhttp3.MediaType
 import okhttp3.RequestBody
 import java.text.SimpleDateFormat
@@ -29,17 +34,17 @@ class AddActivityFragment : Fragment() {
     private lateinit var addActivityViewModel: AddActivityViewModel
     private lateinit var loginPreferences: SharedPreferences
     private lateinit var spinnerType: SearchableSpinner
-    private lateinit var seakerType: SearchableSpinner
+    private lateinit var seakerType: TextView
     private lateinit var citySpinner: SearchableSpinner
     private val medicalList = arrayListOf<String>()
     private val productList = arrayListOf<String>()
     private val specialityList = arrayListOf<String>()
     private val medicalSubList = arrayListOf<String>()
-    private val speakerRequestList = arrayListOf<SpeakerRequestModel>()
+    private var speakerRequestList = arrayListOf<SpeakerRequestModel>()
     private val commercialList = arrayListOf<String>()
     private val marketList = arrayListOf<String>()
-    private val attandanceList = arrayListOf<String>()
-    private val specialityRequestedList = arrayListOf<String>()
+    private var attandanceList = arrayListOf<String>()
+    private var specialityRequestedList = arrayListOf<String>()
     private val speakerList = arrayListOf<String>()
     private var type = ""
     private var productType = ""
@@ -76,8 +81,6 @@ class AddActivityFragment : Fragment() {
         loginPreferences = activity!!.getSharedPreferences("loginPrefs", Context.MODE_PRIVATE)
         setClickListeners()
         intializeMedicalSpinner()
-        intializeSpeakerSpinner()
-        intializeSpecialitySpinner()
         intializeProductSpinner()
         getCountryList()
     }
@@ -226,15 +229,7 @@ class AddActivityFragment : Fragment() {
         for (doctor in doctorList) {
             doctorNameList.add(doctor.name)
         }
-       // initializeDoctorSpinner(speakersSpinner, doctorNameList)
-    }
-
-
-    private fun intializeSpeakerSpinner() {
-        speakerList.clear()
-        speakerList.add("Inter")
-        speakerList.add("Local")
-        initializeSpeakerSpinner(speakerSpinner, speakerList)
+        // initializeDoctorSpinner(speakersSpinner, doctorNameList)
     }
 
     private fun intializeMedicalSpinner() {
@@ -253,14 +248,6 @@ class AddActivityFragment : Fragment() {
         initialiProductSpinner(ActivityProductTypespinner, productList)
     }
 
-    private fun intializeSpecialitySpinner() {
-        specialityList.clear()
-        specialityList.add("PH")
-        specialityList.add("RH")
-        specialityList.add("Cardio")
-        specialityList.add("Pharmacist")
-        initializeSpecialitySpinner(Specialityspinner, specialityList)
-    }
 
     private fun initializeCitySpinner(
         citySpinner: SearchableSpinner,
@@ -502,10 +489,19 @@ class AddActivityFragment : Fragment() {
     }
 
     private fun showNumOfAttend() {
-        attendBottomSheet = AttendBottomSheet()
+        attendBottomSheet = AttendBottomSheet(attandanceList, specialityRequestedList)
         attendBottomSheet.setOnAttendAddedListener(object : AttendBottomSheet.AttendanceListener {
-            override fun onAttendedAdd(number: String) {
-                attandanceList.add(number)
+            override fun onAttendedAdd(
+                customAttandanceList: java.util.ArrayList<String>,
+                customSpecialityRequestedList: java.util.ArrayList<String>
+            ) {
+                attandanceList = customAttandanceList
+                specialityRequestedList = customSpecialityRequestedList
+                var sum = 0
+                for (i in attandanceList) {
+                    sum += i.toInt()
+                }
+                Speciality_spinner.text = "Speciality " + "(" + sum + ")"
             }
 
         }
@@ -553,65 +549,15 @@ class AddActivityFragment : Fragment() {
 
     }
 
-    private fun initializeSpeakerSpinner(
-        spinnerType: SearchableSpinner,
-        typeList: ArrayList<String>
-    ) {
-        val arrayAdapter =
-            context?.let {
-                ArrayAdapter(
-                    it,
-                    R.layout.support_simple_spinner_dropdown_item,
-                    typeList
-                )
-            }
-
-        spinnerType.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(
-                parentView: AdapterView<*>,
-                selectedItemView: View,
-                position: Int,
-                id: Long
-            ) {
-
-                val typeHospital = typeList[position]
-                speakerType = when (typeHospital) {
-                    "Inter" -> {
-                        flagSelected = 1
-                        showInterLayout()
-                        "Inter"
-                    }
-                    else -> {
-                        flagSelected = 1
-                        showLocalLayout()
-                        "Local"
-                    }
-
-                }
-            }
-
-            override fun onNothingSelected(parentView: AdapterView<*>) {
-                // your code here
-            }
-
-        }
-        arrayAdapter?.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        if (arrayAdapter != null) {
-            speakerSpinner.adapter = arrayAdapter
-        }
-
-    }
 
     private fun showInterLayout() {
-        localSpeaker.visibility = View.GONE
-        customBottomSheet = CustomBottomSheet()
+        customBottomSheet = CustomBottomSheet(speakerRequestList)
         customBottomSheet.setOnSpeakerAddedListener(object :
             CustomBottomSheet.OnSpeakerAddedListener {
-            override fun onSpeakerAdded(speakerRequestModel: SpeakerRequestModel) {
-                speakerRequestList.add(speakerRequestModel)
+            override fun onSpeakerAdded(speakerRequestModel: java.util.ArrayList<SpeakerRequestModel>) {
+                speakerRequestList = speakerRequestModel
+                speakerSpinner.text = "Speakers " + "(" + speakerRequestList.size + ")"
             }
-
-
         })
         fragmentManager?.let {
             customBottomSheet.show(
@@ -633,6 +579,12 @@ class AddActivityFragment : Fragment() {
         val backButton = root.findViewById(R.id.backButton) as ImageView
         backButton.setOnClickListener {
             findNavController().navigateUp()
+        }
+        Speciality_spinner.setOnClickListener {
+            showNumOfAttend()
+        }
+        speakerSpinner.setOnClickListener {
+            showInterLayout()
         }
         addActivityButtton.setOnClickListener {
             if (selectedType == -1 || city_id == -1 || specialityRequestedList.size == 0 || attandanceList.size == 0 || Subtype == "" ||
@@ -698,12 +650,8 @@ class AddActivityFragment : Fragment() {
             }
 
         }
-        val logOutButton = root.findViewById(R.id.backButton) as ImageView
         spinnerType = root.findViewById(R.id.medicalspinner)
-        seakerType = root.findViewById(R.id.speakerSpinner)
-        logOutButton.setOnClickListener {
-            activity!!.finish()
-        }
+
         datePicker.setOnClickListener {
             val c = Calendar.getInstance()
             val year = c.get(Calendar.YEAR)

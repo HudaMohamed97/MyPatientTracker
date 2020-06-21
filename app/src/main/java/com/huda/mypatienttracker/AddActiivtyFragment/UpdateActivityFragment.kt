@@ -18,15 +18,11 @@ import androidx.navigation.fragment.findNavController
 import com.huda.mypatienttracker.ActivityFragment.AddActivityViewModel
 import com.huda.mypatienttracker.Models.*
 import com.huda.mypatienttracker.R
-import com.toptoche.searchablespinnerlibrary.SearchableSpinner
-import kotlinx.android.synthetic.main.activity_fragment_list.*
 import kotlinx.android.synthetic.main.update_activity_fragment.*
 import okhttp3.MediaType
 import okhttp3.RequestBody
 import java.text.SimpleDateFormat
 import java.util.*
-import java.util.Arrays.copyOf
-import java.util.EnumSet.copyOf
 
 
 class UpdateActivityFragment : Fragment() {
@@ -38,16 +34,15 @@ class UpdateActivityFragment : Fragment() {
     private lateinit var typeSpinner: SpinnerDialog
     private lateinit var seakerspinner: SpinnerDialog
     private lateinit var citySpinner: SpinnerDialog
-    private lateinit var localSpeakersSpinner: SpinnerDialog
     private lateinit var specialitySpinner: SpinnerDialog
     private lateinit var countrySpinner: SpinnerDialog
     private val medicalList = arrayListOf<String>()
     private val productList = arrayListOf<String>()
     private val specialityList = arrayListOf<String>()
     private val medicalSubList = arrayListOf<String>()
-    private val speakerRequestList = arrayListOf<SpeakerRequestModel>()
-    private val attandanceList = arrayListOf<String>()
-    private val specialityRequestedList = arrayListOf<String>()
+    private var speakerRequestList = arrayListOf<SpeakerRequestModel>()
+    private var attandanceList = arrayListOf<String>()
+    private var specialityRequestedList = arrayListOf<String>()
     private val speakerList = arrayListOf<String>()
     private var type = ""
     private var productType = ""
@@ -87,7 +82,6 @@ class UpdateActivityFragment : Fragment() {
         callSingelActivity()
         intializeMedicalSpinner()
         intializeSpeakerSpinner()
-        intializeSpecialitySpinner()
         intializeProductSpinner()
         setClickListeners()
         getCountryList()
@@ -151,24 +145,6 @@ class UpdateActivityFragment : Fragment() {
         })
     }
 
-    private fun callDoctors() {
-        DoctorList.clear()
-        val accessToken = loginPreferences.getString("accessToken", "")
-        if (accessToken != null) {
-            speakerProgressBar.visibility = View.VISIBLE
-            addActivityViewModel.getDoctors(accessToken)
-        }
-        addActivityViewModel.getDoctorData().observe(this, Observer {
-            if (it != null) {
-                speakerProgressBar.visibility = View.GONE
-                for (doctor in it.data) {
-                    DoctorList.add(doctor)
-                }
-                prepareDoctorList(DoctorList)
-            }
-        })
-    }
-
     private fun callSingelActivity() {
         updateActivtyProgressBar.visibility = View.VISIBLE
         val accessToken = loginPreferences.getString("accessToken", "")
@@ -201,12 +177,17 @@ class UpdateActivityFragment : Fragment() {
                 datePicker.setText(it.data.date)
                 ActivityProductType.text = it.data.product
                 activity_City_Spinner.text = it.data.city.name
-                speakersLocalSpinner.text = ""
-                for (speaker in it.data.speakers) {
-                    speakersLocalSpinner.append(speaker.name + " ")
-                }
+                /* for (speaker in it.data.speakers) {
+                     speakersLocalSpinner.append(speaker.name + " ")
+                 }*/
                 speakerRequestList.addAll(it.data.speakers)
+                speaker_Spinner.text = "Speakers " + "(" + speakerRequestList.size + ")"
                 specialityRequestedList.addAll(it.data.speciality)
+                var sum = 0
+                for (i in it.data.no_attendees) {
+                    sum += i.toInt()
+                }
+                SpecialitySpinner.text = "Speciality " + "(" + sum + ")"
                 attandanceList.addAll(it.data.no_attendees)
 
             } else {
@@ -253,15 +234,6 @@ class UpdateActivityFragment : Fragment() {
         initializeCitySpinner(citiesNameList)
     }
 
-    private fun prepareDoctorList(doctorList: ArrayList<DoctorDate>) {
-        doctorNameList.clear()
-        for (doctor in doctorList) {
-            doctorNameList.add(doctor.name)
-        }
-        initializeDoctorSpinner(doctorNameList)
-    }
-
-
     private fun intializeSpeakerSpinner() {
         speakerList.clear()
         speakerList.add("Inter")
@@ -282,14 +254,6 @@ class UpdateActivityFragment : Fragment() {
         productList.add("tracleer")
     }
 
-    private fun intializeSpecialitySpinner() {
-        specialityList.clear()
-        specialityList.add("PH")
-        specialityList.add("RH")
-        specialityList.add("Cardio")
-        specialityList.add("Pharmacist")
-        initializeSpecialitySpinner(specialityList)
-    }
 
     private fun initializeCitySpinner(
         citiesNameList: ArrayList<String>
@@ -304,27 +268,6 @@ class UpdateActivityFragment : Fragment() {
             }
         })
 
-    }
-
-    private fun initializeDoctorSpinner(
-        doctorsNameList: ArrayList<String>
-    ) {
-        localSpeakersSpinner = SpinnerDialog(activity!!, doctorsNameList, "") // With No Animation
-        localSpeakersSpinner.setCancellable(true) // for cancellable
-        localSpeakersSpinner.setShowKeyboard(false) // for open keyboard by default
-        localSpeakersSpinner.bindOnSpinerListener(object : OnSpinerItemClick {
-            override fun onClick(item: String?, position: Int) {
-                speakersLocalSpinner.append(doctorsNameList[position])
-                val speakerRequestModel = SpeakerRequestModel(
-                    "Local",
-                    DoctorList[position].type,
-                    DoctorList[position].speciality,
-                    DoctorList[position].name
-                )
-                speakerRequestList.add(speakerRequestModel)
-
-            }
-        })
     }
 
 
@@ -413,27 +356,21 @@ class UpdateActivityFragment : Fragment() {
         })
     }
 
-    private fun initializeSpecialitySpinner(
-        typeList: ArrayList<String>
-    ) {
-        specialitySpinner = SpinnerDialog(activity!!, typeList, "") // With No Animation
-        specialitySpinner.setCancellable(true) // for cancellable
-        specialitySpinner.setShowKeyboard(false) // for open keyboard by default
-        specialitySpinner.bindOnSpinerListener(object : OnSpinerItemClick {
-            override fun onClick(item: String?, position: Int) {
-                val specialityText = typeList[position]
-                specialityRequestedList.add(specialityText)
-                SpecialitySpinner.text = specialityText
-                showNumOfAttend()
-            }
-        })
-    }
 
     private fun showNumOfAttend() {
-        attendBottomSheet = AttendBottomSheet()
+        attendBottomSheet = AttendBottomSheet(attandanceList, specialityRequestedList)
         attendBottomSheet.setOnAttendAddedListener(object : AttendBottomSheet.AttendanceListener {
-            override fun onAttendedAdd(number: String) {
-                attandanceList.add(number)
+            override fun onAttendedAdd(
+                customAttandanceList: ArrayList<String>,
+                customSpecialityRequestedList: ArrayList<String>
+            ) {
+                attandanceList = customAttandanceList
+                specialityRequestedList = customSpecialityRequestedList
+                var sum = 0
+                for (i in attandanceList) {
+                    sum += i.toInt()
+                }
+                SpecialitySpinner.text = "Speciality " + "(" + sum + ")"
             }
 
         }
@@ -464,40 +401,13 @@ class UpdateActivityFragment : Fragment() {
     }
 
 
-    private fun initializeSpeakerSpinner(
-        typeList: ArrayList<String>
-    ) {
-        seakerspinner = SpinnerDialog(activity!!, typeList, "") // With No Animation
-        seakerspinner.setCancellable(true) // for cancellable
-        seakerspinner.setShowKeyboard(false) // for open keyboard by default
-        seakerspinner.bindOnSpinerListener(object : OnSpinerItemClick {
-            override fun onClick(item: String?, position: Int) {
-                val typeSpeaker = typeList[position]
-                speakerType = when (typeSpeaker) {
-                    "Inter" -> {
-                        flagSelected = 1
-                        showInterLayout()
-                        "Inter"
-                    }
-                    else -> {
-                        flagSelected = 1
-                        showLocalLayout()
-                        "Local"
-                    }
-
-                }
-            }
-        })
-    }
-
     private fun showInterLayout() {
-        localSpeaker.visibility = View.VISIBLE
-        customBottomSheet = CustomBottomSheet()
+        customBottomSheet = CustomBottomSheet(speakerRequestList)
         customBottomSheet.setOnSpeakerAddedListener(object :
             CustomBottomSheet.OnSpeakerAddedListener {
-            override fun onSpeakerAdded(speakerRequestModel: SpeakerRequestModel) {
-                speakersLocalSpinner.append(" " + speakerRequestModel.name)
-                speakerRequestList.add(speakerRequestModel)
+            override fun onSpeakerAdded(speakerRequestModel: ArrayList<SpeakerRequestModel>) {
+                speakerRequestList = speakerRequestModel
+                speaker_Spinner.text = "Speakers " + "(" + speakerRequestList.size + ")"
             }
         })
         fragmentManager?.let {
@@ -506,13 +416,6 @@ class UpdateActivityFragment : Fragment() {
                 ""
             )
         }
-    }
-
-
-    private fun showLocalLayout() {
-        callDoctors()
-        localSpeaker.visibility = View.VISIBLE
-
     }
 
 
@@ -534,15 +437,10 @@ class UpdateActivityFragment : Fragment() {
             }
         }
         SpecialitySpinner.setOnClickListener {
-            if (specialityList.size != 0) {
-                specialitySpinner.showSpinerDialog()
-            }
+            showNumOfAttend()
         }
         speaker_Spinner.setOnClickListener {
-            if (speakerList.size != 0) {
-                initializeSpeakerSpinner(speakerList)
-                seakerspinner.showSpinerDialog()
-            }
+            showInterLayout()
         }
         subTypeSpinner.setOnClickListener {
             if (medicalSubList.size != 0) {
@@ -568,17 +466,7 @@ class UpdateActivityFragment : Fragment() {
 
             }
         }
-        speakersLocalSpinner.setOnClickListener {
-            if (doctorNameList.size != 0) {
-                localSpeakersSpinner.showSpinerDialog()
-            } else {
-                Toast.makeText(
-                    activity,
-                    "Please Select Type Of speaker First..",
-                    Toast.LENGTH_SHORT
-                ).show()
-            }
-        }
+
 
 
         updateActivityButtton.setOnClickListener {
@@ -630,17 +518,6 @@ class UpdateActivityFragment : Fragment() {
         }
 
         speakerRequestList.clear()
-        addSpeaker.setOnClickListener {
-            if (speakerType == "") {
-                Toast.makeText(activity, "Please Choose Speaker Type First", Toast.LENGTH_SHORT)
-                    .show()
-            } else if (speakerType == "Inter") {
-                showInterLayout()
-            } else {
-                showLocalLayout()
-            }
-
-        }
         val logOutButton = root.findViewById(R.id.backButton) as ImageView
         logOutButton.setOnClickListener {
             findNavController().navigateUp()
