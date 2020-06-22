@@ -30,6 +30,7 @@ class ActivityFragment : Fragment() {
     private lateinit var loginPreferences: SharedPreferences
     private var type: Int = -1
     var mHasReachedBottomOnce = false
+    var fromRefresh = false
     var currentPageNum = 1
     private var fromType: String = ""
     var lastPageNum: Int = 0
@@ -50,7 +51,10 @@ class ActivityFragment : Fragment() {
         loginPreferences = activity!!.getSharedPreferences("loginPrefs", Context.MODE_PRIVATE)
         setClickListeners()
         initRecyclerView()
-        callActivity(1, false, false)
+        if (!fromRefresh) {
+            currentActivity.isChecked = true
+            callActivity(1, false, false)
+        }
         radioActivity.setOnCheckedChangeListener { _, checkedId ->
             when (checkedId) {
                 R.id.currentActivity -> {
@@ -153,6 +157,7 @@ class ActivityFragment : Fragment() {
                 } else if (fromTab == "Update") {
                     val bundle = Bundle()
                     bundle.putInt("ActivityId", modelFeedArrayList[position].id)
+                    fromRefresh = true
                     findNavController().navigate(R.id.action_Activity_to_Update_Activity, bundle)
                 }
 

@@ -69,6 +69,9 @@ class AttendBottomSheet(
                     speakersAdapter.notifyItemInserted(modelList.size - 1)
                     speakersAdapter.notifyDataSetChanged()
                     Toast.makeText(activity, "Added successfully Thanks", Toast.LENGTH_SHORT).show()
+                    resetData()
+
+
                 }
             }
         }
@@ -78,6 +81,12 @@ class AttendBottomSheet(
             }
         }
 
+    }
+
+    private fun resetData() {
+        numOfAttend.setText("")
+        numOfAttend.hint = "   Number of Attendees"
+        SpecialitySpinner.text = "Speciality"
     }
 
     private fun initRecyclerView() {

@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -67,9 +68,65 @@ class UpdatePatientFragment : Fragment() {
             etiology = PatientModel.last_treatment.etiology
             updateEtiloigySpinner.text = PatientModel.last_treatment.etiology
         }
+        if (PatientModel.last_treatment != null) {
+            val array: List<String> = PatientModel.last_treatment.other_medication.split(",")
+            for (medication in array) {
+                if (medication == "PDE5i") {
+                    updatePDE5i.isChecked = true
+                }
+                if (medication == "PDE5i") {
+                    updatePDE5iOpsumit.isChecked = true
+                }
+                if (medication == "Oral_PC") {
+                    updateOral_PC.isChecked = true
+                }
+                if (medication == "Macitentan") {
+                    updateMacitentan.isChecked = true
+                }
+                if (medication == "Other_ERA") {
+                    updateOther_ERA.isChecked = true
+                }
+                if (medication == "Rioopsumit") {
+                    updateRioopsumit.isChecked = true
+                }
+                if (medication == "Rio") {
+                    updateRio.isChecked = true
+                }
+                if (medication == "other") {
+                    updateother.isChecked = true
+                }
+            }
+        } else {
+            fromType = UPTRAVI
+        }
+        if (PatientModel.last_treatment != null) {
+            if (PatientModel.last_treatment.type_medication == "opsumit" || PatientModel.last_treatment.type_medication == "Opsumit") {
+                fromType = OPSUMIT
+                updateUptraviLayout.visibility = View.GONE
+                updateOpsumitLayout.visibility = View.VISIBLE
+                updateRadioUptarvi.isChecked = false
+                updateRadioTraceller.isChecked = false
+                updateRadioOpsumit.isChecked = true
+            }
+            if (PatientModel.last_treatment.type_medication == "uptravi" || PatientModel.last_treatment.type_medication == "Uptravi") {
+                fromType = UPTRAVI
+                updateUptraviLayout.visibility = View.VISIBLE
+                updateOpsumitLayout.visibility = View.GONE
+                updateRadioUptarvi.isChecked = true
+                updateRadioTraceller.isChecked = false
+                updateRadioOpsumit.isChecked = false
+            }
+            if (PatientModel.last_treatment.type_medication == "tracleer" || PatientModel.last_treatment.type_medication == "Tracleer") {
+                fromType = TRACLEER
+                updateUptraviLayout.visibility = View.GONE
+                updateOpsumitLayout.visibility = View.VISIBLE
+                updateRadioUptarvi.isChecked = false
+                updateRadioTraceller.isChecked = true
+                updateRadioOpsumit.isChecked = false
+            }
+        }
         doctorId = PatientModel.doctor.id
         updateDrNameSpinner.text = PatientModel.doctor.name
-
         setClickListeners()
         callHospitals("coe", false, false)
         intializeEtiologySpinner()
@@ -118,88 +175,33 @@ class UpdatePatientFragment : Fragment() {
 
 
         val rg = root.findViewById(R.id.updateRadioPatientGroup) as RadioGroup
-        fromType = UPTRAVI
-        updatePDE5i.setOnClickListener {
-            otherMedication = "PDE5i"
-            /*  updateOral_PC.isChecked = false
-              updateRio.isChecked = false
-              updateother.isChecked = false*/
-        }
-        updatePDE5iOpsumit.setOnClickListener {
-            otherMedication = "PDE5i"
-            /* updateMacitentan.isChecked = false
-             updateRioopsumit.isChecked = false
-             updateOther_ERA.isChecked = false*/
-        }
-
-        updateOral_PC.setOnClickListener {
-            otherMedication = "Oral_PC"
-            /*  updatePDE5i.isChecked = false
-              updateRio.isChecked = false
-              updateother.isChecked = false*/
-        }
-
-        updateMacitentan.setOnClickListener {
-            otherMedication = "Macitentan"
-            /* updatePDE5iOpsumit.isChecked = false
-             updateRioopsumit.isChecked = false
-             updateOther_ERA.isChecked = false*/
-        }
-
-        updateOther_ERA.setOnClickListener {
-            otherMedication = "Other_ERA"
-            /* updatePDE5iOpsumit.isChecked = false
-             updateRioopsumit.isChecked = false
-             updateMacitentan.isChecked = false*/
-        }
-
-        updateRioopsumit.setOnClickListener {
-            otherMedication = "Rioopsumit"
-            /* updatePDE5iOpsumit.isChecked = false
-             updateMacitentan.isChecked = false
-             updateOther_ERA.isChecked = false*/
-        }
-
-        updateRio.setOnClickListener {
-            otherMedication = "Rio"
-            /*  updateOral_PC.isChecked = false
-              updatePDE5i.isChecked = false
-              updateother.isChecked = false*/
-        }
-
-        updateother.setOnClickListener {
-            otherMedication = "PDE5i"
-            /* updateOral_PC.isChecked = false
-             updateRio.isChecked = false
-             updatePDE5i.isChecked = false*/
-        }
 
         updateButton.setOnClickListener {
-            if (updatePDE5i.isChecked) {
+            if (updatePDE5i.isChecked && updateUptraviLayout.isVisible) {
                 otherMedication = "PDE5i,"
             }
-            if (updatePDE5iOpsumit.isChecked) {
+            if (updatePDE5iOpsumit.isChecked && updateOpsumitLayout.isVisible) {
                 otherMedication += "PDE5i,"
             }
-            if (updateOral_PC.isChecked) {
+            if (updateOral_PC.isChecked && updateUptraviLayout.isVisible) {
                 otherMedication += "Oral_PC,"
             }
-            if (updateMacitentan.isChecked) {
+            if (updateMacitentan.isChecked && updateOpsumitLayout.isVisible) {
                 otherMedication += "Macitentan,"
             }
-            if (updateOther_ERA.isChecked) {
+            if (updateOther_ERA.isChecked && updateOpsumitLayout.isVisible) {
                 otherMedication += "Other_ERA,"
             }
-            if (updateRioopsumit.isChecked) {
+            if (updateRioopsumit.isChecked && updateOpsumitLayout.isVisible) {
                 otherMedication += "Rioopsumit,"
             }
-            if (updateRio.isChecked) {
+            if (updateRio.isChecked && updateUptraviLayout.isVisible) {
                 otherMedication += "Rio,"
             }
-            if (updateother.isChecked) {
+            if (updateother.isChecked && updateUptraviLayout.isVisible) {
                 otherMedication += "other,"
             }
-            if (otherMedication.length != 0) {
+            if (otherMedication.isNotEmpty()) {
                 otherMedication = otherMedication.substring(0, otherMedication.length - 1);
 
             }
@@ -252,6 +254,7 @@ class UpdatePatientFragment : Fragment() {
                         Toast.LENGTH_SHORT
                     ).show()
                 else {
+                    otherMedication = ""
                     Toast.makeText(activity, "Submitted Successfully", Toast.LENGTH_SHORT).show()
                 }
             } else {

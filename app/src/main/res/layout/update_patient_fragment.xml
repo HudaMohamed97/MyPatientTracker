@@ -79,16 +79,6 @@
             android:indeterminateTintMode="src_atop"
             android:visibility="gone" />
 
-        <TextView
-            android:id="@+id/textView5"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="right"
-            android:background="@drawable/rounded_background_edittext_blue"
-            android:text="     Patient List     "
-            android:textColor="@color/black" />
-
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="@dimen/space_50"

@@ -30,7 +30,7 @@ class TargetRepository {
                         if (response.code() == 400) {
                             val dummyResponse =
                                 SubmitModel(
-                                    "Error, You insert com.huda.mypatienttracker.Models.HospitalModels.Target of this Month Before!",
+                                    "Error, You inserted Target of this Month Before!",
                                     "error"
                                 )
                             hospitalData.value = dummyResponse

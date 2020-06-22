@@ -119,7 +119,6 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:buttonTint="@color/basic_color"
-                    android:checked="true"
                     android:text="Current"
                     android:textColor="@color/black" />
 

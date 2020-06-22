@@ -177,6 +177,7 @@ class UpdateActivityFragment : Fragment() {
                 datePicker.setText(it.data.date)
                 ActivityProductType.text = it.data.product
                 activity_City_Spinner.text = it.data.city.name
+                activity_Country_Spinner.text = it.data.country.name
                 /* for (speaker in it.data.speakers) {
                      speakersLocalSpinner.append(speaker.name + " ")
                  }*/

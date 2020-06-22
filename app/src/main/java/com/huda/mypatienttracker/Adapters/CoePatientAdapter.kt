@@ -12,7 +12,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.huda.mypatienttracker.R
 import java.util.*
 import androidx.appcompat.view.ContextThemeWrapper
-import com.huda.mypatienttracker.Models.PatientResponse
 import com.huda.mypatienttracker.Models.PatientResponseData
 
 
@@ -47,7 +46,7 @@ class CoePatientAdapter(modelFeedArrayList: ArrayList<PatientResponseData>) :
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val modelFeed = modelFeedArrayList[position]
         holder.hospitalNameCoe.text = modelFeed.hospital?.name
-        if (modelFeed.doctor.name == null) {
+        if (modelFeed.doctor.name != null) {
             holder.doctorName.text = modelFeed.doctor.name
         }
         holder.time.text = modelFeed.created_at

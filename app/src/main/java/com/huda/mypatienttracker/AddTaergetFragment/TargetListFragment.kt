@@ -25,7 +25,6 @@ import com.huda.mypatienttracker.R
 import com.toptoche.searchablespinnerlibrary.SearchableSpinner
 import kotlinx.android.synthetic.main.add_target_fragment.*
 import kotlinx.android.synthetic.main.add_target_fragment.view.*
-import kotlinx.android.synthetic.main.update_target_fragment.*
 import java.util.ArrayList
 
 
@@ -300,13 +299,11 @@ class TargetListFragment : Fragment() {
         addTargetFragmentViewModel.submitData().observe(this, Observer {
             TargetProgressBar.visibility = View.GONE
             if (it != null) {
-                if (it.title == "error")
-                    Toast.makeText(
-                        activity,
-                        it.type,
-                        Toast.LENGTH_SHORT
-                    ).show()
-                else {
+                if (it.title == "error" && !hospitalSubmitTarget)
+                    Toast.makeText(activity, it.type, Toast.LENGTH_SHORT).show()
+                else if (hospitalSubmitTarget) {
+                    showAlertDialog("You Can't Add Target, Because You Confirmed Targets Before!")
+                } else {
                     Toast.makeText(activity, "Submitted Successfully", Toast.LENGTH_SHORT).show()
                     targetNumber.text.clear()
                     callTargetList(type, 1, false, true)

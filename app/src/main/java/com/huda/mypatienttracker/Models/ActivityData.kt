@@ -14,6 +14,7 @@ data class ActivityData(
     @SerializedName("no_attendees") val no_attendees: List<String>,
     @SerializedName("created_at") val created_at: String,
     @SerializedName("city") val city: City,
+    @SerializedName("country") val country: CountryData,
     @SerializedName("user") val user: User,
     @SerializedName("speakers") val speakers: List<SpeakerRequestModel>
 )

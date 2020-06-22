@@ -103,12 +103,23 @@ class CustomBottomSheet(val speakerRequestList: ArrayList<SpeakerRequestModel>) 
                     speakerClickListener.onSpeakerAdded(speakerRequestList)
                     speakersAdapter.notifyItemInserted(speakerRequestList.size - 1)
                     speakersAdapter.notifyDataSetChanged()
-
                     Toast.makeText(activity, "Added successfully Thanks", Toast.LENGTH_SHORT).show()
+                    resetData()
                 }
             }
         }
 
+    }
+
+    private fun resetData() {
+        speakerName.setText("")
+        speakerName.hint = "   speakerName"
+        speakerSpeciality.setText("")
+        speakerSpeciality.hint = "   speakerSpeciality"
+        speaker_Spinner.text = "Speaker"
+        speakerTypeSpinner.text = "Speaker Type"
+        speakerInterType = ""
+        localSpeaker.visibility = View.GONE
     }
 
     private fun initRecyclerView() {
@@ -193,10 +204,12 @@ class CustomBottomSheet(val speakerRequestList: ArrayList<SpeakerRequestModel>) 
                 val typeSpeaker = typeList[position]
                 speakerType = when (typeSpeaker) {
                     "Inter" -> {
+                        speaker_Spinner.text = "International"
                         hideLocalLayout()
                         "Inter"
                     }
                     else -> {
+                        speaker_Spinner.text = "Local"
                         showLocalLayout()
                         "Local"
                     }

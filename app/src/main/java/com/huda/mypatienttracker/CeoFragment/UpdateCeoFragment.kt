@@ -17,6 +17,11 @@ import com.huda.mypatienttracker.AddHospitalFragment.AddHospitalViewModel
 import com.huda.mypatienttracker.Models.HospitalModels.updateHospitalRequestModel
 import com.huda.mypatienttracker.R
 import kotlinx.android.synthetic.main.update_hospital_coe.*
+import kotlinx.android.synthetic.main.update_hospital_coe.backButton
+import kotlinx.android.synthetic.main.update_hospital_coe.cardio
+import kotlinx.android.synthetic.main.update_hospital_coe.pulmo
+import kotlinx.android.synthetic.main.update_hospital_coe.rheuma
+import kotlinx.android.synthetic.main.update_hospital_coe.submitButton
 
 class UpdateCeoFragment : Fragment() {
     private lateinit var root: View
@@ -43,6 +48,9 @@ class UpdateCeoFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         hospitalId = arguments?.getInt("hospitalId")!!
         add_hospitalRequestModel = arguments?.getParcelable("Hospital")!!
+        rheuma.setText(add_hospitalRequestModel.rheuma.toString())
+        cardio.setText(add_hospitalRequestModel.crdio.toString())
+        pulmo.setText(add_hospitalRequestModel.pulmo.toString())
         setClickListeners()
     }
 
